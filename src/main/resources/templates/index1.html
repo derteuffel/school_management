@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Accueil</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- PAGE CONTENT-->
+        <div class="page-content--bgf7">
+            <!-- BREADCRUMB-->
+            <section class="au-breadcrumb2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="au-breadcrumb-content">
+                                <div class="au-breadcrumb-left">
+                                    <span class="au-breadcrumb-span"> </span>
+                                    <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                        <li class="list-inline-item active">
+                                            <a th:href="@{/home/debut}">Accueil</a>
+                                        </li>
+                                        <li class="list-inline-item seprate">
+                                            <span>/</span>
+                                        </li>
+                                        <li class="list-inline-item">Gestion</li>
+                                    </ul>
+                                </div>
+                                <!--form class="au-form-icon--sm" action="" method="post">
+                                    <input class="au-input--w300 au-input--style2" type="text" placeholder="Rechercher votre  &amp; etablissement...">
+                                    <button class="au-btn--submit2" type="submit">
+                                        <i class="zmdi zmdi-search"></i>
+                                    </button>
+                                </form-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END BREADCRUMB-->
+
+            <!-- WELCOME-->
+            <section class="welcome p-t-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="title-4">Bienvenue dans
+                                <span>votre espace de gestion!</span>
+                            </h1>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END WELCOME-->
+
+            <!-- STATISTIC-->
+            <section class="statistic statistic2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
+                                <div class="statistic__item statistic__item--primary">
+                                <h2 class="number">Nouvelle ecole</h2>
+                                <span class="desc">creer votre ecole</span>
+                                <div class="icon">
+                                    <img th:src="@{/images/plus-math.png}">
+                                    <img th:src="@{/images/school.png}">
+                                </div>
+                            </div>
+                            </button>
+                        </div>
+                        <!-- modal medium -->
+                        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <form th:action="@{/ecole/save}" autocomplete="off" method="post" th:object="${ecole}" class="form-horizontal">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addModalLabel">Nouvelle ecole</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body card-block">
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-nom" class=" form-control-label">Nom de l'ecole</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
+                                                        <small class="form-text text-muted">Ce nom sera l'identite de votre etablissement</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-country" class=" form-control-label">Pays</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9 autocomplete">
+                                                        <input type="text" id="text-country" th:field="*{country}" placeholder="Pays" class="form-control">
+                                                        <small class="form-text text-muted">Votre pays de residence</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-province" class=" form-control-label">Province</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9 autocomplete">
+                                                        <input type="text" id="text-province" th:field="*{province}" placeholder="Province" class="form-control">
+                                                        <small class="form-text text-muted">Votre province</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-commune" class=" form-control-label">Commune</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-commune" th:field="*{commune}" placeholder="Commune" class="form-control">
+                                                        <small class="form-text text-muted">Votre Commune</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-quartier" class=" form-control-label">Quartier</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-quartier" th:field="*{quartier}" placeholder="Quartier" class="form-control">
+                                                        <small class="form-text text-muted">Votre Quartier</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-avenue" class=" form-control-label">Avenue</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-avenue" th:field="*{avenue}" placeholder="Avenue" class="form-control">
+                                                        <small class="form-text text-muted">Votre Avenue</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-parcelle" class=" form-control-label">Numero parcelle</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-parcelle" th:field="*{numParcelle}" placeholder="Numero parcelle" class="form-control">
+                                                        <small class="form-text text-muted">Votre reference de parcelle</small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-matricule" class=" form-control-label">Matricule de votre ecole</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <input type="text" id="text-matricule" th:field="*{matricule}" placeholder="Matricule" class="form-control">
+                                                        <small class="form-text text-muted">Votre Matricule</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-matricule" class=" form-control-label">Cycle</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select th:field="*{cycle}" class="form-control" >
+                                                        <option value="">Choisir un cycle</option>
+                                                        <option  value="PRIMAIRE">PRIMAIRE</option>
+                                                        <option  value="SECONDAIRE">SECONDAIRE</option>
+                                                        <option  value="UNIVERSITE">UNIVERSITE</option>
+                                                    </select>
+                                                    <small class="form-text text-muted">Cycle de votre ecole</small>
+                                                </div>
+                                            </div>
+
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label class=" form-control-label">Conditions d'utilisation</label>
+                                                    </div>
+                                                    <div class="col col-md-9">
+                                                        <div class="form-check">
+                                                            <div class="checkbox">
+                                                                <label for="terms" class="form-check-label ">
+                                                                    <input type="checkbox" id="terms" th:field="*{terms}" class="form-check-input">j'accepte
+                                                                </label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                                            <button type="submit" class="btn btn-primary">Creer</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end modal medium -->
+                        <div class="col-md-6 col-lg-6">
+                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#searchModal"  style="width: inherit" >
+                                <div class="statistic__item statistic__item--secondary">
+                                <h2 class="number">Etablissements</h2>
+                                <span class="desc">Chercher une ecole</span>
+                                <div class="icon">
+                                    <img th:src="@{/images/search.png}">
+                                    <img th:src="@{/images/school.png}">
+                                </div>
+                            </div>
+                            </button>
+                        </div>
+                        <!-- modal medium -->
+                        <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="mediumModalLabel">Chercher une ecole</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" th:each=" item : ${lists}" th:if="${#lists.size(lists)}!=0">
+                                        <a th:href="@{/ecole/connexion/}+${item.id}" th:text="${item.name}+''+${item.province}"></a>
+                                        <hr>
+                                    </div>
+                                    <div class="modal-body"  th:unless="${#lists.size(lists)}!=0">
+                                        <div class="alert-danger">
+                                            <span>Aucun etablissement trouver</span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end modal medium -->
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC-->
+
+            <!-- STATISTIC CHART-->
+            <section class="statistic-chart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">A propos</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC CHART-->
+
+
+            <!-- COPYRIGHT-->
+            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+            <!-- END COPYRIGHT-->
+        </div>
+
+    </div>
+
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    <!-- Bootstrap JS-->
+    <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+    <!-- Vendor JS       -->
+    <script th:src="@{/vendor/slick/slick.min.js}">
+    </script>
+    <script th:src="@{/vendor/wow/wow.min.js}"></script>
+    <script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+    </script>
+    <script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+    <script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+    </script>
+    <script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+    <script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+    <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+    <script th:src="@{/vendor/select2/select2.min.js}">
+    </script>
+
+    <!-- Main JS-->
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/countries.js}"></script>
+
+</body>
+
+</html>
+<!-- end document-->

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Direction</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER DESKTOP-->
+    <header th:replace="~{../templates/fragments/header :: header}">
+    </header>
+    <!-- END HEADER DESKTOP -->
+
+    <!-- WELCOME-->
+    <section th:replace="~{../templates/fragments/home_welcome :: home_welcome}"></section>
+    <!-- END WELCOME-->
+
+    <!-- PAGE CONTENT-->
+    <div class="page-container3">
+        <section class="alert-wrap p-t-70 p-b-70">
+            <div class="container">
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div th:replace="~{../templates/fragments/sidebar :: sidebar}">
+                    </div>
+                    <div class="col-xl-9">
+                        <!-- PAGE CONTENT-->
+                        <div class="page-content">
+                            <h2>Management classe <span th:text="${classe.niveau}"></span></h2>
+                            <hr>
+                            <h3>Professeur principal : <span class="text-primary" th:text="${classe.principal}"></span></h3>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-8" style="overflow: scroll">
+
+                                    <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
+                                        <div class="au-card-title" style="background-image:url('images/bg-title-01.jpg');">
+                                            <div class="bg-overlay bg-overlay--blue"></div>
+                                            <h3>
+                                                <i class="zmdi zmdi-account-calendar"></i>26 April, 2018</h3>
+                                        </div>
+                                        <div class="au-task js-list-load">
+                                            <div class="au-task__title">
+                                                <p>Tasks for John Doe</p>
+                                            </div>
+                                            <div class="au-task-list js-scrollbar3">
+                                                <div class="au-task__item au-task__item--danger">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Meeting about plan for Admin Template 2018</a>
+                                                        </h5>
+                                                        <span class="time">10:00 AM</span>
+                                                    </div>
+                                                </div>
+                                                <div class="au-task__item au-task__item--warning">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Create new task for Dashboard</a>
+                                                        </h5>
+                                                        <span class="time">11:00 AM</span>
+                                                    </div>
+                                                </div>
+                                                <div class="au-task__item au-task__item--primary">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Meeting about plan for Admin Template 2018</a>
+                                                        </h5>
+                                                        <span class="time">02:00 PM</span>
+                                                    </div>
+                                                </div>
+                                                <div class="au-task__item au-task__item--success">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Create new task for Dashboard</a>
+                                                        </h5>
+                                                        <span class="time">03:30 PM</span>
+                                                    </div>
+                                                </div>
+                                                <div class="au-task__item au-task__item--danger js-load-item">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Meeting about plan for Admin Template 2018</a>
+                                                        </h5>
+                                                        <span class="time">10:00 AM</span>
+                                                    </div>
+                                                </div>
+                                                <div class="au-task__item au-task__item--warning js-load-item">
+                                                    <div class="au-task__item-inner">
+                                                        <h5 class="task">
+                                                            <a href="#">Create new task for Dashboard</a>
+                                                        </h5>
+                                                        <span class="time">11:00 AM</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="au-task__footer">
+                                                <button class="au-btn au-btn-load js-load-btn">load more</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+
+                                    <h2 class="title-1 m-b-25">Autres</h2>
+                                    <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                                        <div class="au-card-inner">
+                                            <div class="table-responsive">
+                                                <table class="table table-top-countries">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- COPYRIGHT-->
+                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                            <!-- END COPYRIGHT-->
+                        </div>
+                        <!-- END PAGE CONTENT-->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- END PAGE CONTENT  -->
+
+</div>
+
+<!-- Jquery JS-->
+<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+<!-- Bootstrap JS-->
+<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+<!-- Vendor JS       -->
+<script th:src="@{/vendor/slick/slick.min.js}">
+</script>
+<script th:src="@{/vendor/wow/wow.min.js}"></script>
+<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+</script>
+<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+</script>
+<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+<script th:src="@{/vendor/select2/select2.min.js}">
+</script>
+
+<!-- Main JS-->
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
+<!-- end document-->

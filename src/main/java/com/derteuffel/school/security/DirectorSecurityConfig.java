@@ -1,0 +1,72 @@
+package com.derteuffel.school.security;
+
+import com.derteuffel.school.services.CompteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+/**
+ * Created by user on 23/03/2020.
+ */
+@Configuration
+@Order(1)
+public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CompteService compteService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .antMatcher("/direction/**").authorizeRequests()
+                .and()
+                .formLogin()
+                .loginPage("/direction/login")
+                .loginProcessingUrl("/direction/login/process")
+                .defaultSuccessUrl("/direction/home")
+                .permitAll()
+                .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/direction/logout"))
+                .logoutSuccessUrl("/direction/login?logout")
+                .permitAll();
+    }
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DaoAuthenticationProvider authenticationProvider;
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/vendor/**",
+                        "/fonts/**",
+                        "/images/**",
+                        "/static/**",
+                        "/ecole/connexion/**",
+                        "/ecole/save"
+                        );
+    }
+}
