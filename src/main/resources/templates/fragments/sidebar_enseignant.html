@@ -1,0 +1,28 @@
+<div th:fragment="sidebar_enseignant" class="col-xl-3">
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar3 js-spe-sidebar">
+        <nav class="navbar-sidebar2 navbar-sidebar3">
+            <ul class="list-unstyled navbar__list">
+                <li class="active">
+                    <a  th:href="@{/enseignant/home}">
+                        <i class="fas fa-home"></i>Accueil
+                    </a>
+                </li>
+                <li>
+                    <a  th:href="@{/enseignant/eleves/lists/}+${session.classe.id}">
+                        <i class="fas fa-user"></i>Eleves
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/enseignant/parents/lists/}+${session.classe.id}">
+                        <i class="fas fa-users"></i>Parents</a>
+                </li>
+                <li>
+                    <a th:href="@{/enseignant/cours/lists/}+${session.classe.id}">
+                        <i class="fas fa-book"></i>Cours</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+</div>

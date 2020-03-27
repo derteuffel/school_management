@@ -1,9 +1,14 @@
-<div th:fragment="sidebar" class="col-xl-3">
+<div th:fragment="sidebar_director" class="col-xl-3">
     <!-- MENU SIDEBAR-->
     <aside class="menu-sidebar3 js-spe-sidebar">
         <nav class="navbar-sidebar2 navbar-sidebar3">
             <ul class="list-unstyled navbar__list">
-                <li class="active has-sub">
+                <li class="active">
+                    <a  th:href="@{/direction/home}">
+                        <i class="fas fa-home"></i>Accueil
+                    </a>
+                </li>
+                <li >
                     <a  th:href="@{/direction/enseignant/lists}">
                         <i class="fas fa-users"></i>Enseignants
                     </a>

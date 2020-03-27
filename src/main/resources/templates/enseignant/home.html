@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Direction</title>
+    <title>Enseignant</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -42,6 +42,10 @@
     </header>
     <!-- END HEADER DESKTOP -->
 
+    <!-- WELCOME-->
+    <section th:replace="~{../templates/fragments/home_welcome :: home_welcome}"></section>
+    <!-- END WELCOME-->
+
     <!-- PAGE CONTENT-->
     <div class="page-container3">
         <section class="alert-wrap p-t-70 p-b-70">
@@ -57,30 +61,48 @@
                             </span>
                     </button>
                 </div>
+                <div th:if="${error}" class="alert au-alert-warning alert-dismissible fade show au-alert au-alert--70per" role="alert">
+                    <i class="zmdi zmdi-check-circle"></i>
+                    <span  class="content" th:text="${error}">Vous etes connecter successivement a votre compte</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-close-circle"></i>
+                            </span>
+                    </button>
+                </div>
                 <!-- END ALERT-->
             </div>
         </section>
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
+                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
-                        <div class="page-content">
-
-                            <button type="button" data-toggle="modal" data-target="#addSalleModal">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
-                            <h2>Liste des Classes</h2>
-                            <div class="row"  >
-                                <div class="col-lg-3 col-md-6 m-2" th:each="salle : ${lists}">
-                                    <a class="btn" th:href="@{/direction/salle/detail/}+${salle?.id}">
-                                        <div class="alert alert-dark row" role="alert">
-                                        <div class="text-left">
-                                            <strong th:text="${salle?.niveau}">Nom : </strong> <br>
-                                            <strong>Principale : </strong><span th:text="${salle?.principal}"></span> <br>
-                                        </div>
-                                    </div>
-                                    </a>
+                        <div class="page-content row">
+                            <div class="col-md-6">
+                                <div class="statistic__item statistic__item--secondary" style="height: 258px">
+                                    <h2 class="numer">Gestion des eleves</h2>
+                                    <span class="desc text-white">Ajouter, modifier, consulter des informations sur des eleves de votre classe principale</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="statistic__item statistic__item--secondary" style="height: 258px">
+                                    <h2 class="numer">Ensemble des classes</h2>
+                                    <span class="desc text-white">Planifier votre temps pour toutes les classes ou vous donnez cours</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="statistic__item statistic__item--secondary" style="height: 258px">
+                                    <h2 class="numer">Gestion des cours</h2>
+                                    <span class="desc text-white">Vous pouvez ajouter des cours et devoirs en ligne ici pour completer les eleves depuis leur domiciles</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="statistic__item statistic__item--secondary" style="height: 258px">
+                                    <h2 class="numer">Espace communication</h2>
+                                    <span class="desc text-white">Consultez et envoyez des messages a des multiples personnes de votre choix</span>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->
@@ -95,49 +117,6 @@
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-    <!-- modal medium -->
-    <div class="modal fade" id="addSalleModal" tabindex="-1" role="dialog" aria-labelledby="addSalleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form th:action="@{/direction/classe/save}" autocomplete="off" method="post" th:object="${salle}" class="form-horizontal">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvel salle de classe</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body card-block">
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-niveau" class=" form-control-label">Niveau</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-niveau" th:field="*{niveau}" placeholder="Niveau" class="form-control">
-                                <small class="form-text text-muted">Niveau</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-principal" class=" form-control-label">Professeur principal</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select name="id" type="text" class="form-control" id="text-principal">
-                                    <option value="">Choisir un enseignant</option>
-                                    <option th:each="name : ${enseignants}" th:text="${name?.name}+' '+${name?.prenom}" th:value="${name?.id}">Choisir un enseignant</option>
-                                </select>
-                                <small class="form-text text-muted">Nom de l'enseignant</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- end modal medium -->
 
 </div>
 

@@ -33,7 +33,7 @@ public class EcoleController {
     }
 
     @PostMapping("/save")
-    public String save(Ecole ecole, RedirectAttributes redirectAttributes){
+    public String save(Ecole ecole, Model model, HttpServletRequest request){
         ecole.setAvenue(ecole.getAvenue().toUpperCase());
         ecole.setCommune(ecole.getCommune().toUpperCase());
         ecole.setCountry(ecole.getCountry().toUpperCase());
@@ -45,8 +45,10 @@ public class EcoleController {
         ecole.setQuartier(ecole.getQuartier().toUpperCase());
         ecole.setStatus(false);
         ecoleRepository.save(ecole);
-        redirectAttributes.addFlashAttribute("success","Votre ecole a ete ajouter avec success");
-        return "redirect:/ecole/connexion/"+ecole.getId();
+        request.getSession().setAttribute("item",ecole);
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("success","Votre ecole a ete ajouter avec success");
+        return "index";
     }
 
 

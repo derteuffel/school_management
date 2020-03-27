@@ -1,9 +1,6 @@
 package com.derteuffel.school.services;
 
-import com.derteuffel.school.entities.Compte;
-import com.derteuffel.school.entities.Ecole;
-import com.derteuffel.school.entities.Enseignant;
-import com.derteuffel.school.entities.Role;
+import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.CompteRepository;
@@ -96,6 +93,30 @@ public class CompteSeviceImpl implements CompteService{
             compte.setRoles(Arrays.asList(existRole));
         }else {
             role.setName(ERole.ROLE_ENSEIGNANT.toString());
+            roleRepository.save(role);
+            compte.setRoles(Arrays.asList(role));
+        }
+        compteRepository.save(compte);
+        return compte;
+    }
+
+    @Override
+    public Compte saveParent(CompteRegistrationDto compteRegistrationDto, String s, Parent parent) {
+        Compte compte = new Compte();
+
+        compte.setEmail(compteRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setAvatar(s);
+        compte.setParent(parent);
+        Role role = new Role();
+
+
+        Role existRole = roleRepository.findByName(ERole.ROLE_PARENT.toString());
+        if (existRole != null){
+            compte.setRoles(Arrays.asList(existRole));
+        }else {
+            role.setName(ERole.ROLE_PARENT.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));
         }

@@ -6,6 +6,7 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,8 +57,15 @@ public class DirectionLoginController {
         return "direction/login";
     }
 
+    @ModelAttribute("compte")
+    public CompteRegistrationDto compteRegistrationDto(){
+        return new CompteRegistrationDto();
+    }
+
     @GetMapping("/registration")
     public String registrationForm(Model model){
+        List<Ecole> ecoles = ecoleRepository.findAllByStatus(false, Sort.by(Sort.Direction.ASC,"name"));
+        model.addAttribute("lists",ecoles);
         return "direction/registration";
     }
 
@@ -67,6 +75,7 @@ public class DirectionLoginController {
                                             BindingResult result, RedirectAttributes redirectAttributes, Model model, String ecole){
 
         Compte existAccount = compteService.findByUsername(compteDto.getUsername());
+        Ecole ecole1 = ecoleRepository.getOne(Long.parseLong(ecole));
         if (existAccount != null){
             result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
             model.addAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
@@ -76,7 +85,12 @@ public class DirectionLoginController {
             return "direction/registration";
         }
 
-        Ecole ecole1 = ecoleRepository.getOne(Long.parseLong(ecole));
+        if (ecole1.getComptes().size() > 0){
+            model.addAttribute("error","Cet Etablissement a deja un dirigeant veuillez choisir celui que vous avez creer");
+            return "direction/registration";
+        }
+
+
 
         compteService.save(compteDto,"/images/icon/avatar-01.jpg",ecole1.getId());
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
@@ -139,7 +153,9 @@ public class DirectionLoginController {
         List<Enseignant> enseignants = new ArrayList<>();
 
         for (Compte compte1 : comptes){
-            enseignants.add(compte1.getEnseignant());
+            if (compte1.getEnseignant() != null) {
+                enseignants.add(compte1.getEnseignant());
+            }
         }
 
         model.addAttribute("teacher", new Enseignant());

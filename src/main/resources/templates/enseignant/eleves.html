@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Direction</title>
+    <title>Enseignant</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -63,33 +63,28 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
+                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <button type="button" data-toggle="modal" data-target="#addEnseignantModal">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
-                            <h2>Liste des enseignants de l'etablissement</h2>
+                            <button type="button" data-toggle="modal" data-target="#addEleveModal">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <h2>Liste des eleves de la classe</h2>
                             <div class="row"  >
-                                <div class="col-lg-5 col-md-6 m-2" th:each="enseignant : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}">
-                                        <div class="alert alert-dark row" role="alert">
-                                        <div class="image">
-                                            <img th:src="${enseignant?.avatar}" alt="">
-                                        </div>
-                                        <div class="text-left">
-                                            <strong>Nom : </strong><span th:text="${enseignant?.name}"></span> <br>
-                                            <strong>Tel : </strong><span th:text="${enseignant?.telephone}"></span> <br>
-                                            <strong>Cours : </strong><span th:text="${enseignant?.cour_enseigner}"></span>
-                                        </div>
+                                <div class="col-lg-4 col-md-6 m-2" th:each="eleve : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}">
+                                        <div class="alert alert-dark row text-center" role="alert">
+                                            <strong>Nom : </strong><span th:text="${eleve?.name}"></span>
+                                            <br><br>
+                                            <strong>Telephone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span> <br>
                                     </div>
                                     </button>
-                                    <div class="modal fade" th:id="detailEnseignantModal+${enseignant?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEnseignantModalLabel" aria-hidden="true">
+                                    <div class="modal fade" th:id="detailEleveModal+${eleve?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEleveModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Enseignant</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail Eleve</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -97,66 +92,88 @@
                                                     <div class="modal-body card-block">
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-prenom" class=" form-control-label">Prenom</label>
+                                                                <label  class=" form-control-label">Prenom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.prenom}">Prenom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.prenom}">Prenom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-nom" class=" form-control-label">Nom</label>
+                                                                <label  class=" form-control-label">Nom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.name}">Nom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.name}">Nom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-postnom" class=" form-control-label">Postnom</label>
+                                                                <label  class=" form-control-label">Postnom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.postnom}">Postnom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.postnom}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-telephone" class=" form-control-label">Telephone</label>
+                                                                <label  class=" form-control-label">Age</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.telephone}">Numero de telephone</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.age}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-email" class=" form-control-label">E-mail</label>
+                                                                <label  class=" form-control-label">Localisation</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.email}">Adresse email</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.localisation}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-whatsapp" class=" form-control-label">Whatsapp</label>
+                                                                <label  class=" form-control-label">Nom complet tuteur</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.whatsapp}">Numero de telephone whatsapp</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.nomCompletTuteur}">Numero de telephone</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label for="text-cours" class=" form-control-label">Cours enseigner</label>
+                                                                <label  class=" form-control-label">Telephone tuteur</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.cour_enseigner}">Cours enseigner</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.telephoneTuteur}">Numero de telephone</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">E-mail du tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.emailTuteur}">Adresse email</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Whatsapp du tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.whatsappTuteur}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Autre information</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.autreInformation}">Cours enseigner</small>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <a  class="btn btn-primary" th:href="@{/direction/enseignant/edit/}+${enseignant?.id}">Editer</a>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -175,12 +192,12 @@
     </div>
     <!-- END PAGE CONTENT  -->
     <!-- modal medium -->
-    <div class="modal fade" id="addEnseignantModal" tabindex="-1" role="dialog" aria-labelledby="addEnseignantModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addEleveModal" tabindex="-1" role="dialog" aria-labelledby="addEleveModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form th:action="@{/direction/enseignant/save}" autocomplete="off" method="post" th:object="${teacher}" class="form-horizontal">
+                <form th:action="@{/enseignant/eleves/save/}+${classe.id}" autocomplete="off" method="post" th:object="${student}" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvel enseignant</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouvel eleve</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -192,7 +209,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prenom" class="form-control">
-                                <small class="form-text text-muted">Prenom de l'enseignant</small>
+                                <small class="form-text text-muted">Prenom de l'eleve</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -201,7 +218,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
-                                <small class="form-text text-muted">Nom de l'enseignant</small>
+                                <small class="form-text text-muted">Nom de l'eleve</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -210,43 +227,70 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-postnom" th:field="*{postnom}" placeholder="Post nom" class="form-control">
-                                <small class="form-text text-muted">Postnom de l'enseignant</small>
+                                <small class="form-text text-muted">Postnom de l'eleve</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-telephone" class=" form-control-label">Telephone</label>
+                                <label for="text-nomCompletTuteur" class=" form-control-label">nom complet du parent</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-telephone" th:field="*{telephone}" placeholder="Telephone" class="form-control">
+                                <input type="text" id="text-nomCompletTuteur" th:field="*{nomCompletTuteur}" placeholder="Nom complet" class="form-control">
+                                <small class="form-text text-muted">Nom complet de telephone</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-telephone" class=" form-control-label">Telephone du parent</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-telephone" th:field="*{telephoneTuteur}" placeholder="Telephone" class="form-control">
                                 <small class="form-text text-muted">Numero de telephone</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-email" class=" form-control-label">E-mail</label>
+                                <label for="text-email" class=" form-control-label">E-mail du parent ou tuteur</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="email" id="text-email" th:field="*{email}" placeholder="E-mail" class="form-control">
+                                <input type="email" id="text-email" th:field="*{emailTuteur}" placeholder="E-mail" class="form-control">
                                 <small class="form-text text-muted">Adresse email</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-whatsapp" class=" form-control-label">Whatsapp</label>
+                                <label for="text-whatsapp" class=" form-control-label">Whatsapp du parent ou tuteur</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-whatsapp" th:field="*{whatsapp}" placeholder="Whatsapp" class="form-control">
+                                <input type="text" id="text-whatsapp" th:field="*{whatsappTuteur}" placeholder="Whatsapp" class="form-control">
                                 <small class="form-text text-muted">Numero de telephone whatsapp</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-cours" class=" form-control-label">Cours enseigner</label>
+                                <label for="text-age" class=" form-control-label">Age</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-cours" th:field="*{cour_enseigner}" placeholder="Cours" class="form-control">
-                                <small class="form-text text-muted">Cours enseigner</small>
+                                <input type="number" id="text-age" th:field="*{age}" placeholder="age" class="form-control">
+                                <small class="form-text text-muted">Age de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-localisation" class=" form-control-label">Localisation</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-localisation" th:field="*{localisation}" placeholder="Localisation" class="form-control">
+                                <small class="form-text text-muted">Localisation de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-autre" class=" form-control-label">Localisation</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea th:field="*{autreInformation}" id="text-autre" class="form-control" rows="5" placeholder="Autre information"></textarea>
+                                <small class="form-text text-muted">Autre information sur l'eleve</small>
                             </div>
                         </div>
                     </div>
