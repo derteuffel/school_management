@@ -91,42 +91,16 @@
                     <div class="row">
                         <!-- end modal medium -->
                         <div class="col-md-6 col-lg-6">
-                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#searchModal"  style="width: inherit" >
+                            <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit" >
                                 <div class="statistic__item statistic__item--secondary">
-                                    <h2 class="number">Chercher votre ecole</h2>
+                                    <h2 class="number">Connexion a votre compte </h2>
                                     <div class="icon">
                                         <img th:src="@{/images/search.png}">
                                         <img th:src="@{/images/school.png}">
                                     </div>
                                 </div>
-                            </button>
+                            </a>
                         </div>
-                        <!-- modal medium -->
-                        <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="mediumModalLabel">Chercher une ecole</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body" th:each=" item : ${lists}" th:if="${#lists.size(lists)}!=0">
-                                        <a th:href="@{/ecole/connexion/}+${item.id}" th:text="${item.name}+''+${item.province}"></a>
-                                        <hr>
-                                    </div>
-                                    <div class="modal-body"  th:unless="${#lists.size(lists)}!=0">
-                                        <div class="alert-danger">
-                                            <span>Aucun etablissement trouver</span>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end modal medium -->
                         <div class="col-md-6 col-lg-6">
                             <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
                                 <div class="statistic__item statistic__item--primary">

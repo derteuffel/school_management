@@ -23,12 +23,8 @@ public class EcoleController {
     @Autowired
     private EcoleRepository ecoleRepository;
 
-    @GetMapping("/connexion/{id}")
-    public String home(Model model, @PathVariable Long id, HttpServletRequest request){
-
-        Ecole ecole = ecoleRepository.getOne(id);
-        request.getSession().setAttribute("item",ecole);
-        model.addAttribute("ecole",ecole);
+    @GetMapping("/connexion")
+    public String home(){
         return "index";
     }
 
