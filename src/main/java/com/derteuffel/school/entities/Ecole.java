@@ -30,10 +30,4 @@ public class Ecole implements Serializable {
     private Boolean status;
     private Boolean terms;
 
-    @OneToMany(mappedBy = "ecole")
-    private Collection<Compte> comptes;
-
-    @OneToMany(mappedBy = "ecole")
-    private Collection<Salle> salles;
-
 }

@@ -37,7 +37,7 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login/enseignant?logout")
+                .logoutSuccessUrl("/enseignant/login?logout")
                 .permitAll();
     }
     @Autowired

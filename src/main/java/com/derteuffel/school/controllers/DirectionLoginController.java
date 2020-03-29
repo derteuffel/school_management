@@ -85,7 +85,7 @@ public class DirectionLoginController {
             return "direction/registration";
         }
 
-        if (ecole1.getComptes().size() > 0){
+        if (compteRepository.findAllByEcole(ecole1.getId()).size() > 0){
             model.addAttribute("error","Cet Etablissement a deja un dirigeant veuillez choisir celui que vous avez creer");
             return "direction/registration";
         }
@@ -130,10 +130,10 @@ public class DirectionLoginController {
             model.addAttribute("error", "il existe un enseignant deja enregistrer avec cet adresse email");
             return "direction/home";
         }
-        compte1.setUsername(enseignant.getName()+""+compte.getEcole().getComptes().size());
+        compte1.setUsername(enseignant.getName()+""+compteRepository.findAllByEcole(compte.getEcole().getId()).size());
         compte1.setEmail(enseignant.getEmail());
-        compte1.setPassword(enseignant.getName()+""+compte.getEcole().getComptes().size());
-        compte1.setConfirmPassword(enseignant.getName()+""+compte.getEcole().getComptes().size());
+        compte1.setPassword(enseignant.getName()+""+compteRepository.findAllByEcole(compte.getEcole().getId()).size());
+        compte1.setConfirmPassword(enseignant.getName()+""+compteRepository.findAllByEcole(compte.getEcole().getId()).size());
         enseignant.setAvatar("/images/icon/avatar-01.jpg");
         enseignantRepository.save(enseignant);
 
@@ -149,7 +149,7 @@ public class DirectionLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Compte> comptes = compte.getEcole().getComptes();
+        Collection<Compte> comptes = compteRepository.findAllByEcole(compte.getEcole().getId());
         List<Enseignant> enseignants = new ArrayList<>();
 
         for (Compte compte1 : comptes){
@@ -202,12 +202,12 @@ public class DirectionLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Compte> comptes = ecole.getComptes();
+        Collection<Compte> comptes = compteRepository.findAllByEcole(ecole.getId());
         List<Enseignant> enseignants = new ArrayList<>();
         for (Compte compte1: comptes){
             enseignants.add(compte1.getEnseignant());
         }
-        model.addAttribute("lists", ecole.getSalles());
+        model.addAttribute("lists", salleRepository.findAllByEcole(ecole.getId()));
         model.addAttribute("enseignants",enseignants);
         model.addAttribute("salle", new Salle());
         return "direction/classes/lists";
@@ -261,7 +261,7 @@ public class DirectionLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Compte> comptes = ecole.getComptes();
+        Collection<Compte> comptes = compteRepository.findAllByEcole(ecole.getId());
         List<Enseignant> teachers = new ArrayList<>();
 
         for (Compte compte1 : comptes){
