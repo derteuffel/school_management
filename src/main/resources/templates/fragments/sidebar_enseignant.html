@@ -8,28 +8,42 @@
                         <i class="fas fa-home"></i>Accueil
                     </a>
                 </li>
-                <li>
+                <li class=" has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-home"></i>Classes
+                        <span class="arrow">
+                            <i class="fas fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul th:if="${session.salles}!= null" th:each=" classe : ${session.salles}" class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a th:href="@{/enseignant/classe/detail/}+${classe.id}" th:text="${classe.niveau}">Dashboard 1</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li th:if="${session.classe.id}!= null">
                     <a  th:href="@{/enseignant/eleves/lists/}+${session.classe.id}">
                         <i class="fas fa-user"></i>Eleves
                     </a>
                 </li>
-                <li>
+                <li th:if="${session.classe.id}!= null">
                     <a th:href="@{/enseignant/parents/lists/}+${session.classe.id}">
                         <i class="fas fa-users"></i>Parents</a>
                 </li>
-                <li>
+                <li th:if="${session.classe.id}!= null">
                     <a th:href="@{/enseignant/cours/lists/}+${session.classe.id}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
-                <li>
+                <li th:if="${session.classe.id}!= null">
                     <a th:href="@{/enseignant/devoirs/lists/}+${session.classe.id}">
                         <i class="fas fa-address-book"></i>Devoirs</a>
                 </li>
-                <li>
+                <li th:if="${session.classe.id}!= null">
                     <a th:href="@{/enseignant/reponses/lists/}+${session.classe.id}">
                         <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
                 </li>
-                <li>
+                <li th:if="${session.classe.id}!= null">
                     <a th:href="@{/enseignant/examens/lists/}+${session.classe.id}">
                         <i class="fas fa-bookmark"></i>Examens</a>
                 </li>

@@ -139,7 +139,7 @@ public class DirectionLoginController {
 
         compteService.saveEnseignant(compte1,"/images/icon/avatar-01.jpg",compte.getEcole().getId(), enseignant);
          redirectAttributes.addFlashAttribute("success", "Vous avez enregistrer avec success ce nouvel enseignant : "+enseignant.getPrenom()+" "+enseignant.getName()+" "+enseignant.getPostnom());
-        return "redirect:/direction/ecole/detail/"+compte.getEcole().getId();
+        return "redirect:/direction/enseignant/lists";
     }
 
 
@@ -247,6 +247,8 @@ public class DirectionLoginController {
         Enseignant enseignant = enseignantRepository.getOne(enseignantId);
         salle.getEnseignants().add(enseignant);
         salleRepository.save(salle);
+        enseignant.getSallesIds().add(salle.getId());
+        enseignantRepository.save(enseignant);
 
         redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec succes un nouvel enseignant a cette classe");
         return "redirect:/direction/enseignant/classe/"+salle.getId();

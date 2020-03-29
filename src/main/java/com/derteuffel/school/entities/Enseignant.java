@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by user on 24/03/2020.
@@ -25,5 +26,7 @@ public class Enseignant implements Serializable {
     private String whatsapp;
     private String cour_enseigner;
     private String avatar;
+
+    private ArrayList<Long> sallesIds = new ArrayList<>();
 
 }

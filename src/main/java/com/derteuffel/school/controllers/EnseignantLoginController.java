@@ -48,6 +48,8 @@ public class EnseignantLoginController {
 
     @Autowired
     private ExamenRepository examenRepository;
+    @Autowired
+    private EnseignantRepository enseignantRepository;
 
     @Autowired
     private CompteService compteService;
@@ -65,18 +67,38 @@ public class EnseignantLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName()+""+compte.getEnseignant().getPrenom());
-        request.getSession().setAttribute("classe",salle);
+
         request.getSession().setAttribute("ecole", ecole);
         request.getSession().setAttribute("compte",compte);
-        return "redirect:/enseignant/classe/detail/"+salle.getId();
+        return "redirect:/enseignant/ecole/detail/"+ecole.getId();
+    }
+
+    @GetMapping("/ecole/detail/{id}")
+    public String detail(Model model, @PathVariable Long id,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal.getName());
+        Compte compte = compteService.findByUsername(principal.getName());
+        Enseignant enseignant = compte.getEnseignant();
+        Collection<Salle> salles = new ArrayList<>();
+        if (!(enseignant.getSallesIds().isEmpty())) {
+            for (Long ids : enseignant.getSallesIds()) {
+                salles.add(salleRepository.getOne(ids));
+            }
+            model.addAttribute("salles",salles);
+            request.getSession().setAttribute("salles",salles);
+        }
+        Ecole ecole = ecoleRepository.getOne(id);
+
+        model.addAttribute("ecole",ecole);
+        return "enseignant/home";
     }
 
     @GetMapping("/classe/detail/{id}")
-    public String detail(Model model, @PathVariable Long id){
+    public String classeDetail(@PathVariable Long id,HttpServletRequest request){
         Salle salle = salleRepository.getOne(id);
-        model.addAttribute("salle",salle);
-        return "enseignant/home";
+        request.getSession().setAttribute("classe",salle);
+        return "redirect:/enseignant/eleves/lists/"+salle.getId();
+
     }
 
     @GetMapping("/eleves/lists/{id}")
