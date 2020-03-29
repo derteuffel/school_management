@@ -13,5 +13,5 @@ import java.util.Collection;
 public interface CompteRepository extends JpaRepository<Compte,Long> {
 
     Compte findByUsername(String username);
-    Collection<Compte> findAllByEcole(Long id);
+    Collection<Compte> findAllByEcole_Id(Long id);
 }

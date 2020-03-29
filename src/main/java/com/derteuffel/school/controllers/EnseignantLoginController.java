@@ -167,7 +167,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> cours = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.COURS.toString());
         model.addAttribute("lists",cours);
@@ -211,7 +211,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.DEVOIRS.toString());
         model.addAttribute("lists",devoirs);
@@ -255,7 +255,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> reponses = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.REPONSES.toString());
         for (Cours cours : reponses){
@@ -276,7 +276,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau());
         model.addAttribute("lists",examens);
