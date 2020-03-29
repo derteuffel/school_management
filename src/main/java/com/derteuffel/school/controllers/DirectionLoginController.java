@@ -225,6 +225,9 @@ public class DirectionLoginController {
         salle.setPrincipal(enseignant.getName()+"  "+enseignant.getPrenom());
 
         salleRepository.save(salle);
+        enseignant.getSallesIds().add(salle.getId());
+        enseignantRepository.save(enseignant);
+
         redirectAttributes.addFlashAttribute("success","Vous avez ajoute avec succes une nouvelle classe");
         return "redirect:/direction/classe/lists";
     }
