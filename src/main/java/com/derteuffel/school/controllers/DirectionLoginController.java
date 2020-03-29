@@ -130,10 +130,10 @@ public class DirectionLoginController {
             model.addAttribute("error", "il existe un enseignant deja enregistrer avec cet adresse email");
             return "direction/home";
         }
-        compte1.setUsername(compte.getEcole().getName()+"_prof_"+enseignant.getCour_enseigner());
+        compte1.setUsername(enseignant.getName()+""+compte.getEcole().getComptes().size());
         compte1.setEmail(enseignant.getEmail());
-        compte1.setPassword(compte.getEcole().getName()+"_prof_"+enseignant.getCour_enseigner());
-        compte1.setConfirmPassword(compte.getEcole().getName()+"_prof_"+enseignant.getCour_enseigner());
+        compte1.setPassword(enseignant.getName()+""+compte.getEcole().getComptes().size());
+        compte1.setConfirmPassword(enseignant.getName()+""+compte.getEcole().getComptes().size());
         enseignant.setAvatar("/images/icon/avatar-01.jpg");
         enseignantRepository.save(enseignant);
 

@@ -21,6 +21,18 @@
                     <a th:href="@{/enseignant/cours/lists/}+${session.classe.id}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
+                <li>
+                    <a th:href="@{/enseignant/devoirs/lists/}+${session.classe.id}">
+                        <i class="fas fa-address-book"></i>Devoirs</a>
+                </li>
+                <li>
+                    <a th:href="@{/enseignant/reponses/lists/}+${session.classe.id}">
+                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                </li>
+                <li>
+                    <a th:href="@{/enseignant/examens/lists/}+${session.classe.id}">
+                        <i class="fas fa-bookmark"></i>Examens</a>
+                </li>
             </ul>
         </nav>
     </aside>

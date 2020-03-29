@@ -57,6 +57,7 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
                 .ignoring()
                 .antMatchers("/js/**",
                         "/css/**",
+                        "/downloadFile/**",
                         "/img/**",
                         "/vendor/**",
                         "/fonts/**",

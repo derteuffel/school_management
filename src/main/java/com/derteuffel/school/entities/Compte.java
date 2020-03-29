@@ -6,6 +6,7 @@ import lombok.Generated;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by user on 22/03/2020.
@@ -41,6 +42,9 @@ public class Compte implements Serializable{
 
     @OneToOne
     private Parent parent;
+
+   /* @OneToMany(mappedBy = "compte")
+    private Collection<Cours> cours;*/
 
 
 }

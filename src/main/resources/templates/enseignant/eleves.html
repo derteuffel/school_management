@@ -75,12 +75,12 @@
                                 <div class="col-lg-4 col-md-6 m-2" th:each="eleve : ${lists}">
                                     <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}">
                                         <div class="alert alert-dark row text-center" role="alert">
-                                            <strong>Nom : </strong><span th:text="${eleve?.name}"></span>
-                                            <br><br>
-                                            <strong>Telephone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span> <br>
+                                            <p><strong>Nom : </strong><span th:text="${eleve?.name}"></span></p>
+                                            <br>
+                                            <p><strong>Telephone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span></p>
                                     </div>
                                     </button>
-                                    <div class="modal fade" th:id="detailEleveModal+${eleve?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEleveModalLabel" aria-hidden="true">
+                                    <div class="modal fade" th:id="detailEleveModal+${eleve?.id}" tabindex="-1" role="dialog" aria-labelledby="detailEleveModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
