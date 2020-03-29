@@ -94,9 +94,11 @@ public class EnseignantLoginController {
     }
 
     @GetMapping("/classe/detail/{id}")
-    public String classeDetail(@PathVariable Long id,HttpServletRequest request){
+    public String classeDetail(@PathVariable Long id,HttpServletRequest request,Model model){
         Salle salle = salleRepository.getOne(id);
         request.getSession().setAttribute("classe",salle);
+        model.addAttribute("classe",salle);
+
         return "redirect:/enseignant/eleves/lists/"+salle.getId();
 
     }
@@ -169,6 +171,7 @@ public class EnseignantLoginController {
         Collection<Cours> cours = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.COURS.toString());
         model.addAttribute("lists",cours);
         model.addAttribute("salles",salles);
+        model.addAttribute("classe",salle);
         model.addAttribute("course",new Cours());
         return "enseignant/courses";
     }
@@ -212,6 +215,7 @@ public class EnseignantLoginController {
         Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.DEVOIRS.toString());
         model.addAttribute("lists",devoirs);
         model.addAttribute("salles",salles);
+        model.addAttribute("classe",salle);
         model.addAttribute("devoir",new Cours());
         return "enseignant/devoirs";
     }
@@ -260,6 +264,7 @@ public class EnseignantLoginController {
             }
         }
         model.addAttribute("lists",reponses);
+        model.addAttribute("classe",salle);
         model.addAttribute("salles",salles);
         return "enseignant/reponses";
     }
@@ -275,6 +280,7 @@ public class EnseignantLoginController {
         Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau());
         model.addAttribute("lists",examens);
         model.addAttribute("salles",salles);
+        model.addAttribute("classe",salle);
         model.addAttribute("examen",new Examen());
         return "enseignant/examens";
     }
