@@ -1,6 +1,8 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.util.Collection;
 @Data
 @Entity
 @Table(name = "parent")
+
 public class Parent implements Serializable {
 
     @Id
@@ -23,7 +26,6 @@ public class Parent implements Serializable {
     private String email;
     private String whatsapp;
 
-    @OneToMany(mappedBy = "parent")
-    private Collection<Eleve> eleves;
+
 
 }

@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
+    <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,13 +63,13 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
+                    <div th:replace="~{../templates/fragments/sidebar_parent :: sidebar_parent}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Ensemble des reponses des eleves de la classe</h2>
+                            <h2>Ensemble des reponses aux differents devoirs</h2>
                             <div class="row"  >
                                 <div class="col-lg-4 col-md-6 my-2" th:each="reponse : ${lists}">
                                     <button type="button" data-toggle="modal" data-target="#detailReponseModal" th:attr="data-target='#detailReponseModal'+${reponse?.id}">
@@ -121,6 +121,15 @@
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <a th:href="${reponse?.fichier}"><small class="form-text text-muted" >Voir le fichier</small></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Etat</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-success" th:if="${reponse?.status}== true" >Deja vu par l'enseignant</small>
+                                                                <small class="form-text text-warning" th:unless="${reponse?.status}== true" >non vu par l'enseignant</small>
                                                             </div>
                                                         </div>
                                                     </div>

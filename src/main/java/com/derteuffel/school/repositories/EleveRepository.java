@@ -13,4 +13,5 @@ import java.util.Collection;
 public interface EleveRepository extends JpaRepository<Eleve, Long> {
 
     Collection<Eleve> findAllBySalle_Id(Long id);
+    Collection<Eleve> findAllByParent_Id(Long id);
 }

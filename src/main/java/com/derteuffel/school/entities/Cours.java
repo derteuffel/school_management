@@ -25,6 +25,9 @@ public class Cours implements Serializable {
     private String type;
     private Boolean status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Compte compte;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cours cours;
 }

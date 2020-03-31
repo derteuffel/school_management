@@ -69,19 +69,62 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des parents d'eleves de la classe</h2>
-                            <div class="row"  >
-                                <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists}">
-                                    <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}">
-                                        <div class="alert alert-dark row text-center" role="alert">
-                                            <p><strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> </p><br>
-                                            <p><strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span></p> <br>
-                                            <p><strong>E-mail  : </strong><span th:text="${parent?.email}"></span></p> <br>
-                                            <p><strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span></p>
-                                        </div>
-                                    </a>
+                            <h2>Detail parent</h2>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label  class=" form-control-label">Nom </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <small class="form-text text-muted" th:text="${parent?.nomComplet}">Prenom de l'enseignant</small>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label  class=" form-control-label">Telephone </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <small class="form-text text-muted" th:text="${parent?.telephone}">Prenom de l'enseignant</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label  class=" form-control-label">E-mail </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <small class="form-text text-muted" th:text="${parent?.email}">Prenom de l'enseignant</small>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label  class=" form-control-label">Whatsapp </label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <small class="form-text text-muted" th:text="${parent?.whatsapp}">Prenom de l'enseignant</small>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h3>Ses enfants</h3>
+
+                                    <div th:each="eleve : ${lists}">
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                            <label  class=" form-control-label">Nom de l'eleve</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <small class="form-text text-muted" th:text="${eleve?.prenom}+' '+${eleve?.name}+' '+${eleve?.postnom}">Prenom de l'enseignant</small>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                            <label  class=" form-control-label">Classe</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <small class="form-text text-muted" th:text="${eleve?.salle.niveau}">Nom de l'enseignant</small>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    </div>
+                                </div>
                             <!-- COPYRIGHT-->
                             <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 

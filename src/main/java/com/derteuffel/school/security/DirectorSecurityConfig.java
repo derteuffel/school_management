@@ -28,6 +28,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/direction/**").authorizeRequests()
+                .antMatchers("/direction/**").access("hasAnyRole('ROLE_ADMIN','ROLE_DIRECTEUR')")
                 .and()
                 .formLogin()
                 .loginPage("/direction/login")
@@ -40,7 +41,8 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/direction/logout"))
                 .logoutSuccessUrl("/direction/login?logout")
-                .permitAll();
+                .and()
+                .exceptionHandling().accessDeniedPage("/direction/access-denied");
     }
 
     @Autowired

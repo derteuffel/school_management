@@ -2,6 +2,8 @@ package com.derteuffel.school.entities;
 
 import lombok.Data;
 import lombok.Generated;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "compte")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Compte implements Serializable{
 
     @Id

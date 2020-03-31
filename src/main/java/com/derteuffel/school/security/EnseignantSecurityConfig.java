@@ -26,6 +26,7 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/enseignant/**").authorizeRequests()
+                .antMatchers("/enseignant/**").access("hasAnyRole('ROLE_ADMIN','ROLE_ENSEIGNANT')")
                 .and()
                 .formLogin()
                 .loginPage("/enseignant/login")
@@ -36,9 +37,11 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutRequestMatcher(new AntPathRequestMatcher("/enseignant/logout"))
                 .logoutSuccessUrl("/enseignant/login?logout")
-                .permitAll();
+                .and()
+                .exceptionHandling().accessDeniedPage("/enseignant/access-denied");
+
     }
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;

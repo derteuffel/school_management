@@ -22,6 +22,6 @@ public class Examen implements Serializable {
     private String salle;
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Compte compte;
 }

@@ -13,4 +13,6 @@ import java.util.Collection;
 public interface CoursRepository extends JpaRepository<Cours,Long> {
 
     Collection<Cours> findAllBySalleAndType(String name, String type);
+    Collection<Cours> findAllByCompte_IdAndSalleAndType(Long id,String name, String type);
+    Collection<Cours> findAllByCours_Id(Long id);
 }

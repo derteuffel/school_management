@@ -129,6 +129,17 @@ public class EnseignantLoginController {
         return "enseignant/parents";
     }
 
+    @GetMapping("/parent/detail/{id}/{classeId}")
+    public String parentDetail(@PathVariable Long id, @PathVariable Long classeId, Model model){
+        Parent parent = parentRepository.getOne(id);
+        Collection<Eleve> eleves = eleveRepository.findAllByParent_Id(parent.getId());
+        Salle salle = salleRepository.getOne(classeId);
+        model.addAttribute("parent",parent);
+        model.addAttribute("lists",eleves);
+        model.addAttribute("classe",salle);
+        return "enseignant/parent";
+    }
+
     @PostMapping("/eleves/save/{id}")
     public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes){
 
@@ -311,5 +322,10 @@ public class EnseignantLoginController {
         Salle salle = (Salle)request.getSession().getAttribute("classe");
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
         return "redirect:/enseignant/examens/lists/"+ salle.getId();
+    }
+
+    @GetMapping("/access-denied")
+    public String access_denied(){
+        return "enseignant/access-denied";
     }
 }

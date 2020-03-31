@@ -248,11 +248,10 @@ public class DirectionLoginController {
 
         Salle salle = salleRepository.getOne(classeId);
         Enseignant enseignant = enseignantRepository.getOne(enseignantId);
+        enseignant.getSallesIds().add(classeId);
+        enseignantRepository.save(enseignant);
         salle.getEnseignants().add(enseignant);
         salleRepository.save(salle);
-        enseignant.getSallesIds().add(salle.getId());
-        enseignantRepository.save(enseignant);
-
         redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec succes un nouvel enseignant a cette classe");
         return "redirect:/direction/enseignant/classe/"+salle.getId();
 
@@ -312,5 +311,10 @@ public class DirectionLoginController {
 
         model.addAttribute("lists",parents);
         return "direction/classes/parents";
+    }
+
+    @GetMapping("/access-denied")
+    public String access_denied(){
+        return "direction/access-denied";
     }
 }

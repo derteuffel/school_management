@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Enseignant</title>
+    <title>Direction</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -37,25 +37,20 @@
 
 <body class="animsition">
 <div class="page-wrapper">
-    <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
-    </header>
-    <!-- END HEADER DESKTOP -->
+
 
     <!-- PAGE CONTENT-->
     <div class="page-container3">
         <section class="alert-wrap p-t-70 p-b-70">
             <div class="container">
-                <!-- ALERT-->
-                <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
+                <div class="alert au-alert-warning alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
-                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
-                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                    <h2><span  class="content">Vous n'etes pas autoriser a acceder a cet espace</span></h2>
+                    <a th:href="@{/parent/logout}">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
                             </span>
-                    </button>
+                    </a>
                 </div>
                 <!-- END ALERT-->
             </div>
@@ -63,25 +58,10 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
-                    </div>
-                    <div class="col-xl-9">
-                        <!-- PAGE CONTENT-->
-                        <div class="page-content">
 
-                            <h2>Liste des parents d'eleves de la classe</h2>
-                            <div class="row"  >
-                                <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists}">
-                                    <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}">
-                                        <div class="alert alert-dark row text-center" role="alert">
-                                            <p><strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> </p><br>
-                                            <p><strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span></p> <br>
-                                            <p><strong>E-mail  : </strong><span th:text="${parent?.email}"></span></p> <br>
-                                            <p><strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span></p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
+                    <div class="col-xl-12">
+                        <!-- PAGE CONTENT-->
+                        <div class="page-content row">
                             <!-- COPYRIGHT-->
                             <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 

@@ -1,0 +1,32 @@
+<div th:fragment="sidebar_parent" class="col-xl-3">
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar3 js-spe-sidebar">
+        <nav class="navbar-sidebar2 navbar-sidebar3">
+            <ul class="list-unstyled navbar__list">
+                <li class="active">
+                    <a  th:href="@{/parent/home}">
+                        <i class="fas fa-home"></i>Accueil
+                    </a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/cours/lists/}+${classe.id}+'/'+${ecole.id}">
+                        <i class="fas fa-book"></i>Cours</a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/devoirs/lists/}+${classe.id}+'/'+${ecole.id}">
+                        <i class="fas fa-address-book"></i>Devoirs</a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/reponses/lists/}+${classe.id}+'/'+${session.compte.username}+'/'+${ecole.id}">
+                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/examens/lists/}+${classe.id}+'/'+${ecole.id}">
+                        <i class="fas fa-bookmark"></i>Examens</a>
+                </li>
+
+            </ul>
+        </nav>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+</div>

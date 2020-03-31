@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Enseignant</title>
+    <title>Parent</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,9 +38,13 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
+    <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
     </header>
     <!-- END HEADER DESKTOP -->
+
+    <!-- WELCOME-->
+    <section th:replace="~{../templates/fragments/home_welcome :: home_welcome}"></section>
+    <!-- END WELCOME-->
 
     <!-- PAGE CONTENT-->
     <div class="page-container3">
@@ -57,39 +61,36 @@
                             </span>
                     </button>
                 </div>
+                <div th:if="${error}" class="alert au-alert-warning alert-dismissible fade show au-alert au-alert--70per" role="alert">
+                    <i class="zmdi zmdi-check-circle"></i>
+                    <span  class="content" th:text="${error}">Vous etes connecter successivement a votre compte</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-close-circle"></i>
+                            </span>
+                    </button>
+                </div>
                 <!-- END ALERT-->
             </div>
         </section>
         <section>
             <div class="container">
-                <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
-                    </div>
-                    <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
-                        <div class="page-content">
-
-                            <h2>Liste des parents d'eleves de la classe</h2>
-                            <div class="row"  >
-                                <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists}">
-                                    <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}">
-                                        <div class="alert alert-dark row text-center" role="alert">
-                                            <p><strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> </p><br>
-                                            <p><strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span></p> <br>
-                                            <p><strong>E-mail  : </strong><span th:text="${parent?.email}"></span></p> <br>
-                                            <p><strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span></p>
-                                        </div>
-                                    </a>
+                         <div class="page-content row" >
+                            <div class="col-md-6" th:each=" school : ${session.ecoles}">
+                                <a th:href="@{/parent/ecole/detail/}+${school.id}">
+                                    <div class="statistic__item statistic__item--secondary" style="height: 150px;">
+                                    <h2 class="numer" th:text="${school.name}">Gestion de vos enfants</h2>
+                                    <span class="desc text-white" th:text="${school.province}">consulter des informations de vos enfants dans leurs classes respective</span>
                                 </div>
+                                </a>
                             </div>
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
-
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
-                    </div>
-                </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>

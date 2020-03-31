@@ -28,6 +28,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/admin/**").authorizeRequests()
+                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                     .and()
                     .formLogin()
                     .loginPage("/admin/login")
@@ -38,9 +39,10 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
                     .logout()
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/login/admin?logout")
-                    .permitAll();
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
+                    .logoutSuccessUrl("/admin/login?logout")
+                    .and()
+                    .exceptionHandling().accessDeniedPage("/admin/access-denied");
         }
 
 

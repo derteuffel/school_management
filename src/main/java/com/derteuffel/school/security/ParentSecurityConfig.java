@@ -24,6 +24,7 @@ public class ParentSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/parent/**").authorizeRequests()
+                .antMatchers("/parent/**").access("hasAnyRole('ROLE_ADMIN','ROLE_PARENT')")
                 .antMatchers(
                         "/js/**",
                         "/css/**",
@@ -43,9 +44,10 @@ public class ParentSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login/parent?logout")
-                .permitAll();
+                .logoutRequestMatcher(new AntPathRequestMatcher("/parent/logout"))
+                .logoutSuccessUrl("/parent/login?logout")
+                .and()
+                .exceptionHandling().accessDeniedPage("/parent/access-denied");
     }
 
     @Autowired
