@@ -222,4 +222,9 @@ public class ParentLoginController {
         return "parent/examens";
     }
 
+    @GetMapping("/access-denied")
+    public String access_denied(){
+        return "parent/access-denied";
+    }
+
 }
