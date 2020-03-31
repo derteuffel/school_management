@@ -72,9 +72,9 @@
         <section>
             <div class="container">
                         <!-- PAGE CONTENT-->
-                         <div class="page-content row" >
+                         <div class="page-content" >
                              <form th:action="@{/parent/reponses/save/}+${devoir.id}" autocomplete="off" method="post" th:object="${reponse}" enctype="multipart/form-data" class="form-horizontal">
-                                 <div class="modal-header">
+                                 <div class="card-header">
                                      <h5 class="card-title">Reponse au devoir <span th:text="${devoir.title}"></span> du <span th:text="${devoir.date}"></span></h5>
                                  </div>
                                  <div class="card-body card-block">

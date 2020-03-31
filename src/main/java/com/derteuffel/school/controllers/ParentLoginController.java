@@ -176,7 +176,7 @@ public class ParentLoginController {
         return "parent/reponse";
     }
 
-    @PostMapping("/reponse/save/{id}")
+    @PostMapping("/reponses/save/{id}")
     public String reponseSave(Cours cours, HttpServletRequest request, @PathVariable Long id, @RequestParam("file") MultipartFile file){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
