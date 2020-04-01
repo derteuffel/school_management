@@ -28,7 +28,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/direction/**").authorizeRequests()
-                .antMatchers("/direction/**").access("hasAnyRole('ROLE_ADMIN','ROLE_DIRECTEUR')")
+                .antMatchers("/direction/**").access("hasAnyRole('ROLE_ROOT','ROLE_DIRECTEUR')")
                 .and()
                 .formLogin()
                 .loginPage("/direction/login")

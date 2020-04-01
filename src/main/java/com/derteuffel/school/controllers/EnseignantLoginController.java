@@ -2,11 +2,13 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -328,4 +330,57 @@ public class EnseignantLoginController {
     public String access_denied(){
         return "enseignant/access-denied";
     }
+
+    @Autowired
+    private MessageRepository messageRepository;
+
+    @PostMapping("/message/save/{id}")
+    public String saveMessage(Message message, @RequestParam("file") MultipartFile file, @PathVariable Long id, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(id);
+        message.setCompte(compte);
+        message.setSender(compte.getUsername());
+        message.setSalle(salle.getNiveau()+""+salle.getId());
+        message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
+        message.setVisibilite(message.getVisibilite().toString());
+        if (!(file.isEmpty())){
+            try{
+                // Get the file and save it somewhere
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Files.write(path, bytes);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            message.setFichier("/downloadFile/"+file.getOriginalFilename());
+        }
+
+        messageRepository.save(message);
+        return "redirect:/enseignant/message/"+salle.getId();
+
+    }
+
+    @GetMapping("/message/{id}")
+    public String messages(@PathVariable Long id, Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalle(EVisibilite.ENSEIGNANT.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.ENSEIGNANT.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id")));
+        Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
+        for (Message message : messages1){
+            if(!(messages.contains(message))){
+                messages.add(message);
+            }
+        }
+        model.addAttribute("lists",messages);
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        model.addAttribute("message",new Message());
+        return "enseignant/messages";
+    }
+
 }

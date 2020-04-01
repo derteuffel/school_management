@@ -47,6 +47,10 @@
                     <a th:href="@{/enseignant/examens/lists/}+${classe.id}">
                         <i class="fas fa-bookmark"></i>Examens</a>
                 </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/enseignant/message/}+${classe.id}">
+                        <i class="fas fa-comments"></i>Discussions</a>
+                </li>
             </ul>
         </nav>
     </aside>
