@@ -1,0 +1,36 @@
+<div th:fragment="sidebar_encadrement" class="col-xl-3">
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar3 js-spe-sidebar">
+        <nav class="navbar-sidebar2 navbar-sidebar3">
+            <ul class="list-unstyled navbar__list">
+                <li class="active">
+                    <a  th:href="@{/encadrements/home}">
+                        <i class="fas fa-home"></i>Accueil
+                    </a>
+                </li>
+
+                <li>
+                    <a th:href="@{/encadrements/cours/lists}">
+                        <i class="fas fa-book"></i>Cours</a>
+                </li>
+                <li >
+                    <a th:href="@{/encadrements/devoirs/lists}">
+                        <i class="fas fa-address-book"></i>Devoirs</a>
+                </li>
+                <li >
+                    <a th:href="@{/encadrements/reponses/lists}">
+                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                </li>
+                <li >
+                    <a th:href="@{/encadrements/examens/lists}">
+                        <i class="fas fa-bookmark"></i>Examens</a>
+                </li>
+                <li >
+                    <a th:href="@{/encadrements/message}">
+                        <i class="fas fa-comments"></i>Discussions</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+</div>

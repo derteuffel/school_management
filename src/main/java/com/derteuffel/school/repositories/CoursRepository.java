@@ -15,4 +15,5 @@ public interface CoursRepository extends JpaRepository<Cours,Long> {
     Collection<Cours> findAllBySalleAndType(String name, String type);
     Collection<Cours> findAllByCompte_IdAndSalleAndType(Long id,String name, String type);
     Collection<Cours> findAllByCours_Id(Long id);
+    Collection<Cours> findAllByCompte_IdAndType(Long id,String type);
 }

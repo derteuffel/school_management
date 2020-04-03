@@ -12,6 +12,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name = "enseignant")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Enseignant implements Serializable {
 
     @Id

@@ -16,5 +16,6 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     Collection<Message> findAllBySalle(String name);
     Collection<Message> findAllByCompte_Id(Long id);
     Collection<Message> findAllByVisibilite(String visibilite);
+    Collection<Message> findAllByVisibilite(String visibilite,Sort sort);
     Collection<Message> findAllByVisibiliteAndSalle(String visibilite, String name, Sort sort);
 }

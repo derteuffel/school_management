@@ -7,5 +7,6 @@ public enum EVisibilite {
     PUBLIC,
     PARENT,
     ENSEIGNANT,
-    DIRECTION
+    DIRECTION,
+    ENCADREUR
 }

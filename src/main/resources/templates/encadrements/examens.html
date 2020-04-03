@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Encadrement</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER DESKTOP-->
+    <header th:replace="~{../templates/fragments/header_encadrement :: header_encadrement}">
+    </header>
+    <!-- END HEADER DESKTOP -->
+
+    <!-- PAGE CONTENT-->
+    <div class="page-container3">
+        <section class="alert-wrap p-t-70 p-b-70">
+            <div class="container">
+                <!-- ALERT-->
+                <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
+                    <i class="zmdi zmdi-check-circle"></i>
+                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-close-circle"></i>
+                            </span>
+                    </button>
+                </div>
+                <!-- END ALERT-->
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div th:replace="~{../templates/fragments/sidebar_encadrement :: sidebar_encadrement}">
+                    </div>
+                    <div class="col-xl-9">
+                        <!-- PAGE CONTENT-->
+                        <div class="page-content">
+
+                            <button type="button" data-toggle="modal" data-target="#addExamenModal">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <h2>Ensemble des examens de la classe</h2>
+                            <div class="row"  >
+                                <div class="col-lg-4 col-md-6 my-2" th:each="examen : ${lists}">
+                                        <div class="alert alert-light row text-left" role="alert">
+                                            <p><strong>Publier le : </strong><span  th:text="${examen?.date}"></span></p>
+                                            <br>
+                                            <p><strong>Titre : </strong><span class="text-primary underline" th:text="${examen?.title}"></span></p>
+                                            <br>
+                                            <p><strong>Session de  : </strong><span class="text-primary underline" th:text="${examen?.session}"></span></p>
+                                            <br>
+                                            <p><strong>Classe de  : </strong><span class="text-primary underline" th:text="${examen?.salle}"></span></p>
+                                            <br>
+                                            <a th:href="${examen.fichier}">Telecharger le document&nbsp;<i class="fa fa-file"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- COPYRIGHT-->
+                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                            <!-- END COPYRIGHT-->
+                        </div>
+                        <!-- END PAGE CONTENT-->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- END PAGE CONTENT  -->
+    <!-- modal medium -->
+    <div class="modal fade" id="addExamenModal" tabindex="-1" role="dialog" aria-labelledby="addExamenModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form th:action="@{/encadrements/examens/save}" autocomplete="off" method="post" th:object="${examen}" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Nouveau resultat</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body card-block">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-title" class=" form-control-label">Titre</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-title" th:field="*{title}" placeholder="Titre" class="form-control">
+                                <small class="form-text text-muted">Titre</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-session" class=" form-control-label">Session de</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-session" th:field="*{session}" placeholder="Titre" class="form-control">
+                                <small class="form-text text-muted">Session de l'annee</small>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-salle" class=" form-control-label">Classe concerne</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-salle" th:field="*{salle}" placeholder="Classe concerner" class="form-control">
+                                <small class="form-text text-muted">Choisir la classe concerner par ce cours </small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-file" class=" form-control-label">Fichier numerique</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="file" id="text-file" name="file"  class="form-control-file">
+                                <small class="form-text text-muted">Charger un support numerique </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-primary">Creer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end modal medium -->
+
+</div>
+
+<!-- Jquery JS-->
+<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+<!-- Bootstrap JS-->
+<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+<!-- Vendor JS       -->
+<script th:src="@{/vendor/slick/slick.min.js}">
+</script>
+<script th:src="@{/vendor/wow/wow.min.js}"></script>
+<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+</script>
+<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+</script>
+<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+<script th:src="@{/vendor/select2/select2.min.js}">
+</script>
+
+<!-- Main JS-->
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
+<!-- end document-->

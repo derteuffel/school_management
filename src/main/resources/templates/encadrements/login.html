@@ -37,7 +37,7 @@
 
 <body class="animsition">
 <div class="page-wrapper">
-    <div class="page-content--bge5">
+    <div class="page-content--bge5" style="overflow:scroll; ">
         <div class="container">
             <div class="login-wrap">
                 <div class="login-content">
@@ -47,7 +47,7 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <form th:action="@{/enseignant/login/process}"   method="post">
+                        <form th:action="@{/encadrements/login/process}"   method="post">
                             <div th:if="${success}" class="alert alert-success">
                                 <span th:text="${success}"></span>
                             </div>
@@ -73,12 +73,12 @@
                             </div>
                             <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Connexion</button>
                         </form>
-                        <!--div class="register-link">
+                        <div class="register-link">
                             <p>
                                 Nouveau membre?
-                                <a th:href="@{/registration/enseignant}">Inscrivez vous ici</a>
+                                <a th:href="@{/encadrements/registration}">Inscrivez vous ici</a>
                             </p>
-                        </div-->
+                        </div>
                     </div>
                 </div>
             </div>

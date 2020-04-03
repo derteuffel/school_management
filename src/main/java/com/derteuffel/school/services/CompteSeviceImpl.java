@@ -59,7 +59,7 @@ public class CompteSeviceImpl implements CompteService{
         if (compteRepository.findAll().size() <=1){
             role.setName(ERole.ROLE_ROOT.toString());
         }else {
-            role.setName(ERole.ROLE_USER.toString());
+            role.setName(ERole.ROLE_DIRECTEUR.toString());
         }
 
         Role existRole = roleRepository.findByName(role.getName());
@@ -123,6 +123,31 @@ public class CompteSeviceImpl implements CompteService{
         compteRepository.save(compte);
         return compte;
     }
+
+    @Override
+    public Compte saveEncadreur(CompteRegistrationDto compteRegistrationDto, String s, Encadreur encadreur) {
+        Compte compte = new Compte();
+
+        compte.setEmail(compteRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setAvatar(s);
+        compte.setEnseignant(encadreur);
+        Role role = new Role();
+
+
+        Role existRole = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
+        if (existRole != null){
+            compte.setRoles(Arrays.asList(existRole));
+        }else {
+            role.setName(ERole.ROLE_ENCADREUR.toString());
+            roleRepository.save(role);
+            compte.setRoles(Arrays.asList(role));
+        }
+        compteRepository.save(compte);
+        return compte;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

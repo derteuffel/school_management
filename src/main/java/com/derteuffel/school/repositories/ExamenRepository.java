@@ -13,4 +13,5 @@ import java.util.Collection;
 public interface ExamenRepository extends JpaRepository<Examen,Long> {
 
     Collection<Examen> findAllBySalle(String name);
+    Collection<Examen> findAllByCompte_Id(Long id);
 }
