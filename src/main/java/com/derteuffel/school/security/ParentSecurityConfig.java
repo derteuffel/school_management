@@ -17,14 +17,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Created by user on 23/03/2020.
  */
 @Configuration
-@Order(4)
+@Order(3)
 public class ParentSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/parent/**").authorizeRequests()
-                .antMatchers("/parent/**").access("hasAnyRole('ROLE_ADMIN','ROLE_PARENT')")
+                .antMatchers("/parent/**").access("hasAnyRole('ROLE_ROOT','ROLE_PARENT')")
                 .antMatchers(
                         "/js/**",
                         "/css/**",

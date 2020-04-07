@@ -53,7 +53,7 @@
                 <div class="row">
                     <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
-                    <div class="col-xl-9">
+                    <div class="col-xl-6">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
                             <h2>Gestion de la classe&nbsp;&nbsp; <span th:text="${classe.niveau}"></span></h2>
@@ -63,10 +63,10 @@
                             <div class="row">
                                 <h2>Messages</h2>
                                 <div class="page-content row container-fluid" style="overflow: scroll" th:each="message : ${lists}">
-                                    <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
+                                    <div class="col-lg-12 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
                                         <div class="au-card m-b-30 alert alert-secondary" >
                                             <div class="au-card-inner">
-                                                <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                                <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                                 <hr>
                                                 <p><span th:text="${message.content}"></span></p>
                                                 <br>
@@ -74,10 +74,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
+                                    <div class="col-lg-12 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                         <div class="au-card m-b-30 alert alert-success" >
                                             <div class="au-card-inner">
-                                                <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                                <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                                 <hr>
                                                 <p><span th:text="${message.content}"></span></p>
                                                 <br>
@@ -89,58 +89,6 @@
 
                                 </div>
                                 <!-- END PAGE CONTENT-->
-                                <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 25px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
-                                <!-- modal medium -->
-                                <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <form th:action="@{/direction/message/save/}+${classe.id}" autocomplete="off" method="post" th:object="${message}" enctype="multipart/form-data" class="form-horizontal">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="addModalLabel">Nouveau message</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body card-block">
-                                                    <div class="row form-group">
-                                                        <div class="col col-md-3">
-                                                            <label for="text-content" class=" form-control-label">Corps du message</label>
-                                                        </div>
-                                                        <div class="col-12 col-md-9">
-                                                            <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
-                                                            <small class="form-text text-muted">Ajouter votre message</small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col col-md-3">
-                                                            <label for="text-salle" class=" form-control-label">Visibilite du message</label>
-                                                        </div>
-                                                        <div class="col-12 col-md-9">
-                                                            <select th:field="*{visibilite}" id="text-salle" class="form-control">
-                                                                <option value="">Choisir</option>
-                                                                <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
-                                                            </select>
-                                                            <small class="form-text text-muted">Choisir la porte de votre message </small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col col-md-3">
-                                                            <label for="text-file" class=" form-control-label">Fichier numerique</label>
-                                                        </div>
-                                                        <div class="col-12 col-md-9">
-                                                            <input type="file" id="text-file" name="file"  class="form-control-file">
-                                                            <small class="form-text text-muted">Charger un support numerique </small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                                                    <button type="submit" class="btn btn-primary">Creer</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <!-- COPYRIGHT-->
                             <section th:replace="~{../templates/fragments/footer :: footer}"></section>
@@ -149,9 +97,83 @@
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
+                    <div class="col-xl-3">
+                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                            <div class="au-card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-top-countries">
+                                        <tbody>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+    </div>
+    <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 25px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
+    <!-- modal medium -->
+    <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form th:action="@{/direction/message/save/}+${classe.id}" autocomplete="off" method="post" th:object="${message}" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Nouveau message</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body card-block">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-content" class=" form-control-label">Corps du message</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
+                                <small class="form-text text-muted">Ajouter votre message</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-salle" class=" form-control-label">Visibilite du message</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select th:field="*{visibilite}" id="text-salle" class="form-control">
+                                    <option value="">Choisir</option>
+                                    <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
+                                </select>
+                                <small class="form-text text-muted">Choisir la porte de votre message </small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-file" class=" form-control-label">Fichier numerique</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="file" id="text-file" name="file"  class="form-control-file">
+                                <small class="form-text text-muted">Charger un support numerique </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-primary">Creer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     <!-- END PAGE CONTENT  -->
 

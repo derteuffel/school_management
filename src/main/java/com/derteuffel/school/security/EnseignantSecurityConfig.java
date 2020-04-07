@@ -18,7 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Created by user on 23/03/2020.
  */
 @Configuration
-@Order(3)
+@Order(2)
 public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
 
 
@@ -26,7 +26,7 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/enseignant/**").authorizeRequests()
-                .antMatchers("/enseignant/**").access("hasAnyRole('ROLE_ADMIN','ROLE_ENSEIGNANT')")
+                .antMatchers("/enseignant/**").access("hasAnyRole('ROLE_ROOT','ROLE_ENSEIGNANT')")
                 .and()
                 .formLogin()
                 .loginPage("/enseignant/login")

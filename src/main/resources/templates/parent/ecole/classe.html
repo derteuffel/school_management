@@ -59,7 +59,7 @@
                 </div>
                 <div th:if="${error}" class="alert au-alert-warning alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
-                    <span  class="content" th:text="${error}">Vous etes connecter successivement a votre compte</span>
+                    <span  class="content" th:text="${error}">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -81,7 +81,7 @@
                             <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
                                 <div class="au-card m-b-30 alert alert-secondary" >
                                     <div class="au-card-inner">
-                                        <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                        <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                         <hr>
                                         <p><span th:text="${message.content}"></span></p>
                                         <br>
@@ -92,7 +92,7 @@
                             <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                 <div class="au-card m-b-30 alert alert-success" >
                                     <div class="au-card-inner">
-                                        <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                        <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                         <hr>
                                         <p><span th:text="${message.content}"></span></p>
                                         <br>
@@ -104,7 +104,7 @@
 
                         </div>
                         <!-- END PAGE CONTENT-->
-                        <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 30px"><i class="zmdi zmdi-comment"></i>&nbsp;Message</button>
+                        <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 30px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
                         <!-- modal medium -->
                         <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -128,14 +128,14 @@
                                             </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="text-salle" class=" form-control-label">Visibilite du message</label>
+                                                    <label for="text-salle" class=" form-control-label">Visibilité du message</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select th:field="*{visibilite}" id="text-salle" class="form-control">
                                                         <option value="">Choisir</option>
                                                         <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
                                                     </select>
-                                                    <small class="form-text text-muted">Choisir la porte de votre message </small>
+                                                    <small class="form-text text-muted">Choisir la porté de votre message </small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">

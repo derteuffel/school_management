@@ -19,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Created by user on 22/03/2020.
  */
 @Configuration
-@Order(2)
+@Order(5)
 public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
 
 

@@ -82,6 +82,7 @@ public class EnseignantLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         Enseignant enseignant = compte.getEnseignant();
         Collection<Salle> salles = new ArrayList<>();
+        System.out.println(enseignant.getSallesIds());
         if (!(enseignant.getSallesIds().isEmpty())) {
             for (Long ids : enseignant.getSallesIds()) {
                 salles.add(salleRepository.getOne(ids));

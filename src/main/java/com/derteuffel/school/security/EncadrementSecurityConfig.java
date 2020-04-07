@@ -15,7 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * Created by user on 23/03/2020.
  */
 @Configuration
-@Order(5)
+@Order(4)
 public class EncadrementSecurityConfig extends WebSecurityConfigurerAdapter{
 
 

@@ -260,9 +260,10 @@ public class DirectionLoginController {
     @GetMapping("/classe/add/enseignant/{classeId}")
     public String addTeacherClasse(@PathVariable Long classeId, Long enseignantId, RedirectAttributes redirectAttributes){
 
+        System.out.println(classeId);
         Salle salle = salleRepository.getOne(classeId);
         Enseignant enseignant = enseignantRepository.getOne(enseignantId);
-        enseignant.getSallesIds().add(classeId);
+        enseignant.getSallesIds().add(salle.getId());
         enseignantRepository.save(enseignant);
         salle.getEnseignants().add(enseignant);
         salleRepository.save(salle);

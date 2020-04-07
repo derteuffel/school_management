@@ -49,7 +49,7 @@
                                     <span class="au-breadcrumb-span"> </span>
                                     <ul class="list-unstyled list-inline au-breadcrumb__list">
                                         <li class="list-inline-item active">
-                                            <a th:href="@{/home/debut}">Accueil</a>
+                                            <a th:href="@{/}">Accueil</a>
                                         </li>
                                         <li class="list-inline-item seprate">
                                             <span>/</span>
@@ -70,7 +70,6 @@
                     <div class="row">
                         <div class="col-md-12 text-center">
                             <h1 class="title-4">Bienvenue!
-                                <span>Connexion a un compte!</span>
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -103,8 +102,8 @@
                         <div class="col-md-6 col-lg-4">
                             <a th:href="@{/parent/login}" style="width: inherit" class="btn">
                                 <div class="statistic__item statistic__item--orange">
-                                <h2 class="number">Espace parent</h2>
-                                <span class="desc">Espace reserve aux parents d'eleves </br> pour le suivis des enseignements de leurs</br> enfants</span>
+                                <h2 class="number">Espace Parent/eleves</h2>
+                                <span class="desc">Espace reserve aux parents et eleves </br> pour le suivis des enseignements des cours</span>
                                 <div class="icon">
                                     <img th:src="@{/images/guardian.png}">
                                 </div>
@@ -115,7 +114,7 @@
                             <a th:href="@{/enseignant/login}" style="width: inherit" class="btn">
                                 <div class="statistic__item statistic__item--blue">
                                 <h2 class="number">Enseignant</h2>
-                                <span class="desc">Espace reserve uniquement aux </br>enseignants  enregistres dans</br> des ecoles</span>
+                                <span class="desc">Espace reserve uniquement aux </br>enseignants  enregistrés dans</br> des ecoles</span>
                                 <div class="icon">
                                     <img th:src="@{/images/teacher.png}">
                                 </div>
