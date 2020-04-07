@@ -355,7 +355,7 @@ section {
 }
 
 .login-checkbox > label > a {
-    color: #ff2e44;
+    color: #005cbf;
 }
 
 @media (max-width: 991px) {
@@ -395,7 +395,7 @@ section {
 }
 
 .register-link > p > a {
-    color: #ff2e44;
+    color: #005cbf;
 }
 
 .fontawesome-list-wrap {

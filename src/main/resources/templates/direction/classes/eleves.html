@@ -75,7 +75,6 @@
                                     <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}">
                                         <div class="alert alert-dark row text-center" role="alert">
                                             <strong>Nom : </strong><span th:text="${eleve?.name}"></span> <br>
-                                            <strong>Telephone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span> <br>
                                     </div>
                                     </button>
                                     <div class="modal fade" th:id="detailEleveModal+${eleve?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEleveModalLabel" aria-hidden="true">
