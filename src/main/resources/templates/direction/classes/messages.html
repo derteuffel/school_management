@@ -97,7 +97,7 @@
 
                             </div>
                             <!-- END PAGE CONTENT-->
-                            <button type="button" data-toggle="modal" class="text-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 25px"><i class="zmdi zmdi-comment"></i>&nbsp;Message</button>
+                            <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 30px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
                             <!-- modal medium -->
                             <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
@@ -128,7 +128,7 @@
                                                             <option value="">Choisir</option>
                                                             <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
                                                         </select>
-                                                        <small class="form-text text-muted">Choisir la portee de votre message </small>
+                                                        <small class="form-text text-muted">Choisir la porte de votre message </small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">

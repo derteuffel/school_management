@@ -57,12 +57,6 @@
                                         <li class="list-inline-item">Gestion</li>
                                     </ul>
                                 </div>
-                                <form class="au-form-icon--sm" action="" method="post">
-                                    <input class="au-input--w300 au-input--style2" type="text" placeholder="Rechercher votre  &amp; etablissement...">
-                                    <button class="au-btn--submit2" type="submit">
-                                        <i class="zmdi zmdi-search"></i>
-                                    </button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -76,7 +70,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h1 class="title-4">Bienvenue!
-                                <span>Espace de connexion!</span>
+                                <span>Connexion a un compte!</span>
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -98,8 +92,8 @@
                         <div class="col-md-6 col-lg-4">
                             <a th:href="@{/direction/login}" style="width: inherit" class="btn">
                                 <div class="statistic__item statistic__item--green">
-                                <h2 class="number">Espace directeur</h2>
-                                <span class="desc">Acceder?</span>
+                                <h2 class="number">Direction</h2>
+                                <span class="desc">Espace reserver uniquement aux </br>directeurs  et prefets des ecoles</span>
                                 <div class="icon">
                                     <img th:src="@{/images/director.png}">
                                 </div>
@@ -110,7 +104,7 @@
                             <a th:href="@{/parent/login}" style="width: inherit" class="btn">
                                 <div class="statistic__item statistic__item--orange">
                                 <h2 class="number">Espace parent</h2>
-                                <span class="desc">Acceder</span>
+                                <span class="desc">Espace reserver aux parents d'eleves </br> pour le suivis des enseignements de leurs</br> enfants</span>
                                 <div class="icon">
                                     <img th:src="@{/images/guardian.png}">
                                 </div>
@@ -120,8 +114,8 @@
                         <div class="col-md-6 col-lg-4">
                             <a th:href="@{/enseignant/login}" style="width: inherit" class="btn">
                                 <div class="statistic__item statistic__item--blue">
-                                <h2 class="number">Espace Enseignant</h2>
-                                <span class="desc">Acceder</span>
+                                <h2 class="number">Enseignant</h2>
+                                <span class="desc">Espace reserver uniquement aux </br>enseignants  enregistrer dans des ecoles</span>
                                 <div class="icon">
                                     <img th:src="@{/images/teacher.png}">
                                 </div>
@@ -132,11 +126,11 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-4">
                             <a th:href="@{/encadrements/login}" style="width: inherit" class="btn">
-                                <div class="statistic__item statistic__item--blue">
-                                    <h2 class="number">Espace Encadrements de vos enfants</h2>
-                                    <span class="desc">Acceder</span>
+                                <div class="statistic__item statistic__item--red">
+                                    <h2 class="number">Encadrement</h2>
+                                    <span class="desc">Espace reserver pour ceux qui aimeraient </br> etre suivis par notre equipe </span>
                                     <div class="icon">
-                                        <img th:src="@{/images/teacher  .png}">
+                                        <img th:src="@{/images/teacher.png}">
                                     </div>
                                 </div>
                             </a>
