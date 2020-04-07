@@ -6,6 +6,7 @@ import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -165,11 +166,28 @@ public class EnseignantLoginController {
             compteRegistrationDto.setConfirmPassword(compteRegistrationDto.getPassword());
             parentRepository.save(parent);
             compteService.saveParent(compteRegistrationDto,"/images/icon/avatar-01.jpg",parent);
+            MailService mailService = new MailService();
+            mailService.sendSimpleMessage(
+                    compteRegistrationDto.getEmail(),
+                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle de votre enfant :",
+                    "vos identifiants : username:" +compteRegistrationDto.getUsername()+" et password : "+compteRegistrationDto.getPassword()
+
+            );
+
+            mailService.sendSimpleMessage(
+                    "solutionsarl02@gmail.com",
+                    "YesBanana: Notification Inscription d'un parent",
+                    "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
+                            compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
+                            "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+
             eleve.setParent(parent);
 
         }
 
         eleveRepository.save(eleve);
+
+
 
         redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec success un nouvel eleve dans cette classe");
         return "redirect:/enseignant/eleves/lists/"+salle.getId();

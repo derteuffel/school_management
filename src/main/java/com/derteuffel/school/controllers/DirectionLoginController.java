@@ -5,6 +5,7 @@ import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -140,6 +141,21 @@ public class DirectionLoginController {
         enseignantRepository.save(enseignant);
 
         compteService.saveEnseignant(compte1,"/images/icon/avatar-01.jpg",compte.getEcole().getId(), enseignant);
+        MailService mailService = new MailService();
+        mailService.sendSimpleMessage(
+                enseignant.getEmail(),
+                "Vous venez d'etre ajouter en tant que enseignant dans votre ecole virtuelle :",
+                 "vos identifiants : username:" +compte1.getUsername()+" et password : "+compte1.getPassword()
+
+        );
+
+        mailService.sendSimpleMessage(
+                "solutionsarl02@gmail.com",
+                "YesBanana: Notification Inscription d'un enseignant",
+                "L'utilisateur " + compte1.getUsername() + " dont l'email est " +
+                        compte1.getEmail()+ "  Vient de s'inscrire " +
+                        "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+
          redirectAttributes.addFlashAttribute("success", "Vous avez enregistrer avec success ce nouvel enseignant : "+enseignant.getPrenom()+" "+enseignant.getName()+" "+enseignant.getPostnom());
         return "redirect:/direction/enseignant/lists";
     }
