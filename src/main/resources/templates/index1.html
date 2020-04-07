@@ -75,7 +75,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h1 class="title-4">Bienvenue!
+                            <h1 class="title-4">Bienvenue! dans l'espace école en ligne
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -103,7 +103,7 @@
                         <div class="col-md-6 col-lg-6">
                             <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
                                 <div class="statistic__item statistic__item--primary">
-                                <h2 class="number">Enregistrer votre ecole</h2>
+                                <h2 class="number">Enregistrer votre école</h2>
                                 <div class="icon">
                                     <img th:src="@{/images/school.png}">
                                 </div>
@@ -113,10 +113,10 @@
                         <!-- modal medium -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
+                                <div class="modal-content" style="background-color: #00a2e3">
                                     <form th:action="@{/ecole/save}" autocomplete="off" method="post" th:object="${ecole}" class="form-horizontal">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="addModalLabel">Nouvelle ecole</h5>
+                                            <h5 class="modal-title" id="addModalLabel">Nouvelle école</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -128,7 +128,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
-                                                        <small class="form-text text-muted">Ce nom sera l'identite de votre etablissement</small>
+                                                        <small class="form-text text-muted">Ce nom sera l'identite de votre école</small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
@@ -137,7 +137,7 @@
                                                     </div>
                                                     <div class="col-12 col-md-9 autocomplete">
                                                         <input type="text" id="text-country" th:field="*{country}" placeholder="Pays" class="form-control">
-                                                        <small class="form-text text-muted">Votre pays de residence</small>
+                                                        <small class="form-text text-muted">Votre pays de résidence</small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
@@ -188,7 +188,7 @@
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label for="text-matricule" class=" form-control-label">Matricule de votre ecole</label>
+                                                        <label for="text-matricule" class=" form-control-label">Matricule de votre école</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <input type="text" id="text-matricule" th:field="*{matricule}" placeholder="Matricule" class="form-control">
@@ -206,7 +206,7 @@
                                                         <option  value="SECONDAIRE">SECONDAIRE</option>
                                                         <option  value="UNIVERSITE">UNIVERSITE</option>
                                                     </select>
-                                                    <small class="form-text text-muted">Cycle de votre ecole</small>
+                                                    <small class="form-text text-muted">Cycle de votre école</small>
                                                 </div>
                                             </div>
 
@@ -228,7 +228,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                                            <button type="submit" class="btn btn-primary">Creer</button>
+                                            <button type="submit" class="btn btn-primary">Créer</button>
                                         </div>
                                     </form>
                                 </div>
