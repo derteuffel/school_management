@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by user on 22/03/2020.
@@ -13,5 +14,7 @@ import java.util.Collection;
 public interface CompteRepository extends JpaRepository<Compte,Long> {
 
     Compte findByUsername(String username);
+    Compte findByEmail(String email);
     Collection<Compte> findAllByEcole_Id(Long id);
+    Optional<Compte> findByResetToken(String resettoken);
 }

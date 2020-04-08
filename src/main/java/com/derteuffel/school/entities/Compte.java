@@ -27,6 +27,7 @@ public class Compte implements Serializable{
     private String password;
     private String email;
     private String avatar;
+    private String resetToken;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

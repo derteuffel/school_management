@@ -44,6 +44,11 @@ public class CompteSeviceImpl implements CompteService{
     }
 
     @Override
+    public Compte findByEmail(String email) {
+        return compteRepository.findByEmail(email);
+    }
+
+    @Override
     public Compte save(CompteRegistrationDto compteRegistrationDto, String s,Long id) {
         Compte compte = new Compte();
 
