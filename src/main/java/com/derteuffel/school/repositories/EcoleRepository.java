@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface EcoleRepository extends JpaRepository<Ecole, Long> {
     List<Ecole> findAllByStatus(Boolean status, Sort sort);
+    Ecole findByCode(String code);
 }

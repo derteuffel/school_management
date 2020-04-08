@@ -78,7 +78,7 @@ public class DirectionLoginController {
                                             BindingResult result, RedirectAttributes redirectAttributes, Model model, String ecole){
 
         Compte existAccount = compteService.findByUsername(compteDto.getUsername());
-        Ecole ecole1 = ecoleRepository.getOne(Long.parseLong(ecole));
+        Ecole ecole1 = ecoleRepository.findByCode(ecole);
         if (existAccount != null){
             result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
             model.addAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
@@ -88,14 +88,24 @@ public class DirectionLoginController {
             return "direction/registration";
         }
 
-        if (compteRepository.findAllByEcole_Id(ecole1.getId()).size() > 0){
-            model.addAttribute("error","Cet Etablissement a deja un dirigeant veuillez choisir celui que vous avez creer");
+        if (ecole1 != null){
+            if (compteRepository.findAllByEcole_Id(ecole1.getId()).size() > 0){
+                model.addAttribute("error","Cet Etablissement a deja un dirigeant veuillez choisir celui que vous avez creer");
+                return "direction/registration";
+            }
+            compteService.save(compteDto,"/images/icon/avatar-01.jpg",ecole1.getId());
+            MailService mailService = new MailService();
+            mailService.sendSimpleMessage(
+                    "solutionsarl02@gmail.com",
+                    "Viens de s'enregistrer comme directeur de l'ecole :"+ecole1.getName()+" de "+ecole1.getProvince(),
+                    "...."
+
+            );
+        }else {
+            model.addAttribute("error", "Aucune ecole n'est enregistrer avec ce code");
             return "direction/registration";
         }
 
-
-
-        compteService.save(compteDto,"/images/icon/avatar-01.jpg",ecole1.getId());
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/direction/login";
     }

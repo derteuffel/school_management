@@ -29,5 +29,6 @@ public class Ecole implements Serializable {
     private String matricule;
     private Boolean status;
     private Boolean terms;
+    private String code;
 
 }

@@ -85,11 +85,8 @@
                                    th:text="${error}">Validation error</p>
                             </div>
                             <div class="form-group" >
-                                <label class="control-label">Etablissement dont vous avez la charge</label>
-                                <select name="ecole" class="form-control">
-                                    <option value="">Choisir votre ecole</option>
-                                    <option th:each="ecole : ${lists}" th:value="${ecole.id}" th:text="${ecole.name}+''+${ecole.province}">Choisir votre ecole</option>
-                                </select>
+                                <label class="control-label">Code de votre etablissement</label>
+                                <input class="au-input au-input--full" type="text" name="ecole" placeholder="Entrer le code de votre ecole">
                             </div>
 
                             <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Enregistrer</button>
