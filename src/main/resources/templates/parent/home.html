@@ -79,7 +79,7 @@
                          <div class="page-content row" >
                             <div class="col-md-6" th:each=" school : ${session.ecoles}">
                                 <a th:href="@{/parent/ecole/detail/}+${school.id}">
-                                    <div class="statistic__item statistic__item--secondary" style="height: 150px;">
+                                    <div class="statistic__item statistic__item--primary" style="height: 150px;">
                                     <h2 class="numer" th:text="${school.name}">Gestion de vos enfants</h2>
                                     <span class="desc text-white" th:text="${school.province}">consulter des informations de vos enfants dans leurs classes respective</span>
                                 </div>
