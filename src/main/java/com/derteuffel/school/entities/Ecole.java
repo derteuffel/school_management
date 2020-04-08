@@ -30,5 +30,7 @@ public class Ecole implements Serializable {
     private Boolean status;
     private Boolean terms;
     private String code;
+    private String category;
+    private String logo;
 
 }

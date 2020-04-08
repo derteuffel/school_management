@@ -102,7 +102,7 @@ public class DirectionLoginController {
 
             );
         }else {
-            model.addAttribute("error", "Aucune ecole n'est enregistrer avec ce code");
+            model.addAttribute("error", "Aucune ecole n'est enregistrer avec ce code, veillez contacter l'administrateur sur info@yesbanana.org");
             return "direction/registration";
         }
 

@@ -4,15 +4,18 @@ import com.derteuffel.school.entities.Ecole;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 /**
@@ -25,13 +28,16 @@ public class EcoleController {
     @Autowired
     private EcoleRepository ecoleRepository;
 
+    @Value("${file.upload-dir}")
+    private  String fileStorage;
+
     @GetMapping("/connexion")
     public String home(){
         return "index";
     }
 
     @PostMapping("/save")
-    public String save(Ecole ecole, Model model, HttpServletRequest request){
+    public String save(Ecole ecole, Model model, HttpServletRequest request, @RequestParam("file") MultipartFile file){
         ecole.setAvenue(ecole.getAvenue().toUpperCase());
         ecole.setCommune(ecole.getCommune().toUpperCase());
         ecole.setCountry(ecole.getCountry().toUpperCase());
@@ -43,6 +49,17 @@ public class EcoleController {
         ecole.setQuartier(ecole.getQuartier().toUpperCase());
         ecole.setStatus(false);
         ecole.setCode(UUID.randomUUID().toString());
+        if (!(file.isEmpty())){
+            try{
+                // Get the file and save it somewhere
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Files.write(path, bytes);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            ecole.setLogo("/downloadFile/"+file.getOriginalFilename());
+        }
         ecoleRepository.save(ecole);
         MailService mailService = new MailService();
         mailService.sendSimpleMessage(
