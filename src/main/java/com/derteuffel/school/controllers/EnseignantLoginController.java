@@ -82,16 +82,18 @@ public class EnseignantLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
         Enseignant enseignant = compte.getEnseignant();
-        Collection<Salle> salles = new ArrayList<>();
-        System.out.println(enseignant.getSallesIds());
-        if (!(enseignant.getSallesIds().isEmpty())) {
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignant.getId());
+        System.out.println(salles);
+        /*if (!(enseignant.getSallesIds().isEmpty())) {
             for (Long ids : enseignant.getSallesIds()) {
                 salles.add(salleRepository.getOne(ids));
             }
             System.out.println(salles);
             model.addAttribute("salles",salles);
             request.getSession().setAttribute("salles",salles);
-        }
+        }*/
+        request.getSession().setAttribute("salles",salles);
+        model.addAttribute("salles",salles);
         Ecole ecole = ecoleRepository.getOne(id);
 
         model.addAttribute("ecole",ecole);
@@ -169,14 +171,14 @@ public class EnseignantLoginController {
             MailService mailService = new MailService();
             mailService.sendSimpleMessage(
                     compteRegistrationDto.getEmail(),
-                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle de votre enfant :",
+                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle  :",
                     "vos identifiants : username:" +compteRegistrationDto.getUsername()+" et password : "+compteRegistrationDto.getPassword()
 
             );
 
             mailService.sendSimpleMessage(
                     "solutionsarl02@gmail.com",
-                    "YesBanana: Notification Inscription d'un parent",
+                    "YesBanana: Notification Inscription d'un enseignant",
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
                             compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
                             "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");

@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by user on 24/03/2020.
@@ -29,5 +30,7 @@ public class Enseignant implements Serializable {
     private String avatar;
 
     private ArrayList<Long> sallesIds = new ArrayList<>();
+    @ManyToMany
+    private Collection<Salle> salles;
 
 }

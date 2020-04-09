@@ -14,4 +14,5 @@ public interface SalleRepository extends JpaRepository<Salle,Long> {
 Salle findByPrincipal(String name);
 
 Collection<Salle> findAllByEcole_Id(Long id);
+Collection<Salle> findAllByEnseignants_Id(Long id);
 }

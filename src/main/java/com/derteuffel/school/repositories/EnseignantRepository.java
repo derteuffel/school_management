@@ -14,6 +14,7 @@ import java.util.List;
 public interface EnseignantRepository extends JpaRepository<Enseignant,Long> {
 
     Enseignant findByEmail(String email);
+    Collection<Enseignant> findAllBySalles_Id(Long id);
 
 
 }

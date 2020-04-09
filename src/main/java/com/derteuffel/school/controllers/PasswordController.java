@@ -107,7 +107,7 @@ public class PasswordController {
         if (compte.isPresent()){
             // set new password
             System.out.println(compte.get().getPassword());
-            compte.get().setPassword(requestParams.get("password"));
+            compte.get().setPassword(bCryptPasswordEncoder.encode(requestParams.get("password")));
             System.out.println(compte.get().getPassword());
             // set the reset token in null so it cannot be used again
             compte.get().setResetToken(null);
