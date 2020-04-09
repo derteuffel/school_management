@@ -108,6 +108,14 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Leçon </label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${cours?.lesson}">Prenom de l'enseignant</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
                                                                 <label  class=" form-control-label">Contenue</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
@@ -125,6 +133,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <a th:href="@{/enseignant/cours/update/}+${cours.id}" class="btn btn-primary" >Editer</a>
                                                     </div>
                                             </div>
                                         </div>
@@ -192,6 +201,15 @@
                             <div class="col-12 col-md-9">
                                 <input type="file" id="text-file" name="file"  class="form-control-file">
                                 <small class="form-text text-muted">Charger un support numerique </small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-lesson" class=" form-control-label">Lecon</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-lesson" th:field="*{lesson}" placeholder="Lecon" class="form-control">
+                                <small class="form-text text-muted">Lecon</small>
                             </div>
                         </div>
                     </div>

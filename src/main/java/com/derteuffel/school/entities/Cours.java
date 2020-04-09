@@ -24,6 +24,7 @@ public class Cours implements Serializable {
     private String date;
     private String type;
     private Boolean status;
+    private String lesson;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Compte compte;

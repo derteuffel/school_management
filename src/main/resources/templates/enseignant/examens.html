@@ -83,6 +83,7 @@
                                             <p><strong>Classe de  : </strong><span class="text-primary underline" th:text="${examen?.salle}"></span></p>
                                             <br>
                                             <a th:href="${examen.fichier}">Telecharger le document&nbsp;<i class="fa fa-file"></i></a>
+                                            <a th:href="@{enseignant/examen/update/}+${examen.id}" class="btn btn-primary py-2">Modifier</a>
                                     </div>
                                 </div>
                             </div>

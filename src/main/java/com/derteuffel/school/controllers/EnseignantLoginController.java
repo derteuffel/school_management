@@ -146,6 +146,16 @@ public class EnseignantLoginController {
         return "enseignant/parent";
     }
 
+    @GetMapping("/eleves/update/{id}")
+    public String updateEleve(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Eleve eleve = eleveRepository.getOne(id);
+        model.addAttribute("eleve",eleve);
+        return "enseignant/updateEleve";
+    }
+
+
     @PostMapping("/eleves/save/{id}")
     public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes){
 
@@ -211,6 +221,19 @@ public class EnseignantLoginController {
         return "enseignant/courses";
     }
 
+
+    @GetMapping("/cours/update/{id}")
+    public String updateCours(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Cours cours = coursRepository.getOne(id);
+        model.addAttribute("cours",cours);
+        model.addAttribute("salles",salles);
+        return "enseignant/updateCourse";
+    }
+
     @PostMapping("/cours/save")
     public String saveCourse(Cours cours, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request){
         Principal principal = request.getUserPrincipal();
@@ -253,6 +276,18 @@ public class EnseignantLoginController {
         model.addAttribute("classe",salle);
         model.addAttribute("devoir",new Cours());
         return "enseignant/devoirs";
+    }
+
+    @GetMapping("/devoir/update/{id}")
+    public String updateDevoir(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Cours devoir = coursRepository.getOne(id);
+        model.addAttribute("devoir",devoir);
+        model.addAttribute("salles",salles);
+        return "enseignant/updateDevoir";
     }
 
     @PostMapping("/devoirs/save")
@@ -318,6 +353,18 @@ public class EnseignantLoginController {
         model.addAttribute("classe",salle);
         model.addAttribute("examen",new Examen());
         return "enseignant/examens";
+    }
+
+    @GetMapping("/examen/update/{id}")
+    public String updateExamen(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Cours examen = coursRepository.getOne(id);
+        model.addAttribute("examen",examen);
+        model.addAttribute("salles",salles);
+        return "enseignant/updateExamen";
     }
 
     @PostMapping("/examens/save")

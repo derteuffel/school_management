@@ -126,7 +126,8 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <a th:if="${role.name} == 'ROLE_PARENT'" th:href="@{/encadrements/reponses/add/}+${devoir?.id}" class="btn btn-primary" >Repondre</a>
+                                                        <a th:if="${role.name} == 'ROLE_ENCADREUR'" th:href="@{/encadrements/devoir/update/}+${devoir.id}" class="btn btn-primary" >Editer</a>
+                                                        <a th:if="${role.name} == 'ROLE_PARENT'" th:href="@{/encadrements/reponses/add/}+${devoir?.id}" class="btn btn-secondary" >Repondre</a>
                                                     </div>
                                             </div>
                                         </div>

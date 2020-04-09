@@ -120,6 +120,15 @@ public class EncadrementController {
         return "encadrements/courses";
     }
 
+    @GetMapping("/cours/update/{id}")
+    public String updateCours(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Cours cours = coursRepository.getOne(id);
+        model.addAttribute("cours",cours);
+        return "encadrements/updateCourse";
+    }
+
     @PostMapping("/cours/save")
     public String saveCourse(Cours cours, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request){
         Principal principal = request.getUserPrincipal();
@@ -157,6 +166,16 @@ public class EncadrementController {
         model.addAttribute("devoir",new Cours());
         return "encadrements/devoirs";
     }
+
+    @GetMapping("/devoir/update/{id}")
+    public String updateDevoir(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Cours devoir = coursRepository.getOne(id);
+        model.addAttribute("devoir",devoir);
+        return "encadrements/updateDevoir";
+    }
+
 
     @PostMapping("/devoirs/save")
     public String saveDevoir(Cours devoir, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request){
@@ -255,6 +274,15 @@ public class EncadrementController {
 
         model.addAttribute("examen",new Examen());
         return "encadrements/examens";
+    }
+
+    @GetMapping("/examen/update/{id}")
+    public String updateExamen(@PathVariable Long id, Model model,HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Cours examen = coursRepository.getOne(id);
+        model.addAttribute("examen",examen);
+        return "encadrements/updateExamen";
     }
 
     @PostMapping("/examens/save")

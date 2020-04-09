@@ -126,6 +126,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <a th:href="@{/encadrements/cours/update/}+${cours.id}" class="btn btn-primary" >Editer</a>
                                                     </div>
                                             </div>
                                         </div>
@@ -176,11 +177,11 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-niveau" class=" form-control-label">Niveau</label>
+                                <label for="text-niveau" class=" form-control-label">Leçon</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-niveau" th:field="*{salle}" placeholder="Titre" class="form-control">
-                                <small class="form-text text-muted">Niveau concerner</small>
+                                <input type="text" id="text-niveau" th:field="*{lesson}" placeholder="Leçon " class="form-control">
+                                <small class="form-text text-muted">Leçon </small>
                             </div>
                         </div>
                         <div class="row form-group">
