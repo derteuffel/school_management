@@ -4,7 +4,7 @@
         <div class="header4-wrap">
             <div class="header__logo">
                 <a th:if="${session.ecole}!=null" href="#">
-                    <img th:if="${session.compte.ecole.logo}" th:src="${session.compte.ecole.logo}" width="150" height="90" alt="">&nbsp;&nbsp;
+                    <img th:if="${session.compte.ecole?.logo}" th:src="${session.compte.ecole.logo}" width="150" height="90" alt="">&nbsp;&nbsp;
                     <h1 th:text="${session.ecole.name}"></h1>
                 </a>
             </div>

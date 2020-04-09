@@ -74,18 +74,18 @@
                                 <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-secondary" >
                                         <div class="au-card-inner">
-                                            <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                            <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>
-                                            <p>Fichier(s) associe(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                            <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-success" >
                                         <div class="au-card-inner">
-                                            <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                            <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>
@@ -97,7 +97,7 @@
 
                             </div>
                             <!-- END PAGE CONTENT-->
-                            <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 30px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
+                            <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;left: 50px;bottom: 100px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau méssage</button>
                             <!-- modal medium -->
                             <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">

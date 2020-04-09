@@ -103,6 +103,7 @@ public class ParentLoginController {
         model.addAttribute("lists", lists);
         model.addAttribute("ecole",ecole);
         request.getSession().setAttribute("ecole",ecole);
+        request.getSession().setAttribute("compte",compte);
 
         return "parent/ecole/home";
     }

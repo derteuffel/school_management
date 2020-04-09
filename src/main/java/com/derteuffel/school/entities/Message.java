@@ -27,4 +27,6 @@ public class Message implements Serializable {
     private String date;
     @ManyToOne
     private Compte compte;
+
+
 }
