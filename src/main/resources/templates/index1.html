@@ -89,7 +89,7 @@
                         <div class="col-md-6 col-lg-6">
                             <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit" >
                                 <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">Connexion à votre</br> ecole </h2>
+                                    <h2 class="number">Connexion à votre</br> école </h2>
                                     <div class="icon">
                                         <img th:src="@{/images/search.png}">
                                         <img th:src="@{/images/school.png}">
@@ -107,6 +107,17 @@
                                 </div>
                             </button>
                         </div>
+                            <div class="col-md-6">
+                                <a th:href="@{/encadrements/login}" style="width: inherit" class="btn">
+                                    <div class="statistic__item statistic__item--red">
+                                        <h2 class="number">Encadrement</h2>
+                                        <span class="desc">Espace reserve pour des parents dont </br> les eleves aimeraient etre </br> suivis par l'equipe YesB </span>
+                                        <div class="icon">
+                                            <img th:src="@{/images/teacher.png}">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         <!-- modal medium -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -197,7 +208,7 @@
                                                     <label for="text-logo" class=" form-control-label">Logo de votre école</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
-                                                    <input type="text" id="text-logo" name="file"  class="form-control-file">
+                                                    <input type="file" id="text-logo" name="file"  class="form-control-file">
                                                     <small class="form-text text-muted">Inserer le logo de votre ecole qui sera vu par tous</small>
                                                 </div>
                                             </div>
@@ -214,21 +225,21 @@
                                                     </select>
                                                     <small class="form-text text-muted">Cycle de votre école</small>
                                                 </div>
-                                                    <div class="row form-group">
-                                                        <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Categorie</label>
-                                                        </div>
-                                                        <div class="col-12 col-md-9">
-                                                            <select th:field="*{category}" class="form-control" >
-                                                                <option value="">Choisir une categorie</option>
-                                                                <option  value="ONG">ONG</option>
-                                                                <option  value="PUBLIQUE">PUBLIQUE</option>
-                                                                <option  value="PRIVEE">PRIVEE</option>
-                                                                <option  value="FONDATION">FONDATION</option>
-                                                            </select>
-                                                            <small class="form-text text-muted">Categorie de votre école</small>
-                                                        </div>
                                             </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label  class=" form-control-label">Categorie</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <select th:field="*{category}" class="form-control" >
+                                                        <option value="">Choisir une categorie</option>
+                                                        <option  value="ONG">ONG</option>
+                                                        <option  value="PUBLIQUE">PUBLIQUE</option>
+                                                        <option  value="PRIVEE">PRIVEE</option>
+                                                        <option  value="FONDATION">FONDATION</option>
+                                                    </select>
+                                                    <small class="form-text text-muted">Categorie de votre école</small>
+                                                </div>
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
@@ -249,6 +260,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
                                             <button type="submit" class="btn btn-primary">Créer</button>
+                                        </div>
                                         </div>
                                     </form>
                                 </div>

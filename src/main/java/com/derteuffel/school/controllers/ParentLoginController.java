@@ -56,7 +56,9 @@ public class ParentLoginController {
     private  String fileStorage;
 
     @GetMapping("/login")
-    public String director(){
+    public String director(Model model){
+
+        model.addAttribute("message","Demandez les informations de connexion à l'école, enseignants ou directeurs");
         return "parent/login";
     }
 

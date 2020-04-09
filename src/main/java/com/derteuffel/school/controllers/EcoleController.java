@@ -63,7 +63,7 @@ public class EcoleController {
         ecoleRepository.save(ecole);
         MailService mailService = new MailService();
         mailService.sendSimpleMessage(
-                "derteuffel0@gmail.com",
+                "solutionsarl02@gmail.com",
                 "Ecole Yesbanana: Notification Creation d'une ecole",
                 "Nom : "+ecole.getName()+", Province : "+ecole.getProvince()+", Commune : "+ecole.getCommune()+", Cycle : "+ecole.getCycle()+", Matricule : "+ecole.getMatricule()+", et le code generer que vous allez communiquer au directeur pour valider son compte ---> "+ecole.getCode()+
                         " sur la plateforme ecoles.yesbanana.org. Veuillez vous connectez pour l'envoyer son code de confirmation.");

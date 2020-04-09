@@ -50,6 +50,8 @@
                         </a>
                     </div>
                     <div class="login-form">
+                        <p th:text="${message}"></p>
+                        <hr>
                         <form th:action="@{/parent/login/process}"   method="post">
                             <div th:if="${success}" class="alert alert-success">
                                 <span th:text="${success}"></span>
