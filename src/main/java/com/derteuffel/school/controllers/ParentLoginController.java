@@ -5,6 +5,7 @@ import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -103,7 +104,6 @@ public class ParentLoginController {
         model.addAttribute("lists", lists);
         model.addAttribute("ecole",ecole);
         request.getSession().setAttribute("ecole",ecole);
-        request.getSession().setAttribute("compte",compte);
 
         return "parent/ecole/home";
     }
@@ -274,6 +274,14 @@ public class ParentLoginController {
         }
 
         messageRepository.save(message);
+        MailService mailService = new MailService();
+
+        mailService.sendSimpleMessage(
+                compte.getEmail(),
+                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                "avec un visibilite ----> "+message.getVisibilite()
+
+        );
         return "redirect:/parent/classe/detail/"+salle.getId();
 
     }

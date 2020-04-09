@@ -126,6 +126,7 @@ public class DirectionLoginController {
         request.getSession().setAttribute("teacher", new Enseignant());
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("teacher", new Enseignant());
+        model.addAttribute("message",new Message());
         model.addAttribute("ecole", ecole);
         return "direction/home";
     }
@@ -380,15 +381,33 @@ public class DirectionLoginController {
             }
             message.setFichier("/downloadFile/" + file.getOriginalFilename());
         }
-
-
         messageRepository.save(message);
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+
+        MailService mailService = new MailService();
+        mailService.sendSimpleMessage(
+                compte.getEmail(),
+                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                "avec un visibilite ----> "+message.getVisibilite()
+
+        );
+        for (Compte compte1: comptes){
+
+            if (compte1.getEcole() == salle.getEcole()) {
+                mailService.sendSimpleMessage(
+                        compte1.getEmail(),
+                        "Message de la direction ---> " + message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier(),
+                        "Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org"
+
+                );
+            }
+        }
         return "redirect:/direction/salle/detail/" + salle.getId();
 
     }
 
     @PostMapping("/message/save")
-    public String saveMessageEcole(Message message, @RequestParam("file") MultipartFile file, @PathVariable Long id, HttpServletRequest request) {
+    public String saveMessageEcole(Message message, @RequestParam("file") MultipartFile file, HttpServletRequest request) {
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
@@ -406,6 +425,24 @@ public class DirectionLoginController {
                 e.printStackTrace();
             }
             message.setFichier("/downloadFile/" + file.getOriginalFilename());
+        }
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+
+        MailService mailService = new MailService();
+        mailService.sendSimpleMessage(
+                compte.getEmail(),
+                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                "avec un visibilite ----> "+message.getVisibilite()
+
+        );
+        for (Compte compte1: comptes){
+
+            mailService.sendSimpleMessage(
+                    compte1.getEmail(),
+                    "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                    "Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org"
+
+            );
         }
 
         messageRepository.save(message);

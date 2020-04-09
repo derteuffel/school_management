@@ -70,7 +70,7 @@ public class EcoleController {
 
         request.getSession().setAttribute("item",ecole);
         model.addAttribute("ecole",ecole);
-        model.addAttribute("success","Votre ecole a ete ajouter avec success");
+        model.addAttribute("success","Votre école a été ajouter avec success, veuillez contacter les administrateurs du site pour vous fournir le code de validation de votre école pour continuer a l'adresse");
         return "index";
     }
 

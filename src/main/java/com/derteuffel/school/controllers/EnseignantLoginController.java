@@ -42,6 +42,8 @@ public class EnseignantLoginController {
     private SalleRepository salleRepository;
 
     @Autowired
+    private CompteRepository compteRepository;
+    @Autowired
     private EleveRepository eleveRepository;
     @Autowired
     private ParentRepository parentRepository;
@@ -426,6 +428,36 @@ public class EnseignantLoginController {
         }
 
         messageRepository.save(message);
+        MailService mailService = new MailService();
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+
+        for (Compte compte1 : comptes){
+            if (message.getVisibilite().toString().contains(EVisibilite.DIRECTION.toString())){
+                if (compte1.getEcole() == salle.getEcole()){
+                    mailService.sendSimpleMessage(
+                            compte.getEmail(),
+                            "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                            "avec un visibilite ----> "+message.getVisibilite()
+
+                    );
+                }
+            }else {
+                mailService.sendSimpleMessage(
+                        compte.getEmail(),
+                        "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                        "avec un visibilite ----> "+message.getVisibilite()
+
+                );
+            }
+        }
+
+
+        mailService.sendSimpleMessage(
+                compte.getEmail(),
+                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
+                "avec un visibilite ----> "+message.getVisibilite()
+
+        );
         return "redirect:/enseignant/message/"+salle.getId();
 
     }
