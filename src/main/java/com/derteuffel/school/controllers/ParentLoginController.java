@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by user on 23/03/2020.
@@ -38,6 +39,12 @@ public class ParentLoginController {
 
     @Autowired
     private ParentRepository parentRepository;
+
+    @Autowired
+    private PlanningRepository planningRepository;
+
+    @Autowired
+    private PresenceRepository presenceRepository;
 
     @Autowired
     private EleveRepository eleveRepository;
@@ -237,6 +244,82 @@ public class ParentLoginController {
         model.addAttribute("classe",salle);
         return "parent/examens";
     }
+
+    @Autowired
+    private HebdoRepository hebdoRepository;
+
+    @GetMapping("/eleves/lists/{id}/{ecoleId}")
+    public String presences(@PathVariable Long id, @PathVariable Long ecoleId, Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Parent parent = compte.getParent();
+        Ecole ecole = ecoleRepository.getOne(ecoleId);
+        Salle salle = salleRepository.getOne(id);
+
+        Collection<Hebdo> hebdos = hebdoRepository.findAllBySalle_Id(salle.getId());
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        model.addAttribute("lists",hebdos);
+        return "parent/hebdos";
+    }
+
+    public List<String> removeDuplicates(List<String> list)
+    {
+        if (list == null){
+            return new ArrayList<>();
+        }
+
+        // Create a new ArrayList
+        List<String> newList = new ArrayList<String>();
+        // Traverse through the first list
+        for (String element : list) {
+
+            // If this element is not present in newList
+            // then add it
+
+            if (element !=null && !newList.contains(element) && !element.isEmpty()) {
+
+                newList.add(element);
+            }
+        }
+        // return the new list
+        return newList;
+    }
+
+    @GetMapping("/hebdo/detail/{id}/{ecoleId}")
+    public String detailHebdo(Model model, @PathVariable Long id,@PathVariable Long ecoleId){
+
+        Ecole ecole = ecoleRepository.getOne(ecoleId);
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
+        Collection<Presence> presences = presenceRepository.findAllByHebdo_Id(hebdo.getId());
+        ArrayList<String> dates = new ArrayList<>();
+        for (Presence presenceString : presences){
+            dates.add(presenceString.getDate());
+        }
+
+        Salle salle = hebdo.getSalle();
+
+
+        model.addAttribute("plannings",plannings);
+        model.addAttribute("dates",removeDuplicates(dates));
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        return "parent/hebdo";
+    }
+
+    @GetMapping("/activate/planning/{id}")
+    public String activatePlan(@PathVariable Long id){
+        Planning planning = planningRepository.getOne(id);
+        planning.getValidations().add(true);
+        planningRepository.save(planning);
+        Hebdo hebdo = planning.getHebdo();
+        Salle salle = hebdo.getSalle();
+        Ecole ecole = salle.getEcole();
+        return "redirect:/parent/hebdo/detail/"+salle.getId()+"/"+ecole.getId();
+    }
+
 
     @GetMapping("/access-denied")
     public String access_denied(){

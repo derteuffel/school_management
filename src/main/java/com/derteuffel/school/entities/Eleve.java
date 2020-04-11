@@ -2,9 +2,12 @@ package com.derteuffel.school.entities;
 
 import lombok.Data;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * Created by user on 25/03/2020.
@@ -12,6 +15,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "eleve")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Eleve implements Serializable{
 
     @Id
@@ -33,4 +37,5 @@ public class Eleve implements Serializable{
 
     @ManyToOne
     private Parent parent;
+
 }

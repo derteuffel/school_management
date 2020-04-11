@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Parent</title>
+    <title>Enseignant</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
+    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,16 +63,22 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_parent :: sidebar_parent}">
+                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Planning et presences</h2>
+                            <button type="button" data-toggle="modal" data-target="#addHebdoModal" class="btn btn-primary">Nouvelle semaine&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <h2>Ensemble des semaines de travail &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
                             <div class="row"  >
-                                <div class="col-md-7">
-
+                                <div class="col-lg-12 my-2" th:each="hebdo : ${lists}">
+                                        <div class="alert alert-light text-center" >
+                                            <p><strong>Semaine du : </strong><span  th:text="${hebdo?.debut}"></span></p>
+                                            <p><strong>Au : </strong><span  th:text="${hebdo?.fin}"></span></p>
+                                            <hr>
+                                            <a th:href="@{/enseignant/hebdo/detail/}+${hebdo.id}">Voir plus</a>
+                                        </div>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->
@@ -87,6 +93,46 @@
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
+    <!-- modal medium -->
+    <div class="modal fade" id="addHebdoModal" tabindex="-1" role="dialog" aria-labelledby="addHebdoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form th:action="@{/enseignant/hebdo/save/}+${classe.id}" autocomplete="off" method="post" th:object="${hebdo}" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Nouvelle semaine</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body card-block">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-debut" class=" form-control-label">Debut de la semaine</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="date" id="text-debut" th:field="*{debut}" placeholder="Titre" class="form-control">
+                                <small class="form-text text-muted">Date debut</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-fin" class=" form-control-label">Fin de la semaine</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="date" id="text-fin" th:field="*{fin}" placeholder="Titre" class="form-control">
+                                <small class="form-text text-muted">Date fin</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-primary">Creer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end modal medium -->
 
 </div>
 

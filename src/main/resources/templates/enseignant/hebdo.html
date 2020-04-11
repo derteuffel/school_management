@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Parent</title>
+    <title>Enseignant</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
+    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,16 +63,47 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_parent :: sidebar_parent}">
+                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Planning et presences</h2>
+                            <h2>Planning et presence hebdomadaire classe &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
                             <div class="row"  >
-                                <div class="col-md-7">
+                                <div class="col-lg-12 my-2">
+                                        <div class="alert alert-light text-center" >
+                                            <p><strong>Semaine du : </strong><span  th:text="${hebdo?.debut}"></span></p>
+                                            <p><strong>Au : </strong><span  th:text="${hebdo?.fin}"></span></p>
+                                            <hr>
+                                            <div class="container-fluid row">
 
+                                                <div class="col-md-7" >
+                                                    <h3>Planning de la semaine &nbsp;&nbsp; <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPlanningModal" th:attr="data-target='#addPlanningModal'+${hebdo?.id}" ><i class="fas fa-plus"></i></button></h3>
+                                                    <hr>
+                                                    <div th:each=" plan : ${plannings}">
+                                                    <p class="text-left"><sapn th:text="'Le : '+${plan.dateJour}"></sapn>
+                                                        </br>
+                                                        <span th:text="'Titre de la lecon : '+${plan.titre}"></span>
+                                                        </br>
+                                                        <span th:text="'Heure : '+${plan.heure}"></span>
+                                                        </br>
+                                                        <a class="btn text-danger" th:if="${#lists.size(plan.validations)}!=0 and ${plan?.validations[0]}==false" th:href="@{/enseignant/activate/planning/}+${plan.id}" title="Valide ?"><i class="fas fa-circle"></i></a>
+                                                        <span th:if="${#lists.size(plan.validations)}!=0 and ${plan?.validations[0]}==true" class="text-success"><i class="fas fa-circle"></i></span>
+                                                    </p>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <h3>Liste de presence &nbsp;&nbsp; <a th:href="@{/enseignant/presence/add/}+${hebdo.id}" class="btn btn-primary" ><i class="fas fa-plus"></i></a></h3>
+                                                    <hr>
+                                                    <p th:each="date : ${dates}">
+                                                        <a th:href="@{/enseignant/presence/add/}+${hebdo.id}" th:text="'Le : '+${date}"></a>
+                                                        <hr>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->

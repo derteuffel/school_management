@@ -1,6 +1,8 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "salle")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Salle implements Serializable {
 
     @Id
@@ -23,7 +26,7 @@ public class Salle implements Serializable {
     private String niveau;
     private String principal;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "salle_enseignant",
             joinColumns = @JoinColumn(

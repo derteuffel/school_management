@@ -49,7 +49,11 @@
                 </li>
                 <li th:if="${classe}!=null">
                     <a th:href="@{/enseignant/message/}+${classe.id}">
-                        <i class="fas fa-comments"></i>Discussions</a>
+                        <i class="fas fa-comments"></i>Communications</a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/enseignant/hebdos/lists/}+${classe.id}">
+                        <i class="fas fa-list"></i>Planning Hebdo</a>
                 </li>
             </ul>
         </nav>

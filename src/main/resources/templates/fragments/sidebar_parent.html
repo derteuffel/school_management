@@ -24,6 +24,10 @@
                     <a th:href="@{/parent/examens/lists/}+${classe.id}+'/'+${ecole.id}">
                         <i class="fas fa-bookmark"></i>Examens</a>
                 </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/eleves/lists/}+${classe.id}+'/'+${ecole.id}">
+                        <i class="fas fa-users"></i>Plannings et presences</a>
+                </li>
 
             </ul>
         </nav>
