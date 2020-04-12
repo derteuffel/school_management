@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Enseignant</title>
+    <title>Parent</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -88,8 +88,8 @@
                                                         </br>
                                                         <span th:text="'Heure : '+${plan.heure}"></span>
                                                         </br>
-                                                        <a class="btn text-danger" th:if=" ${#lists.size(plan?.validations)}>0" th:href="@{/parent/activate/planning/}+${plan.id}" title="Valide ?"><i class="fas fa-circle"></i></a>
-                                                        <span class="text-success" th:unless=" ${#lists.size(plan?.validations)}>0"><i class="fas fa-circle"></i></span>
+                                                        <a class="btn text-danger" th:if=" ${#lists.size(plan?.validations)}>0 and ${#lists.size(plan?.validations)} < 2" th:href="@{/parent/activate/planning/}+${plan.id}" title="Valide ?"><i class="fas fa-circle"></i></a>
+                                                        <span class="text-success" th:unless=" ${#lists.size(plan?.validations)}>1"><i class="fas fa-circle"></i></span>
                                                     </p>
                                                         <hr>
                                                     </div>
@@ -98,7 +98,7 @@
                                                     <h3>Liste de presence &nbsp;&nbsp; </h3>
                                                     <hr>
                                                     <p th:each="date : ${dates}">
-                                                        <a th:href="@{/parent/presence/add/}+${hebdo.id}" th:text="'Le : '+${date}"></a>
+                                                        <a th:href="@{/parent/presence/detail/}+${hebdo.id}" th:text="'Le : '+${date}"></a>
                                                         <hr>
                                                     </p>
                                                 </div>

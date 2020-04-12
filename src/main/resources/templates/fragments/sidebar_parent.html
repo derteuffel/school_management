@@ -12,21 +12,31 @@
                     <a th:href="@{/parent/cours/lists/}+${classe.id}+'/'+${ecole.id}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/parent/devoirs/lists/}+${classe.id}+'/'+${ecole.id}">
-                        <i class="fas fa-address-book"></i>Devoirs</a>
-                </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/parent/reponses/lists/}+${classe.id}+'/'+${session.compte.username}+'/'+${ecole.id}">
-                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
-                </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/parent/examens/lists/}+${classe.id}+'/'+${ecole.id}">
-                        <i class="fas fa-bookmark"></i>Examens</a>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-tasks"></i>Travaux</a>
+                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/parent/devoirs/lists/}+${classe.id}+'/'+${ecole.id}">
+                                <i class="fas fa-address-book"></i>Devoirs</a>
+                        </li>
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/parent/reponses/lists/}+${classe.id}+'/'+${session.compte.username}+'/'+${ecole.id}">
+                                <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                        </li>
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/parent/examens/lists/}+${classe.id}+'/'+${ecole.id}">
+                                <i class="fas fa-bookmark"></i>Examens</a>
+                        </li>
+                    </ul>
                 </li>
                 <li th:if="${classe}!=null">
                     <a th:href="@{/parent/eleves/lists/}+${classe.id}+'/'+${ecole.id}">
                         <i class="fas fa-users"></i>Plannings et presences</a>
+                </li>
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/parent/classe/detail/}+${classe.id}">
+                        <i class="fas fa-comments"></i>Messagerie</a>
                 </li>
 
             </ul>

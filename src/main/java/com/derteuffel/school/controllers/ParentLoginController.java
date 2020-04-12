@@ -3,6 +3,7 @@ package com.derteuffel.school.controllers;
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.EVisibilite;
+import com.derteuffel.school.helpers.PresenceForm;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.MailService;
@@ -312,6 +313,43 @@ public class ParentLoginController {
         return "parent/hebdo";
     }
 
+    @GetMapping("/presence/detail/{id}")
+    public String presenceNew(Model model, @PathVariable Long id, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Parent parent = compte.getParent();
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Collection<Eleve> eleves = eleveRepository.findAllBySalle_IdAndParent_Id(hebdo.getSalle().getId(),parent.getId());
+
+
+        model.addAttribute("lists",eleves);
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("classe",hebdo.getSalle());
+        model.addAttribute("ecole",hebdo.getSalle().getEcole());
+        return "parent/presence";
+
+    }
+
+    @GetMapping("/presence/eleve/detail/{eleveId}/{id}")
+    public String presenceDetail(Model model, @PathVariable Long id,@PathVariable Long eleveId, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Parent parent = compte.getParent();
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Eleve eleve = eleveRepository.getOne(eleveId);
+        Collection<Presence> presences = presenceRepository.findAllByEleve_IdAndHebdo_Id(eleve.getId(),hebdo.getId());
+
+        model.addAttribute("lists",presences);
+        model.addAttribute("eleve",eleve);
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("classe",hebdo.getSalle());
+        model.addAttribute("ecole",hebdo.getSalle().getEcole());
+        return "parent/presenceDetail";
+
+    }
+
     @GetMapping("/activate/planning/{id}")
     public String activatePlan(@PathVariable Long id){
         Planning planning = planningRepository.getOne(id);
@@ -320,7 +358,7 @@ public class ParentLoginController {
         Hebdo hebdo = planning.getHebdo();
         Salle salle = hebdo.getSalle();
         Ecole ecole = salle.getEcole();
-        return "redirect:/parent/hebdo/detail/"+salle.getId()+"/"+ecole.getId();
+        return "redirect:/parent/hebdo/detail/"+hebdo.getId()+"/"+ecole.getId();
     }
 
 

@@ -35,18 +35,25 @@
                     <a th:href="@{/enseignant/cours/lists/}+${classe.id}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/enseignant/devoirs/lists/}+${classe.id}">
-                        <i class="fas fa-address-book"></i>Devoirs</a>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-tasks"></i>Travaux</a>
+                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/enseignant/devoirs/lists/}+${classe.id}">
+                                <i class="fas fa-address-book"></i>Devoirs</a>
+                        </li>
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/enseignant/reponses/lists/}+${classe.id}">
+                                <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                        </li>
+                        <li th:if="${classe}!=null">
+                            <a th:href="@{/enseignant/examens/lists/}+${classe.id}">
+                                <i class="fas fa-bookmark"></i>Examens</a>
+                        </li>
+                    </ul>
                 </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/enseignant/reponses/lists/}+${classe.id}">
-                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
-                </li>
-                <li th:if="${classe}!=null">
-                    <a th:href="@{/enseignant/examens/lists/}+${classe.id}">
-                        <i class="fas fa-bookmark"></i>Examens</a>
-                </li>
+
                 <li th:if="${classe}!=null">
                     <a th:href="@{/enseignant/message/}+${classe.id}">
                         <i class="fas fa-comments"></i>Communications</a>

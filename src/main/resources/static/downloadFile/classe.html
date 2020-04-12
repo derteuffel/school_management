@@ -75,7 +75,6 @@
                     <div th:replace="~{../templates/fragments/sidebar_parent :: sidebar_parent}">
                     </div>
                     <div class="col-xl-9 ">
-
                         <h3>Messages</h3>
                         <!-- PAGE CONTENT-->
                         <div class="page-content row container-fluid my-5" style="overflow: scroll" th:each="message : ${lists}">
@@ -105,7 +104,7 @@
 
                         </div>
                         <!-- END PAGE CONTENT-->
-                        <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;left: 50px;bottom: 150px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
+                        <button type="button" data-toggle="modal" class="btn btn-success" data-target="#addMessageModal" style="position: fixed;right: 50px;bottom: 30px"><i class="zmdi zmdi-comment"></i>&nbsp;Nouveau message</button>
                         <!-- modal medium -->
                         <div class="modal fade" id="addMessageModal" tabindex="-1" role="dialog" aria-labelledby="addMessageModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">

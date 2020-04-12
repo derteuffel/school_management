@@ -69,15 +69,22 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Ensemble des semaines de travail &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
+                            <h2>Liste de presence de &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
                             <div class="row"  >
-                                <div class="col-lg-12 my-2" th:each="hebdo : ${lists}">
-                                        <div class="alert alert-light text-center" >
-                                            <p><strong>Semaine du : </strong><span  th:text="${hebdo?.debut}"></span></p>
-                                            <p><strong>Au : </strong><span  th:text="${hebdo?.fin}"></span></p>
-                                            <hr>
-                                            <a th:href="@{/parent/hebdo/detail/}+${hebdo.id}+'/'+${ecole.id}">Voir plus</a>
-                                        </div>
+                                <div class="col-lg-12 my-2">
+                                    <div class="container-fluid">
+
+                                            <div class="card-header">
+                                                <h5 class="card-title" id="addModalLabel">Journee de presence</h5>
+
+                                            </div>
+                                            <div class="card-body card-block">
+                                                <div th:each="eleve:${lists}">
+                                                    <a th:href="@{/parent/presence/eleve/detail/}+${eleve.id}+'/'+${hebdo.id}" th:text="${eleve.name}+'   -----> Voir'"></a>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->

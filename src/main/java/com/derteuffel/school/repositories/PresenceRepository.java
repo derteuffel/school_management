@@ -18,4 +18,5 @@ public interface PresenceRepository extends JpaRepository<Presence,Long> {
     Collection<Presence> findAllByEleve_Id(Long id);
 
     Collection<Presence> findAllByDate(String date);
+    Collection<Presence> findAllByEleve_IdAndHebdo_Id(Long id, Long number);
 }
