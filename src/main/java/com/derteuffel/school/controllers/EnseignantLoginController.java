@@ -585,7 +585,7 @@ public class EnseignantLoginController {
         planning.setValidations(array);
         planningRepository.save(planning);
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter une nouvelle journee avec success");
-        return "redirect:/enseignant/hebdos/lists/"+ salle.getId();
+        return "redirect:/enseignant/hebdo/detail/"+ salle.getId();
     }
 
     @GetMapping("/activate/planning/{id}")
