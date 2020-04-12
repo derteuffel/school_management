@@ -504,7 +504,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Hebdo> hebdos = hebdoRepository.findAllByCompte_IdAndSalle_Id(compte.getId(),salle.getId());
+        Collection<Hebdo> hebdos = hebdoRepository.findAllByCompte_IdAndSalle_Id(compte.getId(),salle.getId(), Sort.by(Sort.Direction.DESC,"id"));
         Collection<Presence> presences = new ArrayList<>();
         model.addAttribute("lists",hebdos);
         model.addAttribute("salles",salles);
@@ -578,8 +578,12 @@ public class EnseignantLoginController {
     public String saveplanning(Planning planning, RedirectAttributes redirectAttributes, HttpServletRequest request, @PathVariable Long id){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        Salle salle = (Salle)request.getSession().getAttribute("classe");
         Hebdo hebdo = hebdoRepository.getOne(id);
+        Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
+        if (plannings.size()<=6){
+            redirectAttributes.addFlashAttribute("error","Vous ne pouvez pas ajouter plus de 6 lecons pour une semaine");
+            return "redirect:/enseignant/hebdo/detail/"+ hebdo.getId();
+        }
         planning.setHebdo(hebdo);
         ArrayList<Boolean> array = new ArrayList<>();
         array.add(false);
@@ -587,7 +591,7 @@ public class EnseignantLoginController {
         planning.setValidations(array);
         planningRepository.save(planning);
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter une nouvelle journee avec success");
-        return "redirect:/enseignant/hebdo/detail/"+ salle.getId();
+        return "redirect:/enseignant/hebdo/detail/"+ hebdo.getId();
     }
 
     @GetMapping("/activate/planning/{id}")
@@ -597,7 +601,7 @@ public class EnseignantLoginController {
         planning.getValidations().add(true);
         planningRepository.save(planning);
         Salle salle = (Salle)request.getSession().getAttribute("classe");
-        return "redirect:/enseignant/hebdo/detail/"+salle.getId();
+        return "redirect:/enseignant/hebdo/detail/"+planning.getHebdo().getId();
     }
 
     @GetMapping("/presence/add/{id}")

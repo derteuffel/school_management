@@ -260,7 +260,7 @@ public class ParentLoginController {
         Ecole ecole = ecoleRepository.getOne(ecoleId);
         Salle salle = salleRepository.getOne(id);
 
-        Collection<Hebdo> hebdos = hebdoRepository.findAllBySalle_Id(salle.getId());
+        Collection<Hebdo> hebdos = hebdoRepository.findAllBySalle_Id(salle.getId(),Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("ecole",ecole);
         model.addAttribute("classe",salle);
         model.addAttribute("lists",hebdos);
