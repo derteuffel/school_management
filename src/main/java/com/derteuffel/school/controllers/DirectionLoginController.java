@@ -266,10 +266,10 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
         Salle salle = salleRepository.getOne(id);
-        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalle(EVisibilite.DIRECTION.toString(), salle.getNiveau(), Sort.by(Sort.Direction.DESC, "id"));
-        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.PUBLIC.toString(), salle.getNiveau(), Sort.by(Sort.Direction.DESC, "id")));
-        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.ENSEIGNANT.toString(), salle.getNiveau(), Sort.by(Sort.Direction.DESC, "id")));
-        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.PARENT.toString(), salle.getNiveau(), Sort.by(Sort.Direction.DESC, "id")));
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.DIRECTION.toString(), (salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC, "id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.PUBLIC.toString(), (salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.ENSEIGNANT.toString(), (salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.PARENT.toString(), (salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
         Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
         for (Message message : messages1) {
             if (!(messages.contains(message))) {
@@ -368,6 +368,7 @@ public class DirectionLoginController {
         message.setCompte(compte);
         message.setSender(compte.getUsername());
         message.setSalle(salle.getNiveau() + "" + salle.getId());
+        message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         if (!(file.isEmpty())) {
@@ -413,6 +414,7 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         message.setCompte(compte);
         message.setSender(compte.getUsername());
+        message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         if (!(file.isEmpty())) {

@@ -414,6 +414,7 @@ public class EnseignantLoginController {
         Salle salle = salleRepository.getOne(id);
         message.setCompte(compte);
         message.setSender(compte.getUsername());
+        message.setEcole(salle.getEcole().getName());
         message.setSalle(salle.getNiveau()+""+salle.getId());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
@@ -470,14 +471,15 @@ public class EnseignantLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         Salle salle = salleRepository.getOne(id);
         Ecole ecole = salle.getEcole();
-        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalle(EVisibilite.ENSEIGNANT.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id"));
-        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.ENSEIGNANT.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id")));
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.ENSEIGNANT.toString(),(salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC,"id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC,"id")));
         Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
         for (Message message : messages1){
             if(!(messages.contains(message))){
                 messages.add(message);
             }
         }
+        System.out.println(messages.size());
         model.addAttribute("lists",messages);
         model.addAttribute("ecole",ecole);
         model.addAttribute("classe",salle);

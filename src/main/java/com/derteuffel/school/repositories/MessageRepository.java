@@ -18,4 +18,6 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
     Collection<Message> findAllByVisibilite(String visibilite);
     Collection<Message> findAllByVisibilite(String visibilite,Sort sort);
     Collection<Message> findAllByVisibiliteAndSalle(String visibilite, String name, Sort sort);
+    Collection<Message> findAllByVisibiliteAndEcole(String visibilite, String ecole, Sort sort);
+    Collection<Message> findAllByVisibiliteAndSalleAndEcole(String visibilite,String name, String ecole,Sort sort);
 }

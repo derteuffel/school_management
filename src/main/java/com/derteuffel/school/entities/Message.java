@@ -23,6 +23,7 @@ public class Message implements Serializable {
     private String content;
     private ArrayList<String> receivers = new ArrayList<>();
     private String salle;
+    private String ecole;
     private String visibilite;
     private String date;
     @ManyToOne

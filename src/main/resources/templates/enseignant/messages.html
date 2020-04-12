@@ -85,7 +85,7 @@
                                 <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-success" >
                                         <div class="au-card-inner">
-                                            <p class=" m-b-20"><span class="text-warning" th:text="${message.sender}"></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                            <p class=" m-b-20"><span class="text-warning" >Vous</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span></p>
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>

@@ -121,14 +121,17 @@ public class ParentLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         Salle salle = salleRepository.getOne(id);
         Ecole ecole = salle.getEcole();
-        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalle(EVisibilite.PARENT.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id"));
-        messages.addAll(messageRepository.findAllByVisibiliteAndSalle(EVisibilite.PUBLIC.toString(),salle.getNiveau(), Sort.by(Sort.Direction.DESC,"id")));
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.PARENT.toString(),(salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC,"id"));
+        System.out.println(salle.getNiveau());
+        messages.addAll(messageRepository.findAllByVisibiliteAndSalleAndEcole(EVisibilite.PUBLIC.toString(),(salle.getNiveau()+""+salle.getId()),ecole.getName(), Sort.by(Sort.Direction.DESC,"id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC,"id")));
         Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
         for (Message message : messages1){
             if(!(messages.contains(message))){
                 messages.add(message);
             }
         }
+        System.out.println(messages.size());
         model.addAttribute("ecole",ecole);
         model.addAttribute("classe",salle);
         model.addAttribute("lists",messages);
@@ -341,6 +344,7 @@ public class ParentLoginController {
         System.out.println(compte.getUsername());
         message.setSender(compte.getUsername());
         message.setSalle(salle.getNiveau()+""+salle.getId());
+        message.setEcole(salle.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         System.out.println(message.getVisibilite().toString());
         message.setVisibilite(message.getVisibilite().toString());
