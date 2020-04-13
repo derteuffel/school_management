@@ -75,10 +75,10 @@
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-5 col-md-6 m-2" th:each="enseignant : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}">
+                                    <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" style="width: 100%" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}">
                                         <div class="alert alert-dark row" role="alert">
                                         <div class="image">
-                                            <img th:src="${enseignant?.avatar}" alt="">
+                                            <img class="rounded-circle" style="width: 100px;height: 100px" th:src="${enseignant?.avatar}" alt="">
                                         </div>
                                         <div class="text-left">
                                             <strong>Nom : </strong><span th:text="${enseignant?.name}"></span> <br>
