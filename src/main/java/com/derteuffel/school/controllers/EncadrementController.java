@@ -96,13 +96,13 @@ public class EncadrementController {
             encadreur.setEmail(compteDto.getEmail());
             encadreur.setName(compteDto.getUsername());
             encadreurRepository.save(encadreur);
-            compteService.saveEncadreur(compteDto,"/images/icon/avatar-01.jpg",encadreur);
+            compteService.saveEncadreur(compteDto,"/images/profile.jpeg",encadreur);
         }else {
             Parent parent = new Parent();
             parent.setEmail(compteDto.getEmail());
             parent.setNomComplet(compteDto.getUsername());
             parentRepository.save(parent);
-            compteService.saveParent(compteDto,"/images/icon/avatar-01.jpg",parent);
+            compteService.saveParent(compteDto,"/images/profile.jpeg",parent);
         }
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";

@@ -124,6 +124,34 @@ public class EnseignantLoginController {
         return "enseignant/eleves";
     }
 
+    @GetMapping("/eleves/lists")
+    public String allPrincipales( Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Collection<Eleve> eleves = new ArrayList<>();
+        Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName() + "  " + compte.getEnseignant().getPrenom());
+        if (salle != null) {
+            System.out.println(salle.getNiveau());
+            eleves.addAll(eleveRepository.findAllBySalle_Id(salle.getId()));
+        }
+        model.addAttribute("classe",salle);
+        model.addAttribute("lists",eleves);
+        return "enseignant/elevesP";
+    }
+
+    @GetMapping("/classe/lists")
+    public String allClasse( Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(compte.getEnseignant().getId());
+        model.addAttribute("lists",salles);
+        return "enseignant/classes";
+    }
+
+
+
     @GetMapping("/parents/lists/{id}")
     public String allParents(@PathVariable Long id, Model model){
 
@@ -173,7 +201,7 @@ public class EnseignantLoginController {
             Parent parent= new Parent();
             CompteRegistrationDto compteRegistrationDto = new CompteRegistrationDto();
             parent.setNomComplet(eleve.getNomCompletTuteur().toUpperCase());
-            parent.setEmail(eleve.getEmailTuteur().toUpperCase());
+            parent.setEmail(eleve.getEmailTuteur());
             parent.setTelephone(eleve.getTelephoneTuteur().toUpperCase());
             parent.setWhatsapp(eleve.getWhatsappTuteur().toUpperCase());
             compteRegistrationDto.setEmail(parent.getEmail().toLowerCase());
@@ -181,7 +209,7 @@ public class EnseignantLoginController {
             compteRegistrationDto.setPassword(compteRegistrationDto.getUsername());
             compteRegistrationDto.setConfirmPassword(compteRegistrationDto.getPassword());
             parentRepository.save(parent);
-            compteService.saveParent(compteRegistrationDto,"/images/icon/avatar-01.jpg",parent);
+            compteService.saveParent(compteRegistrationDto,"/images/profile.jpeg",parent);
             eleve.setParent(parent);
             eleveRepository.save(eleve);
             MailService mailService = new MailService();

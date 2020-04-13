@@ -70,7 +70,9 @@
                         <div class="page-content">
 
                             <button type="button" data-toggle="modal" data-target="#addExamenModal" class="btn btn-primary">Nouveau resultat d'examen&nbsp;<i class="zmdi zmdi-plus"></i></button>
-                            <h2>Ensemble des resultats examens de la classe</h2>
+                            <hr>
+                            <h2>Ensemble des resultats examens de la classe : <span th:text="${classe.niveau}"></span></h2>
+                            <hr>
                             <div class="row"  >
                                 <div class="col-lg-4 col-md-6 my-2" th:each="examen : ${lists}">
                                         <div class="alert alert-light row text-left" role="alert">

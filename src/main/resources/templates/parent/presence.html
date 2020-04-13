@@ -80,7 +80,7 @@
                                             </div>
                                             <div class="card-body card-block">
                                                 <div th:each="eleve:${lists}">
-                                                    <a th:href="@{/parent/presence/eleve/detail/}+${eleve.id}+'/'+${hebdo.id}" th:text="${eleve.name}+'   -----> Voir'"></a>
+                                                    <a class="btn btn-outline-primary" th:href="@{/parent/presence/eleve/detail/}+${eleve.id}+'/'+${hebdo.id}" th:text="${eleve.name}+'   -----> Voir'"></a>
                                                     <hr>
                                                 </div>
                                             </div>

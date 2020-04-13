@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Enseignant</title>
+    <title>Direction</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
+    <header th:replace="~{../templates/fragments/header :: header}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,30 +63,26 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
+                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <button type="button" data-toggle="modal" data-target="#addDevoirModal" class="btn btn-primary">Nouveau devoir&nbsp;<i class="zmdi zmdi-plus"></i></button>
-                            <hr>
-                            <h2>Ensemble des devoirs de la classe : <span th:text="${classe.niveau}"></span></h2>
+                            <h2>Liste des eleves de l'ecole : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-lg-4 col-md-6 my-2" th:each="devoir : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailDevoirModal'+${devoir?.id}">
-                                        <div class="alert alert-light row text-center" role="alert">
-                                            <p><strong>Date du : </strong><span  th:text="${devoir?.date}"></span></p>
-                                            <br>
-                                            <p><strong>Titre : </strong><span class="text-primary underline" th:text="${devoir?.title}"></span></p>
+                                <div class=" col-md-4 m-2" th:each="eleve : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}" style="width: 100%">
+                                        <div class="alert alert-dark row text-center" role="alert">
+                                            <strong>Nom : &nbsp;</strong><span th:text="${eleve?.name}"></span> <br>
                                     </div>
                                     </button>
-                                    <div class="modal fade" th:id="detailDevoirModal+${devoir?.id}" tabindex="-1" role="dialog" aria-labelledby="detailDevoirModalLabel" aria-hidden="true">
+                                    <div class="modal fade" th:id="detailEleveModal+${eleve?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEleveModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail devoir</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail Eleve</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -94,40 +90,87 @@
                                                     <div class="modal-body card-block">
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Classe</label>
+                                                                <label  class=" form-control-label">Prenom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.salle}">Prenom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.prenom}">Prenom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Titre</label>
+                                                                <label  class=" form-control-label">Nom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.title}">Prenom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.name}">Nom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Contenue</label>
+                                                                <label  class=" form-control-label">Postnom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.content}">Nom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.postnom}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Fichier join</label>
+                                                                <label  class=" form-control-label">Age</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <a th:href="${devoir?.fichier}"><small class="form-text text-muted" >Voir le fichier</small></a>
+                                                                <small class="form-text text-muted" th:text="${eleve?.age}">Postnom de l'enseignant</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Localisation</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.localisation}">Postnom de l'enseignant</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Nom complet tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.nomCompletTuteur}">Numero de telephone</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Telephone tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.telephoneTuteur}">Numero de telephone</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">E-mail du tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.emailTuteur}">Adresse email</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Whatsapp du tuteur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.whatsappTuteur}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Autre information</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.autreInformation}">Cours enseigner</small>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <a th:href="@{/enseignant/devoir/update/}+${devoir.id}" class="btn btn-primary" >Editer</a>
                                                     </div>
                                             </div>
                                         </div>
@@ -146,67 +189,6 @@
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-    <!-- modal medium -->
-    <div class="modal fade" id="addDevoirModal" tabindex="-1" role="dialog" aria-labelledby="addDevoirModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form th:action="@{/enseignant/devoirs/save}" autocomplete="off" method="post" th:object="${devoir}" enctype="multipart/form-data" class="form-horizontal">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouveau devoir</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body card-block">
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-title" class=" form-control-label">Titre</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-title" th:field="*{title}" placeholder="Titre" class="form-control">
-                                <small class="form-text text-muted">Titre du devoir</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-content" class=" form-control-label">Contenue</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <textarea th:field="*{content}" id="text-content" class="form-control" rows="15" placeholder="Contenue"></textarea>
-                                <small class="form-text text-muted">Ajouter un resumer du devoir</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-salle" class=" form-control-label">Classe concerne</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select th:field="*{salle}" id="text-salle" class="form-control">
-                                    <option value="">Choisir</option>
-                                    <option th:each=" item : ${salles}" th:value="${item.niveau}" th:text="${item.niveau}">Choisir</option>
-                                </select>
-                                <small class="form-text text-muted">Choisir la classe concerner par ce devoir </small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-file" class=" form-control-label">Fichier numerique</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="file" id="text-file" name="file"  class="form-control-file">
-                                <small class="form-text text-muted">Charger un support numerique </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- end modal medium -->
 
 </div>
 

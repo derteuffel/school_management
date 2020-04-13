@@ -82,27 +82,86 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content row">
                             <div class="col-md-6">
-                                <div class="statistic__item statistic__item--green" style="height: 258px">
+                                <a th:href="@{/enseignant/eleves/lists}">
+                                    <div class="statistic__item statistic__item--green" style="height: 258px">
                                     <h2 class="numer">Gestion des eleves</h2>
                                     <span class="desc text-white">Ajouter, modifier, consulter des informations sur des eleves de votre classe principale</span>
                                 </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="statistic__item statistic__item--green" style="height: 258px">
+                                <a th:href="@{/enseignant/classe/lists}">
+                                    <div class="statistic__item statistic__item--green" style="height: 258px">
                                     <h2 class="numer">Ensemble des classes</h2>
                                     <span class="desc text-white">Planifier votre temps pour toutes les classes ou vous donnez cours</span>
                                 </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
-                                <div class="statistic__item statistic__item--green" style="height: 258px">
+                                <button  type="button" data-toggle="modal" data-target="#coursModal" >
+                                    <div class="statistic__item statistic__item--green" style="height: 258px">
                                     <h2 class="numer">Gestion des cours</h2>
-                                    <span class="desc text-white">Vous pouvez ajouter des cours et devoirs en ligne ici pour completer les eleves depuis leur domiciles</span>
+                                    <span class="desc text-white">Vous pouvez ajouter des cours et devoirs en ligne ici pour completer les eleves depuis leurs domiciles</span>
+                                </div>
+                                </button>
+                            </div>
+                            <div class="modal fade" th:id="coursModal" tabindex="-1" role="dialog" aria-labelledby="coursModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="coursModalLabel">Liste des classes</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body card-block">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label  class=" form-control-label">Classes</label>
+                                                </div>
+                                                <div class="col-12 col-md-9" th:each="classe : ${salles}">
+                                                    <a th:href="@{/enseignant/cours/lists/}+${classe.id}"><small class="form-text text-muted" th:text="${classe?.niveau}">Nom de l'enseignant</small></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
-                                <div class="statistic__item statistic__item--green" style="height: 258px">
+                                <button  type="button" data-toggle="modal" data-target="#messagesModal" >
+                                    <div class="statistic__item statistic__item--green" style="height: 258px">
                                     <h2 class="numer">Espace communication</h2>
                                     <span class="desc text-white">Consultez et envoyez des messages a des multiples personnes de votre choix</span>
+                                </div>
+                                </button>
+                            </div>
+                            <div class="modal fade" th:id="messagesModal" tabindex="-1" role="dialog" aria-labelledby="messagesModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="messagesModalLabel">Liste des classes</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body card-block">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label  class=" form-control-label">Classes</label>
+                                                </div>
+                                                <div class="col-12 col-md-9" th:each="classe : ${salles}">
+                                                    <a th:href="@{/enseignant/message/}+${classe.id}"><small class="form-text text-muted" th:text="${classe?.niveau}">Nom de l'enseignant</small></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->

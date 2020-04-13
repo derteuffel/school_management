@@ -69,20 +69,15 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <button type="button" data-toggle="modal" data-target="#addSalleModal" class="btn btn-primary">Nouvelle classe&nbsp;<i class="zmdi zmdi-plus"></i></button>
-                            <hr>
-                            <h2>Liste des Classes</h2>
-                            <hr>
+                            <h2>Liste des parents d'eleve de l'ecole : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <div class="row"  >
-                                <div class="col-lg-3 col-md-6 m-2" th:each="salle : ${lists}">
-                                    <a class="btn" th:href="@{/direction/salle/detail/}+${salle?.id}">
-                                        <div class="alert alert-dark row" role="alert">
-                                        <div class="text-left">
-                                            <strong th:text="${salle?.niveau}">Nom : </strong> <br>
-                                            <strong>Principale : </strong><span th:text="${salle?.principal}"></span> <br>
-                                        </div>
+                                <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists}">
+                                        <div class="alert alert-dark text-left" role="alert">
+                                            <strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> <br>
+                                            <strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span> <br>
+                                            <strong>E-mail  : </strong><span th:text="${parent?.email}"></span> <br>
+                                            <strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span>
                                     </div>
-                                    </a>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->
@@ -97,49 +92,6 @@
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-    <!-- modal medium -->
-    <div class="modal fade" id="addSalleModal" tabindex="-1" role="dialog" aria-labelledby="addSalleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form th:action="@{/direction/classe/save}" autocomplete="off" method="post" th:object="${salle}" class="form-horizontal">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvelle salle de classe</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body card-block">
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-niveau" class=" form-control-label">Niveau</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-niveau" th:field="*{niveau}" placeholder="Niveau" class="form-control">
-                                <small class="form-text text-muted">Niveau</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-principal" class=" form-control-label">Professeur principal</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <select name="id" type="text" class="form-control" id="text-principal">
-                                    <option value="">Choisir un enseignant</option>
-                                    <option th:each="name : ${enseignants}" th:text="${name?.name}+' '+${name?.prenom}" th:value="${name?.id}">Choisir un enseignant</option>
-                                </select>
-                                <small class="form-text text-muted">Nom de l'enseignant</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- end modal medium -->
 
 </div>
 

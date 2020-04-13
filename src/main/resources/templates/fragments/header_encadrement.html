@@ -11,7 +11,7 @@
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
                         <div class="image">
-                            <img th:src="@{session.compte.avatar}" alt="John Doe" />
+                            <img th:src="${session.compte.avatar}" alt="John Doe" />
                         </div>
                         <div class="content">
                             <a class="js-acc-btn" href="#" th:text="${session.compte.username}">john doe</a>
@@ -20,7 +20,7 @@
                             <div class="info clearfix">
                                 <div class="image">
                                     <a href="#">
-                                        <img th:src="@{session.compte.avatar}" alt="John Doe" />
+                                        <img th:src="${session.compte.avatar}" alt="John Doe" />
                                     </a>
                                 </div>
                                 <div class="content">
