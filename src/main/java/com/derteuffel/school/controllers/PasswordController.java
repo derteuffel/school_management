@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,30 +47,32 @@ public class PasswordController {
 
         // look up user in database by e-mail
 
-        Compte compte = compteService.findByEmail(email);
+        Collection<Compte> comptes = compteRepository.findAllByEmail(email);
 
-        if (compte == null){
-            model.addAttribute("error", "We didn't find an account for that e-mail address.");
-        }else {
-            // Generate random 36-character string token for reset password
-            compte.setResetToken(UUID.randomUUID().toString());
+        for (Compte compte : comptes) {
+            if (compte == null) {
+                model.addAttribute("error", "We didn't find an account for that e-mail address.");
+            } else {
+                // Generate random 36-character string token for reset password
+                compte.setResetToken(UUID.randomUUID().toString());
 
-            //save token to data base
-            compteRepository.save(compte);
+                //save token to data base
+                compteRepository.save(compte);
 
 
-            String appUrl= request.getScheme() + "://" + request.getServerName();
+                String appUrl = request.getScheme() + "://" + request.getServerName();
 
-            MailService passworMail= new MailService();
+                MailService passworMail = new MailService();
 
-            passworMail.sendSimpleMessage(compte.getEmail(),
-                    "Demande de réinitialisation de mot de passe",
-                    "Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous:\n" + appUrl+
-                            "/password/reset?token=" + compte.getResetToken());
+                passworMail.sendSimpleMessage(compte.getEmail(),
+                        "Demande de réinitialisation de mot de passe",
+                        "Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous:\n" + appUrl +
+                                "/password/reset?token=" + compte.getResetToken());
 
-            // add message in view to confirmation
-            model.addAttribute("success", "un lien pour reinitialliser votre mot de passe a été envoyé a cette adresse" + email);
+                // add message in view to confirmation
+                model.addAttribute("success", "un lien pour reinitialliser votre mot de passe a été envoyé a cette adresse" + email);
 
+            }
         }
         return "resetSentEmail";
     }
