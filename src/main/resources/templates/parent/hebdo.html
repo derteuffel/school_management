@@ -98,7 +98,7 @@
                                                     <h3>Liste de presence &nbsp;&nbsp; </h3>
                                                     <hr>
                                                     <p th:each="date : ${dates}">
-                                                        <a th:href="@{/parent/presence/detail/}+${hebdo.id}" th:text="'Le : '+${date}"></a>
+                                                        <a class="btn btn-outline-primary my-2" th:href="@{/parent/presence/detail/}+${hebdo.id}" th:text="'Le : '+${date}" style="width: 100%"></a>
                                                         <hr>
                                                     </p>
                                                 </div>

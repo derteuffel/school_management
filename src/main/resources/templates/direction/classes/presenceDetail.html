@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Parent</title>
+    <title>Direction</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
+    <header th:replace="~{../templates/fragments/header :: header}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,21 +63,29 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_parent :: sidebar_parent}">
+                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
-                    <div class="col-xl-9">
+                    <div class="col-xl-6">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Ensemble des semaines de travail &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
+                            <h2>Etat de presence &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
                             <div class="row"  >
-                                <div class="col-lg-12 my-2" th:each="hebdo : ${lists}">
-                                        <div class="alert alert-light text-center" >
-                                            <p><strong>Semaine du : </strong><span  th:text="${hebdo?.debut}"></span></p>
-                                            <p><strong>Au : </strong><span  th:text="${hebdo?.fin}"></span></p>
-                                            <hr>
-                                            <a th:href="@{/parent/hebdo/detail/}+${hebdo.id}">Voir plus</a>
-                                        </div>
+                                <div class="col-lg-12 my-2">
+                                    <div class="container-fluid">
+
+                                            <div class="card-header">
+                                                <h5 class="card-title" id="addModalLabel"><span th:text="${eleve.name}"></span></h5>
+
+                                            </div>
+                                            <div class="card-body card-block">
+                                                <div th:each="presence:${lists}">
+                                                    <p>Le : <span th:text="${presence.date}"></span> &nbsp;&nbsp;&nbsp;<span th:if="${presence.status}==true" class="text-success"><i class="fas fa-circle"></i></span>
+                                                        <span th:unless="${presence.status}==true" class="text-danger"><i class="fas fa-circle"></i></span></p>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- COPYRIGHT-->
@@ -86,6 +94,31 @@
                             <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
+                    </div>
+                    <div class="col-xl-3">
+                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                            <div class="au-card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-top-countries">
+                                        <tbody>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/hebdos/}+${classe?.id}">Planning hebdomadaire</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

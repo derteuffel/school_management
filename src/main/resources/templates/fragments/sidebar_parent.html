@@ -31,7 +31,7 @@
                     </ul>
                 </li>
                 <li th:if="${classe}!=null">
-                    <a th:href="@{/parent/eleves/lists/}+${classe.id}+'/'+${ecole.id}">
+                    <a th:href="@{/parent/eleves/lists/}+${classe.id}">
                         <i class="fas fa-users"></i>Plannings et presences</a>
                 </li>
                 <li th:if="${classe}!=null">

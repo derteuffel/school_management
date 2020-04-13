@@ -252,13 +252,13 @@ public class ParentLoginController {
     @Autowired
     private HebdoRepository hebdoRepository;
 
-    @GetMapping("/eleves/lists/{id}/{ecoleId}")
-    public String presences(@PathVariable Long id, @PathVariable Long ecoleId, Model model, HttpServletRequest request){
+    @GetMapping("/eleves/lists/{id}")
+    public String presences(@PathVariable Long id,  Model model, HttpServletRequest request){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Parent parent = compte.getParent();
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
 
         Collection<Hebdo> hebdos = hebdoRepository.findAllBySalle_Id(salle.getId(),Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("ecole",ecole);
@@ -290,10 +290,9 @@ public class ParentLoginController {
         return newList;
     }
 
-    @GetMapping("/hebdo/detail/{id}/{ecoleId}")
-    public String detailHebdo(Model model, @PathVariable Long id,@PathVariable Long ecoleId){
+    @GetMapping("/hebdo/detail/{id}")
+    public String detailHebdo(Model model, @PathVariable Long id){
 
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
         Hebdo hebdo = hebdoRepository.getOne(id);
         Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
         Collection<Presence> presences = presenceRepository.findAllByHebdo_Id(hebdo.getId());
@@ -303,6 +302,7 @@ public class ParentLoginController {
         }
 
         Salle salle = hebdo.getSalle();
+        Ecole ecole = salle.getEcole();
 
 
         model.addAttribute("plannings",plannings);

@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Enseignant</title>
+    <title>Direction</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,7 +38,7 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
+    <header th:replace="~{../templates/fragments/header :: header}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -63,9 +63,9 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_enseignant :: sidebar_enseignant}">
+                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
-                    <div class="col-xl-9">
+                    <div class="col-xl-6">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
@@ -79,7 +79,7 @@
                                             <div class="container-fluid row">
 
                                                 <div class="col-md-7" >
-                                                    <h3>Planning de la semaine &nbsp;&nbsp; <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPlanningModal" th:attr="data-target='#addPlanningModal'+${hebdo?.id}" ><i class="fas fa-plus"></i></button></h3>
+                                                    <h3>Planning de la semaine </h3>
                                                     <hr>
                                                     <div th:each=" plan : ${plannings}">
                                                     <p class="text-left"><sapn th:text="'Le : '+${plan.dateJour}"></sapn>
@@ -88,57 +88,19 @@
                                                         </br>
                                                         <span th:text="'Heure : '+${plan.heure}"></span>
                                                         </br>
-                                                        <a class="btn text-danger" th:if="${#lists.size(plan.validations)}!=0 and ${plan?.validations[0]}==false" th:href="@{/enseignant/activate/planning/}+${plan.id}" title="Valide ?"><i class="fas fa-circle"></i></a>
-                                                        <span th:if="${#lists.size(plan.validations)}!=0 and ${plan?.validations[0]}==true" class="text-success"><i class="fas fa-circle"></i></span>
+                                                        <div class="row" th:each="status: ${plan.validations}">
+                                                            <span th:if="${status}==true" class="text-success"><i class="fas fa-circle"></i></span>
+                                                            <span th:unless="${status}==true" class="text-danger"><i class="fas fa-circle"></i></span>
+                                                        </div>
                                                     </p>
                                                         <hr>
                                                     </div>
-                                                    <!-- modal medium -->
-                                                    <div class="modal fade" th:id="addPlanningModal+${hebdo?.id}" tabindex="-1" role="dialog" aria-labelledby="addPlanningModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog modal-lg" role="document">
-                                                            <div class="modal-content">
-                                                                <form th:action="@{/enseignant/planning/save/}+${hebdo?.id}" autocomplete="off" method="post" th:object="${planning}" enctype="multipart/form-data" class="form-horizontal">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="addPlanningModalLabel">Nouvelle journee</h5>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body card-block">
-                                                                        <div class="row form-group">
-                                                                            <div class="col col-md-3">
-                                                                                <label for="text-titre" class=" form-control-label">Titre</label>
-                                                                            </div>
-                                                                            <div class="col-12 col-md-9">
-                                                                                <input type="text" id="text-titre" th:field="*{titre}" placeholder="Titre" class="form-control">
-                                                                                <small class="form-text text-muted">Titre de la lecon</small>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row form-group">
-                                                                            <div class="col col-md-3">
-                                                                                <label for="text-heure" class=" form-control-label">Heure</label>
-                                                                            </div>
-                                                                            <div class="col-12 col-md-9">
-                                                                                <input type="time" id="text-heure" th:field="*{heure}" placeholder="Heure" class="form-control">
-                                                                                <small class="form-text text-muted">Heure de la lecon</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                                                                        <button type="submit" class="btn btn-primary">Creer</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- end modal medium -->
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <h3>Liste de presence &nbsp;&nbsp; <a th:href="@{/enseignant/presence/add/}+${hebdo.id}" class="btn btn-primary" ><i class="fas fa-plus"></i></a></h3>
+                                                    <h3>Liste de presence &nbsp;&nbsp; </h3>
                                                     <hr>
                                                     <p th:each="date : ${dates}">
-                                                        <a class="btn btn-outline-primary my-2" th:href="@{/enseignant/presence/add/}+${hebdo.id}" th:text="'Le : '+${date}" style="width: 100%"></a>
+                                                        <a class="btn btn-outline-primary my-2" th:href="@{/direction/presence/detail/}+${hebdo.id}" th:text="'Le : '+${date}" style="width: 100%"></a>
                                                         <hr>
                                                     </p>
                                                 </div>
@@ -153,12 +115,36 @@
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
+                    <div class="col-xl-3">
+                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                            <div class="au-card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-top-countries">
+                                        <tbody>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/hebdos/}+${classe?.id}">Planning hebdomadaire</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-
 
 </div>
 

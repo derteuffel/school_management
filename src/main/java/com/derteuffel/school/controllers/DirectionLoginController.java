@@ -451,4 +451,110 @@ public class DirectionLoginController {
         return "redirect:/direction/home";
     }
 
+
+    @Autowired
+    private HebdoRepository hebdoRepository;
+
+    @Autowired
+    private PlanningRepository planningRepository;
+
+    @Autowired
+    private PresenceRepository presenceRepository;
+
+    @GetMapping("/classe/hebdos/{id}")
+    public String presences(@PathVariable Long id, Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+
+                Collection<Hebdo> hebdos = hebdoRepository.findAllBySalle_Id(salle.getId(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        model.addAttribute("lists",hebdos);
+        return "direction/classes/hebdos";
+    }
+
+    public List<String> removeDuplicates(List<String> list)
+    {
+        if (list == null){
+            return new ArrayList<>();
+        }
+
+        // Create a new ArrayList
+        List<String> newList = new ArrayList<String>();
+        // Traverse through the first list
+        for (String element : list) {
+
+            // If this element is not present in newList
+            // then add it
+
+            if (element !=null && !newList.contains(element) && !element.isEmpty()) {
+
+                newList.add(element);
+            }
+        }
+        // return the new list
+        return newList;
+    }
+
+    @GetMapping("/hebdo/detail/{id}")
+    public String detailHebdo(Model model, @PathVariable Long id){
+
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
+        Collection<Presence> presences = presenceRepository.findAllByHebdo_Id(hebdo.getId());
+        ArrayList<String> dates = new ArrayList<>();
+        for (Presence presenceString : presences){
+            dates.add(presenceString.getDate());
+        }
+
+        Salle salle = hebdo.getSalle();
+        Ecole ecole = salle.getEcole();
+
+
+        model.addAttribute("plannings",plannings);
+        model.addAttribute("dates",removeDuplicates(dates));
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        return "direction/classes/hebdo";
+    }
+
+    @GetMapping("/presence/detail/{id}")
+    public String presenceNew(Model model, @PathVariable Long id, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Collection<Eleve> eleves = eleveRepository.findAllBySalle_Id(hebdo.getSalle().getId());
+
+
+        model.addAttribute("lists",eleves);
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("classe",hebdo.getSalle());
+        model.addAttribute("ecole",hebdo.getSalle().getEcole());
+        return "direction/classes/presence";
+
+    }
+
+    @GetMapping("/presence/eleve/detail/{eleveId}/{id}")
+    public String presenceDetail(Model model, @PathVariable Long id,@PathVariable Long eleveId, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Hebdo hebdo = hebdoRepository.getOne(id);
+        Eleve eleve = eleveRepository.getOne(eleveId);
+        Collection<Presence> presences = presenceRepository.findAllByEleve_IdAndHebdo_Id(eleve.getId(),hebdo.getId());
+
+        model.addAttribute("lists",presences);
+        model.addAttribute("eleve",eleve);
+        model.addAttribute("hebdo",hebdo);
+        model.addAttribute("classe",hebdo.getSalle());
+        model.addAttribute("ecole",hebdo.getSalle().getEcole());
+        return "direction/classes/presenceDetail";
+
+    }
+
+
 }
