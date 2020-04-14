@@ -77,6 +77,7 @@
                     <div class="col-xl-9 ">
 
                         <h3>Messages</h3>
+                        <hr>
                         <!-- PAGE CONTENT-->
                         <div class="page-content row container-fluid my-5" style="overflow: scroll" th:each="message : ${lists}">
                             <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
@@ -93,11 +94,32 @@
                             <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                 <div class="au-card m-b-30 alert alert-success" >
                                     <div class="au-card-inner">
-                                        <p class=" m-b-20"><span class="text-warning" >Vous </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span></p>
+                                        <p class=" m-b-20"><span class="text-warning" >Vous </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span>
+                                            <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${message?.id}"><i class="fas fa-trash"></i></a>
+                                        </p>
                                         <hr>
                                         <p><span th:text="${message.content}"></span></p>
                                         <br>
                                         <p>Fichier(s) associe(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                    </div>
+                                </div>
+                                <div class="modal fade" th:id="deleteModal+${message?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Supprimer Message</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body card-block">
+                                                <p>Vous voulez vraiment supprimer ce message??</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                <a  class="btn btn-primary" th:href="@{/parent/message/delete/}+${message?.id}+'/'+${classe.id}">Supprimer</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

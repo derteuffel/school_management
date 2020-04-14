@@ -140,6 +140,13 @@ public class ParentLoginController {
         return "parent/ecole/classe";
     }
 
+
+    @GetMapping("/message/delete/{id}/{salleId}")
+    public String messageDelete(@PathVariable Long id, @PathVariable Long salleId){
+        messageRepository.deleteById(id);
+        return "redirect:/parent/classe/detail/"+salleId;
+    }
+
     @GetMapping("/cours/lists/{id}/{ecoleId}")
     public String cours(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
         Ecole ecole = ecoleRepository.getOne(ecoleId);
@@ -192,6 +199,16 @@ public class ParentLoginController {
         model.addAttribute("lists",reponses);
         model.addAttribute("classe",salle);
         return "parent/reponses";
+    }
+
+    @GetMapping("/reponse/delete/{id}/{salleId}")
+    public String reponseDelete(Long id, Long salleId,HttpServletRequest request){
+        coursRepository.deleteById(id);
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(salleId);
+        Ecole ecole = salle.getEcole();
+        return "redirect;/parent/reponses/lists/"+salle.getId()+"/"+compte.getUsername()+"/"+ecole.getId();
     }
 
     @GetMapping("/reponses/add/{id}")
