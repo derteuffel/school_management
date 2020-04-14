@@ -1,6 +1,8 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "cours")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Cours implements Serializable {
 
     @Id

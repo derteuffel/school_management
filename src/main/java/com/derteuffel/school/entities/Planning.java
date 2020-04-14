@@ -30,6 +30,6 @@ public class Planning implements Serializable {
     private String heure;
     private ArrayList<Boolean> validations ;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Hebdo hebdo;
 }

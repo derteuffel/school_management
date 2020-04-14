@@ -102,28 +102,49 @@
                                         <small class="form-text text-muted" th:text="${parent?.whatsapp}">Prenom de l'enseignant</small>
                                     </div>
                                 </div>
+                                <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label  class=" form-control-label">Action </label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <a href="#" class="btn" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'"><i class="fas fa-trash"></i></a>
+                                    <div class="modal fade" th:id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer Parent</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body card-block">
+                                                    <p>Vous voulez vraiment supprimer ce parent??</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                    <a  class="btn btn-primary" th:href="@{/enseignant/parent/delete/}+${parent?.id}+'/'+${classe.id}">Supprimer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 <hr>
                                 <h3>Ses enfants</h3>
+                                <hr>
 
-                                    <div th:each="eleve : ${lists}">
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label  class=" form-control-label">Nom de l'eleve</label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <small class="form-text text-muted" th:text="${eleve?.prenom}+' '+${eleve?.name}+' '+${eleve?.postnom}">Prenom de l'enseignant</small>
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col col-md-3">
-                                            <label  class=" form-control-label">Classe</label>
-                                        </div>
-                                        <div class="col-12 col-md-9">
-                                            <small class="form-text text-muted" th:text="${eleve?.salle.niveau}">Nom de l'enseignant</small>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <th>Nom de l'eleve</th>
+                                        <th>Classe</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="eleve : ${lists}">
+                                            <td ><small class="form-text text-muted" th:text="${eleve?.prenom}+' '+${eleve?.name}+' '+${eleve?.postnom}">Prenom de l'enseignant</small></td>
+                                            <td ><small class="form-text text-muted" th:text="${eleve?.salle.niveau}">Nom de l'enseignant</small></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             <!-- COPYRIGHT-->
                             <section th:replace="~{../templates/fragments/footer :: footer}"></section>

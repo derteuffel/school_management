@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "presence")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Presence implements Serializable {
 
     @Id
@@ -24,9 +25,8 @@ public class Presence implements Serializable {
 
     private String date;
     private Boolean status = false;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Hebdo hebdo;
-    @ManyToOne
-    @OnDelete(action= OnDeleteAction.NO_ACTION)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Eleve eleve;
 }

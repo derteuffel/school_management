@@ -82,9 +82,30 @@
                                                 <p><span th:text="${message.content}"></span></p>
                                                 <br>
                                                 <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                                <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${message?.id}"><i class="fas fa-trash"></i></a>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="modal fade" th:id="deleteModal+${message?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer message</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body card-block">
+                                                    <p>Vous voulez vraiment supprimer ce message??</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                    <a  class="btn btn-primary" th:href="@{/direction/message/delete/}+${message?.id}">Supprimer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
 
                                 </div>

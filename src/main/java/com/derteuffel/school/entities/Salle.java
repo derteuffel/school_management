@@ -35,6 +35,6 @@ public class Salle implements Serializable {
                     name = "enseignant_id", referencedColumnName = "id"))
     private Collection<Enseignant> enseignants;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ecole ecole;
 }

@@ -38,13 +38,13 @@ public class Compte implements Serializable{
                     name = "role_id", referencedColumnName = "id"))
     private Collection<Role> roles;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Ecole ecole;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Enseignant enseignant;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Parent parent;
 
    /* @OneToMany(mappedBy = "compte")

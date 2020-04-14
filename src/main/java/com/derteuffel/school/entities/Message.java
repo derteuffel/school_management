@@ -1,6 +1,8 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 @Data
 @Entity
 @Table(name = "message")
+@OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Message implements Serializable {
 
     @Id
@@ -26,7 +29,7 @@ public class Message implements Serializable {
     private String ecole;
     private String visibilite;
     private String date;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Compte compte;
 
 

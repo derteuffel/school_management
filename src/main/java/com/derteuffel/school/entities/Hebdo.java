@@ -33,10 +33,10 @@ public class Hebdo implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fin;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Salle salle;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Compte compte;
 
 

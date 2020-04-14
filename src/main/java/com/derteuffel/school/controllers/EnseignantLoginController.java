@@ -74,6 +74,7 @@ public class EnseignantLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
+        System.out.println(ecole.getName());
 
         request.getSession().setAttribute("ecole", ecole);
         request.getSession().setAttribute("compte",compte);
@@ -100,6 +101,7 @@ public class EnseignantLoginController {
         model.addAttribute("salles",salles);
         Ecole ecole = ecoleRepository.getOne(id);
 
+        request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("ecole",ecole);
         return "enseignant/home";
     }
@@ -115,12 +117,16 @@ public class EnseignantLoginController {
     }
 
     @GetMapping("/eleves/lists/{id}")
-    public String allEleves(@PathVariable Long id, Model model){
+    public String allEleves(@PathVariable Long id, Model model,HttpServletRequest request){
 
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
         Collection<Eleve> eleves = eleveRepository.findAllBySalle_Id(id);
         model.addAttribute("classe",salleRepository.getOne(id));
         model.addAttribute("student",new Eleve());
         model.addAttribute("lists",eleves);
+        request.getSession().setAttribute("compte",compte);
+        System.out.println(eleves.size());
         return "enseignant/eleves";
     }
 
@@ -137,8 +143,11 @@ public class EnseignantLoginController {
         }
         model.addAttribute("classe",salle);
         model.addAttribute("lists",eleves);
+        System.out.println(eleves.size());
         return "enseignant/elevesP";
     }
+
+
 
     @GetMapping("/classe/lists")
     public String allClasse( Model model, HttpServletRequest request){
@@ -176,6 +185,12 @@ public class EnseignantLoginController {
         model.addAttribute("lists",eleves);
         model.addAttribute("classe",salle);
         return "enseignant/parent";
+    }
+
+    @GetMapping("/parent/delete/{id}/{salleId}")
+    public String parentDelete(@PathVariable Long id, @PathVariable Long salleId){
+        parentRepository.deleteById(id);
+        return "redirect:/enseignant/parents/lists/"+salleId;
     }
 
     @GetMapping("/eleves/update/{id}")
@@ -237,6 +252,13 @@ public class EnseignantLoginController {
         return "redirect:/enseignant/eleves/lists/"+salle.getId();
     }
 
+
+    @GetMapping("/eleve/delete/{id}/{salleId}")
+    public String deleteEleve(@PathVariable Long id, @PathVariable Long salleId){
+        eleveRepository.deleteById(id);
+        return "redirect:/enseignant/eleve/lists/"+salleId;
+    }
+
     @GetMapping("/cours/lists/{id}")
     public String cours(@PathVariable Long id, Model model, HttpServletRequest request){
 
@@ -292,6 +314,12 @@ public class EnseignantLoginController {
         Salle salle = (Salle)request.getSession().getAttribute("classe");
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau cours avec success");
         return "redirect:/enseignant/cours/lists/"+ salle.getId();
+    }
+
+    @GetMapping("/cours/delete/{id}/{salleId}")
+    public String coursDelete(@PathVariable Long id, @PathVariable Long salleId){
+        coursRepository.deleteById(id);
+        return "redirect:/enseignant/cours/lists/"+salleId;
     }
 
     @GetMapping("/devoirs/lists/{id}")
@@ -350,6 +378,12 @@ public class EnseignantLoginController {
         return "redirect:/enseignant/devoirs/lists/"+ salle.getId();
     }
 
+    @GetMapping("/devoirs/delete/{id}/{salleId}")
+    public String devoirDelete(@PathVariable Long id, @PathVariable Long salleId){
+        coursRepository.deleteById(id);
+
+        return "redirect:/enseignant/devoirs/lists/"+salleId;
+    }
     @GetMapping("/reponses/lists/{id}")
     public String reponses(@PathVariable Long id, Model model, HttpServletRequest request){
 
@@ -426,6 +460,12 @@ public class EnseignantLoginController {
         return "redirect:/enseignant/examens/lists/"+ salle.getId();
     }
 
+
+    @GetMapping("/examen/delete/{id}/{salleId}")
+    public String examenDelete(@PathVariable Long id, @PathVariable Long salleId){
+        examenRepository.deleteById(id);
+        return "redirect:/enseignant/examens/lists/"+salleId;
+    }
     @GetMapping("/access-denied")
     public String access_denied(){
         return "enseignant/access-denied";

@@ -296,6 +296,16 @@ public class DirectionLoginController {
         return "redirect:/direction/enseignant/lists";
     }
 
+    @GetMapping("/enseignant/delete/{id}")
+    public String deleteEnseignant(@PathVariable Long id){
+        Collection<Compte> comptes = compteRepository.findAllByEmail(enseignantRepository.getOne(id).getEmail());
+        for (Compte compte : comptes){
+            compteRepository.delete(compte);
+        }
+        enseignantRepository.deleteById(id);
+        return "redirect:/direction/enseignant/lists";
+    }
+
     // ------ Enseignant management end -----///
     // ------ Classe management start -----///
 
@@ -479,6 +489,12 @@ public class DirectionLoginController {
         }
         return "redirect:/direction/salle/detail/" + salle.getId();
 
+    }
+
+    @GetMapping("/message/delete/{id}")
+    public String deleteMessage(@PathVariable Long id){
+        messageRepository.deleteById(id);
+        return "redirect:/direction/home";
     }
 
     @PostMapping("/message/save")

@@ -32,10 +32,10 @@ public class Eleve implements Serializable{
     private String localisation;
     private String autreInformation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Salle salle;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Parent parent;
 
 }
