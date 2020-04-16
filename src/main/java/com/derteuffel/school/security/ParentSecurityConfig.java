@@ -44,7 +44,8 @@ public class ParentSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/parent/logout"))
+                .and()
+                .logout().logoutUrl("/direction/logout")
                 .logoutSuccessUrl("/parent/login?logout")
                 .and()
                 .exceptionHandling().accessDeniedPage("/parent/access-denied");

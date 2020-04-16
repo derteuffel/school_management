@@ -63,6 +63,12 @@ public class EncadrementController {
         return "encadrements/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/encadrements/login";
+    }
     @ModelAttribute("compte")
     public CompteRegistrationDto compteRegistrationDto(){
         return new CompteRegistrationDto();

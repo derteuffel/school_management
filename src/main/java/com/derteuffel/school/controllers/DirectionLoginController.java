@@ -60,6 +60,12 @@ public class DirectionLoginController {
         return "direction/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/direction/login";
+    }
     @ModelAttribute("compte")
     public CompteRegistrationDto compteRegistrationDto() {
         return new CompteRegistrationDto();

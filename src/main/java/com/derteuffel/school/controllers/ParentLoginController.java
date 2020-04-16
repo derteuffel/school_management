@@ -71,6 +71,13 @@ public class ParentLoginController {
         return "parent/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/parent/login";
+    }
+
     @GetMapping("/home")
     public String home(HttpServletRequest request){
         Principal principal = request.getUserPrincipal();

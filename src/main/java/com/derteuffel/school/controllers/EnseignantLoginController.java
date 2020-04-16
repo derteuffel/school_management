@@ -68,6 +68,12 @@ public class EnseignantLoginController {
         return "enseignant/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/enseignant/login";
+    }
     @GetMapping("/home")
     public String home(HttpServletRequest request){
         Principal principal = request.getUserPrincipal();

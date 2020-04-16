@@ -34,7 +34,8 @@ public class EncadrementSecurityConfig extends WebSecurityConfigurerAdapter{
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/encadrements/logout"))
+                .and()
+                .logout().logoutUrl("/encadrements/logout")
                 .logoutSuccessUrl("/encadrements/login?logout")
                 .and()
                 .exceptionHandling().accessDeniedPage("/encadrements/access-denied");

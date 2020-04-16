@@ -39,10 +39,11 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/direction/logout"))
-                .logoutSuccessUrl("/direction/login?logout");
-                /*.and()
-                .exceptionHandling().accessDeniedPage("/direction/access-denied");*/
+                .and()
+                .logout().logoutUrl("/direction/logout")
+                .logoutSuccessUrl("/direction/login?logout")
+                .and()
+                .exceptionHandling().accessDeniedPage("/direction/access-denied");
     }
 
     @Autowired
