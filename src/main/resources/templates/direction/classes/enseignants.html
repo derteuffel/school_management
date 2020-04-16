@@ -65,16 +65,18 @@
                 <div class="row">
                     <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
-                    <div class="col-xl-9">
+                    <div class="col-xl-6">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
                             <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <hr>
                             <h2>Liste des enseignants de la classe</h2>
+                            <hr>
                             <div class="row"  >
-                                <div class="col-lg-5 col-md-6 m-2" th:each="enseignant : ${lists}">
+                                <div class="col-md-6 my-2 py-1" th:each="enseignant : ${lists}">
                                     <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" style="width: 100%" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}">
-                                        <div class="alert alert-dark row" role="alert">
+                                        <div class="alert alert-dark text-left" role="alert">
                                         <div class="image">
                                             <img class="rounded-circle" style="width: 100px;height: 100px" th:src="${enseignant?.avatar}" alt="">
                                         </div>
@@ -161,14 +163,40 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
+                    <div class="col-xl-3">
+                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                            <div class="au-card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-top-countries">
+                                        <tbody>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/hebdos/}+${classe?.id}">Planning hebdomadaire</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>

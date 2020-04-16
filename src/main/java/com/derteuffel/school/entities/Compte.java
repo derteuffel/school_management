@@ -50,5 +50,8 @@ public class Compte implements Serializable{
    /* @OneToMany(mappedBy = "compte")
     private Collection<Cours> cours;*/
 
+   @OneToOne(fetch = FetchType.LAZY)
+   private Enfant enfant;
+
 
 }

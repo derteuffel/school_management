@@ -70,6 +70,7 @@
                         <div class="page-content">
 
                             <h2>Etat de presence &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
+                            <hr>
                             <div class="row"  >
                                 <div class="col-lg-12 my-2">
                                     <div class="container-fluid">
@@ -88,10 +89,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
@@ -121,6 +119,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>

@@ -51,6 +51,9 @@ public class DirectionLoginController {
     private MessageRepository messageRepository;
 
     @Autowired
+    private ParentRepository parentRepository;
+
+    @Autowired
     private EleveRepository eleveRepository;
     @Value("${file.upload-dir}")
     private String fileStorage;
@@ -422,9 +425,60 @@ public class DirectionLoginController {
 
         Collection<Eleve> eleves = eleveRepository.findAllBySalle_Id(id);
         model.addAttribute("classe", salleRepository.getOne(id));
+        model.addAttribute("student", new Eleve());
         model.addAttribute("lists", eleves);
         return "direction/classes/eleves";
     }
+
+    @PostMapping("/eleves/save/{id}")
+    public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes){
+
+        Parent existParent = parentRepository.findByNomComplet(eleve.getNomCompletTuteur().toUpperCase());
+        Salle salle = salleRepository.getOne(id);
+        eleve.setSalle(salle);
+
+        if (existParent != null){
+            eleve.setParent(existParent);
+        }else {
+            Parent parent= new Parent();
+            CompteRegistrationDto compteRegistrationDto = new CompteRegistrationDto();
+            parent.setNomComplet(eleve.getNomCompletTuteur().toUpperCase());
+            parent.setEmail(eleve.getEmailTuteur());
+            parent.setTelephone(eleve.getTelephoneTuteur().toUpperCase());
+            parent.setWhatsapp(eleve.getWhatsappTuteur().toUpperCase());
+            compteRegistrationDto.setEmail(parent.getEmail().toLowerCase());
+            compteRegistrationDto.setUsername(parent.getNomComplet().toLowerCase());
+            compteRegistrationDto.setPassword(compteRegistrationDto.getUsername());
+            compteRegistrationDto.setConfirmPassword(compteRegistrationDto.getPassword());
+            parentRepository.save(parent);
+            compteService.saveParent(compteRegistrationDto,"/images/profile.jpeg",parent);
+            eleve.setParent(parent);
+            eleveRepository.save(eleve);
+            MailService mailService = new MailService();
+            mailService.sendSimpleMessage(
+                    compteRegistrationDto.getEmail(),
+                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle  :",
+                    "vos identifiants : username:" +compteRegistrationDto.getUsername()+" et password : "+compteRegistrationDto.getPassword()
+
+            );
+
+            mailService.sendSimpleMessage(
+                    "solutionsarl02@gmail.com",
+                    "YesBanana: Notification Inscription d'un enseignant",
+                    "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
+                            compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
+                            "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+
+
+
+        }
+
+
+
+        redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec success un nouvel eleve dans cette classe");
+        return "redirect:/direction/classe/eleves/"+salle.getId();
+    }
+
 
     //---- Eleve management end -----//
     //---- Parent management start -----//

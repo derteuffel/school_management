@@ -24,8 +24,7 @@ public class Enfant implements Serializable {
 
     private String name;
     private String niveau;
+    private String email;
     private ArrayList<String> matieres = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Parent parent;
 }

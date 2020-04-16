@@ -70,6 +70,7 @@
                         <div class="page-content">
 
                             <h2>Messages</h2>
+                            <hr>
                             <div class="page-content row container-fluid" style="overflow: scroll" th:each="message : ${lists}">
                                 <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-secondary" >

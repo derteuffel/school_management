@@ -128,6 +128,29 @@ public class CompteSeviceImpl implements CompteService{
         compteRepository.save(compte);
         return compte;
     }
+    @Override
+    public Compte saveEnfant(CompteRegistrationDto compteRegistrationDto, String s, Enfant enfant) {
+        Compte compte = new Compte();
+
+        compte.setEmail(compteRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setAvatar(s);
+        compte.setEnfant(enfant);
+        Role role = new Role();
+
+
+        Role existRole = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
+        if (existRole != null){
+            compte.setRoles(Arrays.asList(existRole));
+        }else {
+            role.setName(ERole.ROLE_ENFANT.toString());
+            roleRepository.save(role);
+            compte.setRoles(Arrays.asList(role));
+        }
+        compteRepository.save(compte);
+        return compte;
+    }
 
     @Override
     public Compte saveEncadreur(CompteRegistrationDto compteRegistrationDto, String s, Encadreur encadreur) {

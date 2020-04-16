@@ -50,13 +50,13 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <div class="form-group">
+                        <!--div class="form-group">
                             <a class="btn btn-outline-light" style="width: 100%" href="https://www.yesbanana.org/visitor/teacher/secondaire">Enregistrez-vous en tant que encadreur</a>
                         </div>
                         <div class="form-group">
                             <a class="btn btn-outline-light" style="width: 100%" href="https://www.yesbanana.org/visitor/student">Enregistrez-vous en tant que éleve</a>
-                        </div>
-                        <!--form th:action="@{/encadrements/registration}" th:object="${compte}" method="post">
+                        </div-->
+                        <form th:action="@{/encadrements/registration}" th:object="${compte}" method="post">
 
                             <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
                                th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
@@ -95,16 +95,16 @@
                                 <select name="type" type="text" id="type" class="form-control">
                                     <option value="">Choisir</option>
                                     <option value="ENCADREUR">ENCADREUR</option>
-                                    <option value="PARENT">PARENT</option>
+                                    <option value="ENFANT">ELEVE</option>
                                 </select>
                             </div>
 
                             <div class="form-group" >
-                                <label class="control-label">Cours enseigné <small>champs à remplir uniquement par les encadreurs</small></label>
-                                <input class="au-input au-input--full" type="text"  placeholder="cours enseigner">
+                                <label class="control-label">Cours de reference</label>
+                                <input class="au-input au-input--full" type="text" name="cours_reference"  placeholder="cours enseigner">
                             </div>
                             <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Enregistrer</button>
-                        </form-->
+                        </form>
                         <div class="register-link">
                             <p>
                                 Deja un compte?

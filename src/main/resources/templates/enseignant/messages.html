@@ -70,6 +70,7 @@
                         <div class="page-content">
 
                             <h2>Messages</h2>
+                            <hr>
                             <div class="page-content row container-fluid" style="overflow: scroll" th:each="message : ${lists}">
                                 <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-secondary" >
@@ -171,14 +172,15 @@
                                 </div>
                             </div>
                             <!-- end modal medium -->
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
                 </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>

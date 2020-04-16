@@ -69,11 +69,14 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
+                            <button  type="button" data-toggle="modal" data-target="#addEleveModal" class="btn btn-primary">Nouvel eleve&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <hr>
                             <h2>Liste des eleves de la classe</h2>
+                            <hr>
                             <div class="row"  >
-                                <div class="col-lg-4 col-md-6 m-2" th:each="eleve : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}">
-                                        <div class="alert alert-dark row text-center" role="alert">
+                                <div class="col-md-6 my-2 px-1" th:each="eleve : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailEleveModal" th:attr="data-target='#detailEleveModal'+${eleve?.id}" style="width: 100%">
+                                        <div class="alert alert-dark text-left" role="alert">
                                             <strong>Nom : </strong><span th:text="${eleve?.name}"></span> <br>
                                     </div>
                                     </button>
@@ -176,40 +179,156 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
                     <div class="col-xl-3">
                         <h2 class="title-1 m-b-25">Autres</h2>
                         <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
-                                <div class="au-card-inner">
-                                    <div class="table-responsive">
-                                        <table class="table table-top-countries">
-                                            <tbody>
-                                            <tr>
-                                                <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                            <div class="au-card-inner">
+                                <div class="table-responsive">
+                                    <table class="table table-top-countries">
+                                        <tbody>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/enseignant/classe/}+${classe?.id}">Enseignants</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/eleves/}+${classe?.id}">Eleves</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/parents/}+${classe?.id}">Parents</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a class="text-white" th:href="@{/direction/classe/hebdos/}+${classe?.id}">Planning hebdomadaire</a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
+    <!-- modal medium -->
+    <div class="modal fade" id="addEleveModal" tabindex="-1" role="dialog" aria-labelledby="addEleveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form th:action="@{/direction/eleves/save/}+${classe.id}" autocomplete="off" method="post" th:object="${student}" class="form-horizontal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Nouvel eleve</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body card-block">
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-prenom" class=" form-control-label">Prenom</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prenom" class="form-control">
+                                <small class="form-text text-muted">Prenom de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-nom" class=" form-control-label">Nom</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
+                                <small class="form-text text-muted">Nom de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-postnom" class=" form-control-label">Postnom</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-postnom" th:field="*{postnom}" placeholder="Post nom" class="form-control">
+                                <small class="form-text text-muted">Postnom de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-nomCompletTuteur" class=" form-control-label">nom complet du parent</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-nomCompletTuteur" th:field="*{nomCompletTuteur}" placeholder="Nom complet" class="form-control">
+                                <small class="form-text text-muted">Nom complet de telephone</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-telephone" class=" form-control-label">Telephone du parent</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-telephone" th:field="*{telephoneTuteur}" placeholder="Telephone" class="form-control">
+                                <small class="form-text text-muted">Numero de telephone</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-email" class=" form-control-label">E-mail du parent ou tuteur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="email" id="text-email" th:field="*{emailTuteur}" placeholder="E-mail" class="form-control">
+                                <small class="form-text text-muted">Adresse email</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-whatsapp" class=" form-control-label">Whatsapp du parent ou tuteur</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-whatsapp" th:field="*{whatsappTuteur}" placeholder="Whatsapp" class="form-control">
+                                <small class="form-text text-muted">Numero de telephone whatsapp</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-age" class=" form-control-label">Age</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="number" id="text-age" th:field="*{age}" placeholder="age" class="form-control">
+                                <small class="form-text text-muted">Age de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-localisation" class=" form-control-label">Localisation</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="text" id="text-localisation" th:field="*{localisation}" placeholder="Localisation" class="form-control">
+                                <small class="form-text text-muted">Localisation de l'eleve</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-autre" class=" form-control-label">Localisation</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <textarea th:field="*{autreInformation}" id="text-autre" class="form-control" rows="5" placeholder="Autre information"></textarea>
+                                <small class="form-text text-muted">Autre information sur l'eleve</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                        <button type="submit" class="btn btn-primary">Creer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end modal medium -->
 
 </div>
 

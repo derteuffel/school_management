@@ -10,5 +10,6 @@ public enum ERole {
     ROLE_DIRECTEUR,
     ROLE_ENSEIGNANT,
     ROLE_ADMIN,
+    ROLE_ENFANT,
     ROLE_ENCADREUR
 }

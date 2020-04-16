@@ -70,7 +70,9 @@
                         <div class="page-content">
 
                             <button type="button" data-toggle="modal" data-target="#addHebdoModal" class="btn btn-primary">Nouvelle semaine&nbsp;<i class="zmdi zmdi-plus"></i></button>
+                            <hr>
                             <h2>Ensemble des semaines de travail &nbsp;&nbsp;<span th:text="${classe.niveau}"></span></h2>
+                            <hr>
                             <div class="row"  >
                                 <div class="col-lg-12 my-2" th:each="hebdo : ${lists}">
                                         <div class="alert alert-light text-center" >
@@ -81,14 +83,15 @@
                                         </div>
                                 </div>
                             </div>
-                            <!-- COPYRIGHT-->
-                            <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
-                            <!-- END COPYRIGHT-->
                         </div>
                         <!-- END PAGE CONTENT-->
                     </div>
                 </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>

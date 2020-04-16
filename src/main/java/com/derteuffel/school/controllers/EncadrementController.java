@@ -26,9 +26,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by user on 02/04/2020.
@@ -81,7 +79,7 @@ public class EncadrementController {
 
     @PostMapping("/registration")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
-                                            BindingResult result, RedirectAttributes redirectAttributes, Model model, String type,String cours_enseignant){
+                                            BindingResult result, RedirectAttributes redirectAttributes, Model model, String type,String cours_reference){
 
         Compte existAccount = compteService.findByUsername(compteDto.getUsername());
         if (existAccount != null){
@@ -98,17 +96,18 @@ public class EncadrementController {
         if (type.equals("ENCADREUR")){
             Encadreur encadreur = new Encadreur();
             encadreur.setAvatar("/images/icon/avatar-01.jpg");
-            encadreur.setCour_enseigner(cours_enseignant);
+            encadreur.setCour_enseigner(cours_reference);
             encadreur.setEmail(compteDto.getEmail());
             encadreur.setName(compteDto.getUsername());
             encadreurRepository.save(encadreur);
             compteService.saveEncadreur(compteDto,"/images/profile.jpeg",encadreur);
         }else {
-            Parent parent = new Parent();
-            parent.setEmail(compteDto.getEmail());
-            parent.setNomComplet(compteDto.getUsername());
-            parentRepository.save(parent);
-            compteService.saveParent(compteDto,"/images/profile.jpeg",parent);
+            Enfant enfant = new Enfant();
+            enfant.setEmail(compteDto.getEmail());
+            enfant.setName(compteDto.getUsername());
+            enfant.setMatieres(new ArrayList<>(Arrays.asList(cours_reference)));
+            enfantRepository.save(enfant);
+            compteService.saveEnfant(compteDto,"/images/profile.jpeg",enfant);
         }
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";
