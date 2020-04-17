@@ -80,6 +80,28 @@ public class CompteSeviceImpl implements CompteService{
     }
 
     @Override
+    public Compte saveRoot(CompteRegistrationDto compteRegistrationDto, String s) {
+        Compte compte = new Compte();
+        compte.setEmail(compteRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setAvatar(s);
+
+        Role role = new Role();
+
+        Role existRole = roleRepository.findByName(ERole.ROLE_ROOT.toString());
+        if (existRole != null){
+            compte.setRoles(Arrays.asList(existRole));
+        }else {
+            role.setName(ERole.ROLE_ROOT.toString());
+            roleRepository.save(role);
+            compte.setRoles(Arrays.asList(role));
+        }
+        compteRepository.save(compte);
+        return compte;
+    }
+
+    @Override
     public Compte saveEnseignant(CompteRegistrationDto compteRegistrationDto, String s, Long id, Enseignant enseignant) {
         Compte compte = new Compte();
 

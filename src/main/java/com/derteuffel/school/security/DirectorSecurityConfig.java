@@ -70,6 +70,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/static/**",
                         "/ecole/connexion",
                         "/direction/registration",
+                        "/direction/registration/**",
                         "/password/**",
                         "/ecole/save"
                         );

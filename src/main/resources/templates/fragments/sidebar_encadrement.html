@@ -9,11 +9,11 @@
                     </a>
                 </li>
 
-                <li th:if="${role.name}='ROLE_ROOT' or ${role.name}='ROLE_COORDINATOR'">
+                <li th:if="${role.name}=='ROLE_ROOT'">
                     <a th:href="@{/encadrements/encadreurs}">
                         <i class="fas fa-users"></i>Encadreurs</a>
                 </li>
-                <li th:if="${role.name}='ROLE_ROOT' or ${role.name}='ROLE_COORDINATOR'">
+                <li th:if="${role.name}=='ROLE_ROOT'">
                     <a th:href="@{/encadrements/eleves}">
                         <i class="fas fa-user"></i>Eleves</a>
                 </li>

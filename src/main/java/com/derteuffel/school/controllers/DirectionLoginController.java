@@ -81,6 +81,11 @@ public class DirectionLoginController {
         return "direction/registration";
     }
 
+    @GetMapping("/registration/root")
+    public String registrationRoot(Model model) {
+        return "direction/rootRegistration";
+    }
+
 
     @PostMapping("/registration")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
@@ -117,6 +122,27 @@ public class DirectionLoginController {
 
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/direction/login";
+    }
+
+    @PostMapping("/registration/root")
+    public String registrationRoot(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
+                                            BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+
+        Compte existAccount = compteService.findByUsername(compteDto.getUsername());
+        if (existAccount != null) {
+            result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            redirectAttributes.addFlashAttribute("error", "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+        }
+
+        if (result.hasErrors()) {
+            return "redirect:/direction/registration/root";
+        }
+
+
+            compteService.saveRoot(compteDto, "/images/profile.jpeg");
+
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
+        return "redirect:/";
     }
 
     @GetMapping("/home")
