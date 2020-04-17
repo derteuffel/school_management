@@ -34,6 +34,7 @@ public class Enfant implements Serializable {
     private String heureFin;
     private  int nbreJourParSemaine;
     private  int nbreMois;
+    private String pays;
     private ArrayList<String> matieres = new ArrayList<>();
 
 }

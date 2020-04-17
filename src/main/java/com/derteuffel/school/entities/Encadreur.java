@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Encadreur extends Enseignant {
 
-    private Double salaire;
+    private String salaire;
     private String cv;
     private String heureDebut;
     private String heureFin;
@@ -27,4 +27,5 @@ public class Encadreur extends Enseignant {
     private  int nbreMois;
     private String motivation;
     private String localisation;
+    private String pays;
 }

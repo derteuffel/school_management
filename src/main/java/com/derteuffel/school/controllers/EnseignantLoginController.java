@@ -155,6 +155,18 @@ public class EnseignantLoginController {
         return "enseignant/elevesP";
     }
 
+    @GetMapping("/bibliotheque/lists")
+    public String allBibliotheques( Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName() + "  " + compte.getEnseignant().getPrenom());
+
+        model.addAttribute("classe",salle);
+
+        return "enseignant/bibliotheques";
+    }
+
 
 
     @GetMapping("/classe/lists")

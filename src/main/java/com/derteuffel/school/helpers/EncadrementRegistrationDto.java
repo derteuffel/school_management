@@ -36,6 +36,7 @@ public class EncadrementRegistrationDto {
     private String niveau;
     private String localisation;
     private int age;
+    private String pays;
     private  int nbreMois;
     private String salaire;
     private String whatsapp;

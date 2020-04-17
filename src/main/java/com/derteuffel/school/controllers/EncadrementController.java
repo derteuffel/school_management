@@ -118,8 +118,9 @@ public class EncadrementController {
             encadreur.setMotivation(encadrementRegistrationDto.getMotivation());
             encadreur.setNbreJourParSemaine(encadrementRegistrationDto.getNbreJourParSemanie());
             encadreur.setNbreMois(encadrementRegistrationDto.getNbreMois());
-            encadreur.setSalaire(Double.parseDouble(encadrementRegistrationDto.getSalaire()));
+            encadreur.setSalaire(encadrementRegistrationDto.getSalaire()+" $");
             encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
+            encadreur.setPays(encadrementRegistrationDto.getPays());
             if (!(file.isEmpty())) {
                 try {
                     // Get the file and save it somewhere
@@ -194,6 +195,7 @@ public class EncadrementController {
             enfant.setHeureFin(encadrementRegistrationDto.getHeureFin());
             enfant.setNbreJourParSemaine(encadrementRegistrationDto.getNbreJourParSemanie());
             enfant.setNbreMois(encadrementRegistrationDto.getNbreMois());
+            enfant.setPays(encadrementRegistrationDto.getPays());
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
@@ -210,6 +212,15 @@ public class EncadrementController {
         request.getSession().setAttribute("compte",compte);
         model.addAttribute("course",new Cours());
         return "encadrements/courses";
+    }
+
+    @GetMapping("/bibliotheque/lists")
+    public String bibliotheques( Model model, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        request.getSession().setAttribute("compte",compte);
+        return "encadrements/bibliotheques";
     }
 
     @GetMapping("/cours/update/{id}")

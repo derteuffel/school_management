@@ -35,8 +35,8 @@
                         <i class="fas fa-users"></i>Plannings et presences</a>
                 </li>
                 <li th:if="${classe}!=null">
-                    <a th:href="@{/parent/classe/detail/}+${classe.id}">
-                        <i class="fas fa-comments"></i>Messagerie</a>
+                    <a th:href="@{/parent/bibliotheque/lists/}+${classe.id}">
+                        <i class="fas fa-bookmark-o"></i>Bibliotheques</a>
                 </li>
 
             </ul>

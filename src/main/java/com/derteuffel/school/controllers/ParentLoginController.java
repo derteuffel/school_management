@@ -171,6 +171,17 @@ public class ParentLoginController {
         return "parent/courses";
     }
 
+    @GetMapping("/bibliotheque/lists/{id}/{ecoleId}")
+    public String bibliotheques(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
+        Ecole ecole = ecoleRepository.getOne(ecoleId);
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Salle salle = salleRepository.getOne(id);
+
+        model.addAttribute("ecole",ecole);
+        model.addAttribute("classe",salle);
+        return "parent/bibliotheques";
+    }
+
     @GetMapping("/devoirs/lists/{id}/{ecoleId}")
     public String devoirs(@PathVariable Long id, @PathVariable Long ecoleId, Model model, HttpServletRequest request){
         Ecole ecole = ecoleRepository.getOne(ecoleId);

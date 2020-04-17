@@ -254,6 +254,16 @@ public class DirectionLoginController {
         return "direction/enseignants/lists";
     }
 
+    @GetMapping("/bibliotheque/lists")
+    public String lists(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal.getName());
+        Compte compte = compteService.findByUsername(principal.getName());
+
+
+        return "direction/bibliotheques";
+    }
+
     @GetMapping("/parent/lists")
     public String parentLists(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();

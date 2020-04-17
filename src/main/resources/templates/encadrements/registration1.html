@@ -51,7 +51,7 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <form th:action="@{/encadrements/registration1}" th:object="${compte}" method="post" class="form-horizontal" >
+                        <form th:action="@{/encadrements/registration1}" th:object="${compte}" method="post" autocomplete="off" class="form-horizontal" >
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addEnfantModalLabel">Nouvel Eleve</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,6 +106,10 @@
                                 <div class="form-group" >
                                     <label class="control-label">Votre Localisation</label>
                                     <input class="au-input au-input--full" type="text" th:field="*{localisation}"  placeholder="Localisation">
+                                </div>
+                                <div class="form-group autocomplete" >
+                                    <label class="control-label">Votre Pays</label>
+                                    <input class="au-input au-input--full" type="text" id="text-country" th:field="*{pays}"  placeholder="Votre pays">
                                 </div>
 
                                 <div class="form-group" >
@@ -212,6 +216,7 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/countries.js}"></script>
 
 </body>
 
