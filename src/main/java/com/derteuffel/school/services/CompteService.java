@@ -2,6 +2,7 @@ package com.derteuffel.school.services;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
+import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -14,6 +15,6 @@ public interface CompteService extends UserDetailsService{
     Compte save(CompteRegistrationDto compteRegistrationDto, String s, Long id);
     Compte saveEnseignant(CompteRegistrationDto compteRegistrationDto, String s, Long id, Enseignant enseignant);
     Compte saveParent(CompteRegistrationDto compteRegistrationDto, String s, Parent parent);
-    Compte saveEnfant(CompteRegistrationDto compteRegistrationDto, String s, Enfant enfant);
-    Compte saveEncadreur(CompteRegistrationDto compteRegistrationDto, String s, Encadreur encadreur);
+    Compte saveEnfant(EncadrementRegistrationDto encadrementRegistrationDto, String s, Enfant enfant);
+    Compte saveEncadreur(EncadrementRegistrationDto encadrementRegistrationDto, String s, Encadreur encadreur);
 }

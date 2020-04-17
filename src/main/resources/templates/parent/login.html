@@ -45,17 +45,20 @@
                         <a th:href="@{/}">
                             <i class="fa fa-long-arrow-left"></i> &nbsp;Retourner à la page d’accueil
                         </a><br>
+                        <h2>ESPACE PARENT</h2>
                         <a href="#">
                             <img th:src="@{/images/guardian.png}" alt="CoolAdmin">
                         </a>
                     </div>
                     <div class="login-form">
-                        <p th:text="${message}"></p>
-                        <hr>
                         <form th:action="@{/parent/login/process}"   method="post">
                             <div th:if="${success}" class="alert alert-success">
                                 <span th:text="${success}"></span>
                             </div>
+                            <div th:if="${message}" class="alert alert-success">
+                                <span th:text="${message}"></span>
+                            </div>
+                            <hr>
                             <div th:if="${param.error}">
                                 <div class="alert alert-danger">Invalid username or
                                     password.</div>

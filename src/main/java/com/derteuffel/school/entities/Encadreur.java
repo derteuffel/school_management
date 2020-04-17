@@ -18,4 +18,13 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "id")
 @OnDelete(action= OnDeleteAction.NO_ACTION)
 public class Encadreur extends Enseignant {
+
+    private Double salaire;
+    private String cv;
+    private String heureDebut;
+    private String heureFin;
+    private  int nbreJourParSemaine;
+    private  int nbreMois;
+    private String motivation;
+    private String localisation;
 }

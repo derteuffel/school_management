@@ -3,6 +3,7 @@ package com.derteuffel.school.services;
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
+import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.CompteRepository;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.repositories.RoleRepository;
@@ -90,13 +91,13 @@ public class CompteSeviceImpl implements CompteService{
         compte.setEcole(ecole);
         compte.setEnseignant(enseignant);
 
-        Role role = new Role();
-
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENSEIGNANT.toString());
         if (existRole != null){
             compte.setRoles(Arrays.asList(existRole));
         }else {
+
+            Role role = new Role();
             role.setName(ERole.ROLE_ENSEIGNANT.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));
@@ -114,13 +115,12 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setParent(parent);
-        Role role = new Role();
-
 
         Role existRole = roleRepository.findByName(ERole.ROLE_PARENT.toString());
         if (existRole != null){
             compte.setRoles(Arrays.asList(existRole));
         }else {
+            Role role = new Role();
             role.setName(ERole.ROLE_PARENT.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));
@@ -129,21 +129,20 @@ public class CompteSeviceImpl implements CompteService{
         return compte;
     }
     @Override
-    public Compte saveEnfant(CompteRegistrationDto compteRegistrationDto, String s, Enfant enfant) {
+    public Compte saveEnfant(EncadrementRegistrationDto encadrementRegistrationDto, String s, Enfant enfant) {
         Compte compte = new Compte();
 
-        compte.setEmail(compteRegistrationDto.getEmail());
-        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
-        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setEmail(encadrementRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(encadrementRegistrationDto.getPassword()));
+        compte.setUsername(encadrementRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEnfant(enfant);
-        Role role = new Role();
-
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
         if (existRole != null){
             compte.setRoles(Arrays.asList(existRole));
         }else {
+            Role role = new Role();
             role.setName(ERole.ROLE_ENFANT.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));
@@ -153,21 +152,20 @@ public class CompteSeviceImpl implements CompteService{
     }
 
     @Override
-    public Compte saveEncadreur(CompteRegistrationDto compteRegistrationDto, String s, Encadreur encadreur) {
+    public Compte saveEncadreur(EncadrementRegistrationDto encadrementRegistrationDto, String s, Encadreur encadreur) {
         Compte compte = new Compte();
 
-        compte.setEmail(compteRegistrationDto.getEmail());
-        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
-        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setEmail(encadrementRegistrationDto.getEmail());
+        compte.setPassword(passwordEncoder.encode(encadrementRegistrationDto.getPassword()));
+        compte.setUsername(encadrementRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEnseignant(encadreur);
-        Role role = new Role();
-
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
         if (existRole != null){
             compte.setRoles(Arrays.asList(existRole));
         }else {
+            Role role = new Role();
             role.setName(ERole.ROLE_ENCADREUR.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));

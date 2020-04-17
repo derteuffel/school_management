@@ -64,7 +64,9 @@ public class EnseignantLoginController {
     private  String fileStorage;
 
     @GetMapping("/login")
-    public String director(){
+    public String director(Model model){
+
+        model.addAttribute("message","Bien vouloir contacter le responsable de votre ecole pour obtenir les informations de connexion a votre compte");
         return "enseignant/login";
     }
 

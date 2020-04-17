@@ -5,6 +5,7 @@ import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
+import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,47 +69,133 @@ public class EncadrementController {
         return "redirect:/encadrements/login";
     }
     @ModelAttribute("compte")
-    public CompteRegistrationDto compteRegistrationDto(){
-        return new CompteRegistrationDto();
+    public EncadrementRegistrationDto encadrementRegistrationDto(){
+        return new EncadrementRegistrationDto();
     }
 
-    @GetMapping("/registration")
+
+    @GetMapping("/registration2")
     public String registrationForm(Model model){
+        ArrayList<Integer> amounts = new ArrayList<>();
+        for (int i = 10;i<500;i+=10){
+            amounts.add(i);
+        }
+        model.addAttribute("amounts",amounts);
+        return "encadrements/registration2";
+    }
+
+    @GetMapping("/registration1")
+    public String registration1(Model model){
+        return "encadrements/registration1";
+    }
+    @GetMapping("/registration")
+    public String registration(Model model){
         return "encadrements/registration";
     }
 
-    @PostMapping("/registration")
-    public String registrationDirectionSave(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
-                                            BindingResult result, RedirectAttributes redirectAttributes, Model model, String type,String cours_reference){
+    @PostMapping("/registration2")
+    public String registrationDirectionSave(@ModelAttribute("compte") @Valid EncadrementRegistrationDto encadrementRegistrationDto,
+                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file ){
 
-        Compte existAccount = compteService.findByUsername(compteDto.getUsername());
+        Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
             result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
-            model.addAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            redirectAttributes.addFlashAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
         }
 
         if (result.hasErrors()) {
-            return "encadrements/registration";
+            return "redirect:/encadrements/registration2";
         }
 
-
-
-        if (type.equals("ENCADREUR")){
             Encadreur encadreur = new Encadreur();
             encadreur.setAvatar("/images/icon/avatar-01.jpg");
-            encadreur.setCour_enseigner(cours_reference);
-            encadreur.setEmail(compteDto.getEmail());
-            encadreur.setName(compteDto.getUsername());
+            encadreur.setTelephone(encadrementRegistrationDto.getTelephone());
+            encadreur.setName(encadrementRegistrationDto.getName());
+            encadreur.setEmail(encadrementRegistrationDto.getEmail());
+            encadreur.setCour_enseigner(encadrementRegistrationDto.getCours_reference());
+            encadreur.setHeureDebut(encadrementRegistrationDto.getHeureDebut());
+            encadreur.setHeureFin(encadrementRegistrationDto.getHeureFin());
+            encadreur.setMotivation(encadrementRegistrationDto.getMotivation());
+            encadreur.setNbreJourParSemaine(encadrementRegistrationDto.getNbreJourParSemanie());
+            encadreur.setNbreMois(encadrementRegistrationDto.getNbreMois());
+            encadreur.setSalaire(Double.parseDouble(encadrementRegistrationDto.getSalaire()));
+            encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
+            if (!(file.isEmpty())) {
+                try {
+                    // Get the file and save it somewhere
+                    byte[] bytes = file.getBytes();
+                    Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                    Files.write(path, bytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                encadreur.setAvatar("/downloadFile/" + file.getOriginalFilename());
+            }
+
             encadreurRepository.save(encadreur);
-            compteService.saveEncadreur(compteDto,"/images/profile.jpeg",encadreur);
-        }else {
-            Enfant enfant = new Enfant();
-            enfant.setEmail(compteDto.getEmail());
-            enfant.setName(compteDto.getUsername());
-            enfant.setMatieres(new ArrayList<>(Arrays.asList(cours_reference)));
-            enfantRepository.save(enfant);
-            compteService.saveEnfant(compteDto,"/images/profile.jpeg",enfant);
+            compteService.saveEncadreur(encadrementRegistrationDto,"/images/profile.jpeg",encadreur);
+
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
+        return "redirect:/encadrements/login";
+    }
+
+    @GetMapping("/encadreurs")
+    public String encadreurs(Model model){
+        Collection<Encadreur> encadreurs = encadreurRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        return "encadrements/encadreurs";
+    }
+
+    @GetMapping("/encadreur/delete/")
+    public String deleteEncadreur(@PathVariable Long id){
+        encadreurRepository.deleteById(id);
+        return "redirect:/encadrements/encadreurs";
+    }
+
+    @GetMapping("/eleves")
+    public String eleves(Model model){
+        Collection<Enfant> enfants = enfantRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",enfants);
+        return "encadrements/enfants";
+    }
+
+    @GetMapping("/eleves/delete/")
+    public String deleteEnfants(@PathVariable Long id){
+        encadreurRepository.deleteById(id);
+        return "redirect:/encadrements/eleves";
+    }
+
+    @PostMapping("/registration1")
+    public String registrationSave(@ModelAttribute("compte") @Valid EncadrementRegistrationDto encadrementRegistrationDto,
+                                            BindingResult result, RedirectAttributes redirectAttributes ){
+
+        Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
+        if (existAccount != null){
+            result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            redirectAttributes.addFlashAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
         }
+
+        if (result.hasErrors()) {
+            return "redirect:/encadrements/registration1";
+        }
+
+
+
+            Enfant enfant = new Enfant();
+            enfant.setMatieres(new ArrayList<>(Arrays.asList(encadrementRegistrationDto.getCours_reference())));
+            enfant.setName(encadrementRegistrationDto.getName());
+            enfant.setEmail(encadrementRegistrationDto.getEmail());
+            enfant.setModePaiement(encadrementRegistrationDto.getModePaiement());
+            enfant.setMotivation(encadrementRegistrationDto.getMotivation());
+            enfant.setNiveau(encadrementRegistrationDto.getNiveau());
+            enfant.setLocalisation(encadrementRegistrationDto.getLocalisation());
+            enfant.setAge(encadrementRegistrationDto.getAge());
+            enfant.setHeureDebut(encadrementRegistrationDto.getHeureDebut());
+            enfant.setHeureFin(encadrementRegistrationDto.getHeureFin());
+            enfant.setNbreJourParSemaine(encadrementRegistrationDto.getNbreJourParSemanie());
+            enfant.setNbreMois(encadrementRegistrationDto.getNbreMois());
+            enfantRepository.save(enfant);
+            compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";
     }

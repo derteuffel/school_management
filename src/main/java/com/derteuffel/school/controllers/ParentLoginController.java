@@ -67,7 +67,7 @@ public class ParentLoginController {
     @GetMapping("/login")
     public String director(Model model){
 
-        model.addAttribute("message","Demandez les informations de connexion à l'école, enseignants ou directeurs");
+        model.addAttribute("message","Bien vouloir contacter le responsable de votre ecole pour obtenir les informations de connexion a votre compte");
         return "parent/login";
     }
 

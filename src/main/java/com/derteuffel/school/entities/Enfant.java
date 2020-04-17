@@ -25,6 +25,15 @@ public class Enfant implements Serializable {
     private String name;
     private String niveau;
     private String email;
+    private String modePaiement;
+    private String motivation;
+    private String telephone;
+    private String localisation;
+    private int age;
+    private String heureDebut;
+    private String heureFin;
+    private  int nbreJourParSemaine;
+    private  int nbreMois;
     private ArrayList<String> matieres = new ArrayList<>();
 
 }
