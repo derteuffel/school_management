@@ -130,7 +130,7 @@ public class EncadrementController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                encadreur.setAvatar("/downloadFile/" + file.getOriginalFilename());
+                encadreur.setCv("/downloadFile/" + file.getOriginalFilename());
             }
 
             encadreurRepository.save(encadreur);
