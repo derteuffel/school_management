@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by user on 02/04/2020.
@@ -36,5 +37,8 @@ public class Enfant implements Serializable {
     private  int nbreMois;
     private String pays;
     private ArrayList<String> matieres = new ArrayList<>();
+
+    @ManyToMany
+    Collection<Encadreur> encadreurs;
 
 }

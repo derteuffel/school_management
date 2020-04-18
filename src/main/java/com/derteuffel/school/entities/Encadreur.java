@@ -4,9 +4,8 @@ import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by user on 02/04/2020.
@@ -28,4 +27,13 @@ public class Encadreur extends Enseignant {
     private String motivation;
     private String localisation;
     private String pays;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "encadreurs_enfants",
+            joinColumns = @JoinColumn(
+                    name = "encadreur_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "enfant_id", referencedColumnName = "id"))
+    private Collection<Enfant> enfants;
 }

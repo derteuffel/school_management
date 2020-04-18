@@ -5,6 +5,7 @@ import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
+import com.derteuffel.school.helpers.EleveEncadreurHelper;
 import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
@@ -48,6 +49,9 @@ public class EncadrementController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private CompteRepository compteRepository;
 
     @Autowired
     private ParentRepository parentRepository;
@@ -144,7 +148,7 @@ public class EncadrementController {
     public String encadreurs(Model model){
         Collection<Encadreur> encadreurs = encadreurRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("lists",encadreurs);
-        return "encadrements/encadreurs";
+        return "encadrements/enseignants";
     }
 
     @GetMapping("/encadreur/delete/")
@@ -158,6 +162,43 @@ public class EncadrementController {
         Collection<Enfant> enfants = enfantRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("lists",enfants);
         return "encadrements/enfants";
+    }
+
+    @GetMapping("/enseignant/eleves/{id}")
+    public String encadreurEleves(Model model, @PathVariable Long id){
+        Encadreur encadreur = encadreurRepository.getOne(id);
+        Collection<Enfant> enfantCollection = enfantRepository.findAll();
+        Collection<Enfant> eleves = new ArrayList<>();
+        for (Enfant enfant : enfantCollection){
+            if (enfant.getMatieres().contains(encadreur.getCour_enseigner())){
+                eleves.add(enfant);
+            }
+        }
+        Collection<Enfant> enfants = encadreur.getEnfants();
+        System.out.println(enfants.size());
+        model.addAttribute("eleves",eleves);
+        model.addAttribute("helper",new EleveEncadreurHelper());
+        model.addAttribute("encadreur",encadreur);
+        model.addAttribute("lists",enfants);
+        return "encadrements/enseignant/enfants";
+    }
+
+
+    @PostMapping("/enseignant/eleves/save/{id}")
+    public String EncadreurAddEleve(EleveEncadreurHelper eleveEncadreurHelper, @PathVariable Long id){
+
+        System.out.println(eleveEncadreurHelper.getStudents());
+        Encadreur encadreur = encadreurRepository.getOne(id);
+        for (Long student : eleveEncadreurHelper.getStudents()){
+            Enfant enfant = enfantRepository.getOne(student);
+            if (!(encadreur.getEnfants().contains(enfant))) {
+                encadreur.getEnfants().add(enfant);
+            }
+            System.out.println(encadreur.getEnfants().size());
+            encadreurRepository.save(encadreur);
+        }
+
+        return "redirect:/encadrements/enseignant/eleves/"+encadreur.getId();
     }
 
     @GetMapping("/eleves/delete/")
@@ -207,8 +248,22 @@ public class EncadrementController {
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
+        Collection<Compte> alls = compteRepository.findAll();
+        Collection<Cours> allsCours = new ArrayList<>();
+        for (Compte compte1 : alls){
+            if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
+                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.COURS.toString()));
+            }
+        }
+        Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
         Collection<Cours> cours = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.COURS.toString());
-        model.addAttribute("lists",cours);
+        if (compte.getRoles().contains(role)){
+            model.addAttribute("lists",allsCours);
+        }else {
+            model.addAttribute("lists", cours);
+        }
+        System.out.println(cours);
+        System.out.println(allsCours);
         request.getSession().setAttribute("compte",compte);
         model.addAttribute("course",new Cours());
         return "encadrements/courses";
@@ -264,7 +319,21 @@ public class EncadrementController {
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        Collection<Cours> devoirs = coursRepository.findAllByCompte_IdAndType(compte.getId(), ECours.DEVOIRS.toString());
+        Collection<Compte> alls = compteRepository.findAll();
+        Collection<Cours> allsCours = new ArrayList<>();
+        for (Compte compte1 : alls){
+            if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
+                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.DEVOIRS.toString()));
+            }
+        }
+        Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
+        Collection<Cours> devoirs = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString());
+        if (compte.getRoles().contains(role)){
+            model.addAttribute("lists",allsCours);
+        }else {
+            model.addAttribute("lists", devoirs);
+        }
+        System.out.println(allsCours);
         model.addAttribute("lists",devoirs);
         model.addAttribute("devoir",new Cours());
         return "encadrements/devoirs";
@@ -352,7 +421,22 @@ public class EncadrementController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Cours> reponses = coursRepository.findAllByCompte_IdAndType(compte.getId(), ECours.REPONSES.toString());
+        Collection<Compte> alls = compteRepository.findAll();
+        Collection<Cours> allsCours = new ArrayList<>();
+        for (Compte compte1 : alls){
+            if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
+                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.REPONSES.toString()));
+            }
+        }
+        Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
+        Collection<Cours> reponses = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString());
+        if (compte.getRoles().contains(role)){
+            model.addAttribute("lists",allsCours);
+        }else {
+            model.addAttribute("lists", reponses);
+        }
+        System.out.println(reponses);
+        System.out.println(allsCours);
         for (Cours cours : reponses){
             if (cours.getStatus().equals(false)){
                 cours.setStatus(true);
@@ -372,7 +456,20 @@ public class EncadrementController {
     public String examens( Model model, HttpServletRequest request){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
+        Collection<Compte> alls = compteRepository.findAll();
+        Collection<Examen> allsCours = new ArrayList<>();
+        for (Compte compte1 : alls){
+            if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
+                allsCours.addAll(examenRepository.findAllByCompte_Id(compte1.getId()));
+            }
+        }
+        Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
         Collection<Examen> examens = examenRepository.findAllByCompte_Id(compte.getId());
+        if (compte.getRoles().contains(role)){
+            model.addAttribute("lists",allsCours);
+        }else {
+            model.addAttribute("lists", examens);
+        }
         model.addAttribute("lists",examens);
 
         model.addAttribute("examen",new Examen());
