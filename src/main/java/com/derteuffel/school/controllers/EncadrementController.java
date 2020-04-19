@@ -183,6 +183,16 @@ public class EncadrementController {
         return "encadrements/enseignant/enfants";
     }
 
+    @GetMapping("/eleves/enseignant/{id}")
+    public String elevesEncadreur(Model model, @PathVariable Long id){
+        Enfant enfant =enfantRepository.getOne(id);
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
+        System.out.println(encadreurs.size());
+        model.addAttribute("enfant",enfant);
+        model.addAttribute("lists",encadreurs);
+        return "encadrements/enfant/enseignants";
+    }
+
 
     @PostMapping("/enseignant/eleves/save/{id}")
     public String EncadreurAddEleve(EleveEncadreurHelper eleveEncadreurHelper, @PathVariable Long id){
