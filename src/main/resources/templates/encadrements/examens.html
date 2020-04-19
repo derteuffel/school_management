@@ -84,7 +84,8 @@
                                             <br>
                                             <p><strong>Classe de  : </strong><span class="text-primary underline" th:text="${examen?.salle}"></span></p>
                                             <br>
-                                            <a th:href="${examen.fichier}">Telecharger le document&nbsp;<i class="fa fa-file"></i></a>
+                                            <a th:if="${examen.fichier}" th:href="${examen.fichier}">Telecharger le document&nbsp;<i class="fa fa-file"></i></a>
+                                            <span th:unless="${examen.fichier}" >Aucun fichier associe</span>
                                             <a th:if="${role.name} == 'ROLE_ENCADREUR'" th:href="@{/encadrements/examen/update/}+${examen.id}" class="btn btn-primary" >Editer</a>
                                     </div>
                                 </div>

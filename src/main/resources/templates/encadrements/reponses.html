@@ -120,7 +120,8 @@
                                                                 <label  class=" form-control-label">Fichier join</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <a th:href="${reponse?.fichier}"><small class="form-text text-muted" >Voir le fichier</small></a>
+                                                                <a th:if="${reponse?.fichier}" th:href="${reponse?.fichier}"><small class="form-text text-muted" >Voir le fichier</small></a>
+                                                                <a th:unless="${reponse?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
                                                             </div>
                                                         </div>
                                                     </div>
