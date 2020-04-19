@@ -284,11 +284,19 @@ public class EncadrementController {
         for (Compte compte1 : alls){
             if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.COURS.toString()));
+            }else if (compte1.getRoles().contains(ERole.ROLE_ENFANT.toString())){
+
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte1.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                for (Encadreur encadreur : encadreurs){
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getId(),ECours.COURS.toString()));
+                }
             }
+
         }
         Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
+        Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
         Collection<Cours> cours = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.COURS.toString());
-        if (compte.getRoles().contains(role)){
+        if (compte.getRoles().contains(role)||compte.getRoles().contains(role1)){
             model.addAttribute("lists",allsCours);
         }else {
             model.addAttribute("lists", cours);
@@ -355,11 +363,19 @@ public class EncadrementController {
         for (Compte compte1 : alls){
             if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.DEVOIRS.toString()));
+            }else if (compte1.getRoles().contains(ERole.ROLE_ENFANT.toString())){
+
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte1.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                for (Encadreur encadreur : encadreurs){
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getId(),ECours.DEVOIRS.toString()));
+                }
             }
+
         }
         Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
+        Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
         Collection<Cours> devoirs = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString());
-        if (compte.getRoles().contains(role)){
+        if (compte.getRoles().contains(role)||compte.getRoles().contains(role1)){
             model.addAttribute("lists",allsCours);
         }else {
             model.addAttribute("lists", devoirs);
@@ -456,25 +472,32 @@ public class EncadrementController {
         Collection<Cours> allsCours = new ArrayList<>();
         for (Compte compte1 : alls){
             if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
-                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.REPONSES.toString()));
+                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte1.getId(),ECours.COURS.toString()));
+            }else if (compte1.getRoles().contains(ERole.ROLE_ENFANT.toString())){
+
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte1.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                for (Encadreur encadreur : encadreurs){
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getId(),ECours.COURS.toString()));
+                }
             }
+
         }
+
         Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
-        Collection<Cours> reponses = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString());
-        if (compte.getRoles().contains(role)){
+        Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
+        Collection<Cours> reponses = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.COURS.toString());
+        if (compte.getRoles().contains(role)||compte.getRoles().contains(role1)){
             model.addAttribute("lists",allsCours);
         }else {
+            for (Cours cours : reponses){
+                if (cours.getStatus().equals(false)){
+                    cours.setStatus(true);
+                    coursRepository.save(cours);
+                }
+            }
             model.addAttribute("lists", reponses);
         }
-        System.out.println(reponses);
-        System.out.println(allsCours);
-        for (Cours cours : reponses){
-            if (cours.getStatus().equals(false)){
-                cours.setStatus(true);
-                coursRepository.save(cours);
-            }
-        }
-        model.addAttribute("lists",reponses);
+
 
         return "encadrements/reponses";
     }
@@ -492,16 +515,24 @@ public class EncadrementController {
         for (Compte compte1 : alls){
             if (compte1.getRoles().contains(ERole.ROLE_ENCADREUR.toString())){
                 allsCours.addAll(examenRepository.findAllByCompte_Id(compte1.getId()));
+            }else if (compte1.getRoles().contains(ERole.ROLE_ENFANT.toString())){
+
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte1.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                for (Encadreur encadreur : encadreurs){
+                    allsCours.addAll(examenRepository.findAllByCompte_Id(encadreur.getId()));
+                }
             }
+
         }
         Role role = roleRepository.findByName(ERole.ROLE_ROOT.toString());
-        Collection<Examen> examens = examenRepository.findAllByCompte_Id(compte.getId());
-        if (compte.getRoles().contains(role)){
+        Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
+        Collection<Cours> examens = coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString());
+        if (compte.getRoles().contains(role)||compte.getRoles().contains(role1)){
             model.addAttribute("lists",allsCours);
         }else {
-            model.addAttribute("lists", examens);
+            model.addAttribute("lists",examens);
         }
-        model.addAttribute("lists",examens);
+
 
         model.addAttribute("examen",new Examen());
         return "encadrements/examens";
