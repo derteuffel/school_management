@@ -150,6 +150,16 @@ public class EncadrementController {
         model.addAttribute("lists",encadreurs);
         return "encadrements/enseignants";
     }
+    @GetMapping("/encadreurs/lists")
+    public String encadreur(Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Enfant enfant = compte.getEnfant();
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        return "encadrements/enseignants";
+    }
+
 
     @GetMapping("/encadreur/delete/")
     public String deleteEncadreur(@PathVariable Long id){
@@ -160,6 +170,17 @@ public class EncadrementController {
     @GetMapping("/eleves")
     public String eleves(Model model){
         Collection<Enfant> enfants = enfantRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",enfants);
+        return "encadrements/enfants";
+    }
+
+    @GetMapping("/eleves/lists")
+    public String elevesEncadrer(Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+
+        Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+        Collection<Enfant> enfants = encadreur.getEnfants();
         model.addAttribute("lists",enfants);
         return "encadrements/enfants";
     }

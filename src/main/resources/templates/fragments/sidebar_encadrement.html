@@ -41,6 +41,14 @@
                     <a th:href="@{/encadrements/bibliotheque/lists}">
                         <i class="fas fa-bookmark-o"></i>Bibliotheques</a>
                 </li>
+                <li th:if="${role.name}=='ROLE_ENCADREUR'" >
+                    <a th:href="@{/encadrements/eleves/lists}">
+                        <i class="fas fa-users"></i>Eleve encadres</a>
+                </li>
+                <li th:if="${role.name}=='ROLE_ENFANT'" >
+                    <a th:href="@{/encadrements/encadreurs/lists}">
+                        <i class="fas fa-users"></i>Mes encadreurs</a>
+                </li>
             </ul>
         </nav>
     </aside>
