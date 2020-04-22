@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by user on 22/03/2020.
@@ -21,7 +20,7 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(){
-        return "index";
+        return "home";
     }
 
     @GetMapping("/")
