@@ -1,5 +1,6 @@
 package com.derteuffel.school.controllers;
 
+/*
 import com.derteuffel.school.entities.Chat;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -25,3 +26,4 @@ public class ChatController {
         return chatMessage;
     }
 }
+*/

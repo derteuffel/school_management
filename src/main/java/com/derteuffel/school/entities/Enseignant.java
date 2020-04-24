@@ -35,5 +35,7 @@ public class Enseignant implements Serializable {
     private ArrayList<Long> sallesIds = new ArrayList<>();
     @ManyToMany
     private Collection<Salle> salles;
+    @OneToOne
+    private Compte compte;
 
 }

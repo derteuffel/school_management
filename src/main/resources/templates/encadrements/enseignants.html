@@ -91,7 +91,7 @@
                                             <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="detailModalLabel">Detail Encadreur   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <a  class="btn btn-primary" th:href="@{/encadrements/encadreur/delete/}+${enseignant?.id}">Supprimer</a>
+                                                            <a class="pull-right" th:href="@{/encadrements/enseignant/eleves/}+${enseignant?.id}">Eleves encadres</a>
                                                         </h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -223,7 +223,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <a th:href="@{/encadrements/enseignant/eleves/}+${enseignant?.id}">Eleves encadres</a>
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                                                     </div>
                                             </div>
@@ -243,6 +242,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <a  class="btn btn-primary" th:href="@{/encadrements/encadreur/delete/}+${enseignant?.id}">Supprimer</a>
                                                     </div>
                                             </div>
                                         </div>
