@@ -292,17 +292,17 @@ public class EncadrementController {
             }else if (compte.getRoles().contains(role1)){
 
                 System.out.println("je suis enfant");
-                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
                 System.out.println(encadreurs.size());
                 for (Encadreur encadreur : encadreurs){
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.COURS.toString()));
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
 
             }else {
 
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                        allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.COURS.toString()));
+                        allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
             }
 
@@ -379,14 +379,14 @@ public class EncadrementController {
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString()));
             }else if (compte.getRoles().contains(ERole.ROLE_ENFANT.toString())){
 
-                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
                 for (Encadreur encadreur : encadreurs){
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.DEVOIRS.toString()));
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.DEVOIRS.toString()));
                 }
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.DEVOIRS.toString()));
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.DEVOIRS.toString()));
                 }
             }
 
@@ -488,14 +488,14 @@ public class EncadrementController {
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString()));
             }else if (compte.getRoles().contains(role1)){
 
-                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
+                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
                 for (Encadreur encadreur : encadreurs){
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.REPONSES.toString()));
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.REPONSES.toString()));
                 }
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(encadreur.getCompte().getId(),ECours.DEVOIRS.toString()));
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.DEVOIRS.toString()));
                 }
 
         }
@@ -530,12 +530,12 @@ public class EncadrementController {
 
                 Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC));
                 for (Encadreur encadreur : encadreurs){
-                    allsCours.addAll(examenRepository.findAllByCompte_Id(encadreur.getCompte().getId()));
+                    allsCours.addAll(examenRepository.findAllByCompte_Id(compteRepository.findByEnseignant_Id(encadreur.getId()).getId()));
                 }
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                    allsCours.addAll(examenRepository.findAllByCompte_Id(encadreur.getCompte().getId()));
+                    allsCours.addAll(examenRepository.findAllByCompte_Id(compteRepository.findByEnseignant_Id(encadreur.getId()).getId()));
                 }
             }
 
@@ -581,6 +581,12 @@ public class EncadrementController {
         examenRepository.save(examen);
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
         return "redirect:/encadrements/examens/lists";
+    }
+
+    @GetMapping("/examen/delete/{id}")
+    public String deleteExamen(@PathVariable Long id){
+        examenRepository.deleteById(id);
+        return "redirect:/encadrements/examen/lists";
     }
 
     @GetMapping("/access-denied")

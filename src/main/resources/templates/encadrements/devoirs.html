@@ -74,11 +74,10 @@
                             <h2>Ensemble des devoirs de la classe</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-lg-4 col-md-6 my-2" th:each="devoir : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailDevoirModal'+${devoir?.id}">
-                                        <div class="alert alert-light row text-center" role="alert">
+                                <div class="col-md-6 my-2" th:each="devoir : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailDevoirModal'+${devoir?.id}" style="width: 100%">
+                                        <div class="alert alert-dark text-left" role="alert">
                                             <p><strong>Date du : </strong><span  th:text="${devoir?.date}"></span></p>
-                                            <br>
                                             <p><strong>Titre : </strong><span class="text-primary underline" th:text="${devoir?.title}"></span></p>
                                     </div>
                                     </button>
