@@ -27,10 +27,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by user on 02/04/2020.
@@ -272,12 +269,43 @@ public class EncadrementController {
             enfant.setPays(encadrementRegistrationDto.getPays());
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
-        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
         return "redirect:/encadrements/login";
     }
 
+    @GetMapping("/activation/form")
+    public  String activationPage(HttpServletRequest request, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        if (compte.getStatus() == true){
+            return "redirect:/encadrements/cours/lists";
+        }
+        if (compte.getCode() == null){
+            compte.setCode(UUID.randomUUID().toString());
+            compteRepository.save(compte);
+        }
+
+        model.addAttribute("success","Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
+        return "encadrements/activation";
+    }
+
+    @GetMapping("/activation/code")
+     public String activation(String activation, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        if (!(compte.getCode().equals(activation))){
+            redirectAttributes.addFlashAttribute("success","Code d'activation incorrect");
+            return "redirect:/encadrements/logout";
+        }else {
+            compte.setStatus(true);
+            compteRepository.save(compte);
+            redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
+            return "redirect:/encadrements/activation/form";
+        }
+     }
     @GetMapping("/cours/lists")
     public String cours( Model model, HttpServletRequest request){
+
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());

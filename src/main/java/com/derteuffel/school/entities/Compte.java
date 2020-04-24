@@ -1,14 +1,12 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
-import lombok.Generated;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * Created by user on 22/03/2020.
@@ -28,6 +26,8 @@ public class Compte implements Serializable{
     private String email;
     private String avatar;
     private String resetToken;
+    private String code;
+    private Boolean status;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

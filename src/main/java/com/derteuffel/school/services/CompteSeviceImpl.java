@@ -15,9 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.xml.ws.ServiceMode;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +59,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEcole(ecole);
+        compte.setStatus(false);
 
         Role role = new Role();
 
@@ -86,6 +87,8 @@ public class CompteSeviceImpl implements CompteService{
         compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
+        compte.setCode(UUID.randomUUID().toString());
+        compte.setStatus(false);
 
         Role role = new Role();
 
@@ -112,6 +115,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setAvatar(s);
         compte.setEcole(ecole);
         compte.setEnseignant(enseignant);
+        compte.setStatus(false);
 
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENSEIGNANT.toString());
@@ -137,6 +141,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setParent(parent);
+        compte.setStatus(false);
 
         Role existRole = roleRepository.findByName(ERole.ROLE_PARENT.toString());
         if (existRole != null){
@@ -159,6 +164,8 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(encadrementRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEnfant(enfant);
+        compte.setStatus(false);
+        compte.setCode(UUID.randomUUID().toString());
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
         if (existRole != null){
@@ -182,6 +189,8 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(encadrementRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEnseignant(encadreur);
+        compte.setCode(UUID.randomUUID().toString());
+        compte.setStatus(false);
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
         if (existRole != null){

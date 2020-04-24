@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by user on 23/03/2020.
@@ -28,7 +27,7 @@ public class EncadrementSecurityConfig extends WebSecurityConfigurerAdapter{
                 .formLogin()
                 .loginPage("/encadrements/login")
                 .loginProcessingUrl("/encadrements/login/process")
-                .defaultSuccessUrl("/encadrements/cours/lists")
+                .defaultSuccessUrl("/encadrements/activation/form")
                 .permitAll()
                 .and()
                 .logout()
