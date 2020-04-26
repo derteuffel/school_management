@@ -269,7 +269,7 @@ public class EncadrementController {
             enfant.setPays(encadrementRegistrationDto.getPays());
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
-        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse info@yesbanana.org pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
         return "redirect:/encadrements/login";
     }
 

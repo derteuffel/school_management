@@ -3,7 +3,6 @@ package com.derteuffel.school.controllers;
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.EVisibilite;
-import com.derteuffel.school.helpers.PresenceForm;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.MailService;
@@ -161,7 +160,7 @@ public class ParentLoginController {
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> cours = new ArrayList<>();
         if (salles.contains(salle)) {
-            cours = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.COURS.toString());
+            cours = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.COURS.toString());
         }else {
             model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
         }
@@ -189,7 +188,7 @@ public class ParentLoginController {
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> devoirs = new ArrayList<>();
         if (salles.contains(salle)) {
-            devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.DEVOIRS.toString());
+            devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
         }else {
             model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
         }
@@ -209,7 +208,7 @@ public class ParentLoginController {
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> reponses = new ArrayList<>();
         if (salles.contains(salle)) {
-            reponses = coursRepository.findAllByCompte_IdAndSalleAndType(compte.getId(),salle.getNiveau(), ECours.REPONSES.toString());
+            reponses = coursRepository.findAllByCompte_IdAndSalleAndType(compte.getId(),salle.getNiveau()+""+salle.getId(), ECours.REPONSES.toString());
         }else {
             model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
         }
@@ -274,7 +273,7 @@ public class ParentLoginController {
         Salle salle = salleRepository.getOne(id);
         Collection<Examen> examens = new ArrayList<>();
         if (salles.contains(salle)) {
-            examens = examenRepository.findAllBySalle(salle.getNiveau());
+            examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         }else {
             model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
         }
