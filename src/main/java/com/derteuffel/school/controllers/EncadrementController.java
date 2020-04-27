@@ -405,7 +405,7 @@ public class EncadrementController {
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
             if (compte.getRoles().contains(role)){
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString()));
-            }else if (compte.getRoles().contains(ERole.ROLE_ENFANT.toString())){
+            }else if (compte.getRoles().contains(role1)){
 
                 Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
                 for (Encadreur encadreur : encadreurs){
@@ -508,32 +508,33 @@ public class EncadrementController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Encadreur> allEncadreurs = encadreurRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        Collection<Enfant> allEnfants = enfantRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
         Collection<Cours> allsCours = new ArrayList<>();
+        Collection<Cours> tempCours = new ArrayList<>();
         Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
             if (compte.getRoles().contains(role)){
-                allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString()));
-            }else if (compte.getRoles().contains(role1)){
-
-                Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
-                for (Encadreur encadreur : encadreurs){
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.REPONSES.toString()));
+                tempCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString()));
+                for (Cours cours : tempCours){
+                    allsCours.addAll(coursRepository.findAllByCours_Id(cours.getId()));
                 }
+            }else if (compte.getRoles().contains(role1)){
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString()));
+                System.out.println(allsCours.size());
             }else {
                 System.out.println("je suis root");
-                for (Encadreur encadreur : allEncadreurs) {
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.DEVOIRS.toString()));
+                for (Enfant enfant : allEnfants) {
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getEnfant().getId(),ECours.REPONSES.toString()));
                 }
 
         }
 
-            for (Cours cours : allsCours){
+           /* for (Cours cours : allsCours){
                 if (cours.getStatus().equals(false)){
                     cours.setStatus(true);
                     coursRepository.save(cours);
                 }
-            }
+            }*/
             model.addAttribute("lists", allsCours);
 
         return "encadrements/reponses";
