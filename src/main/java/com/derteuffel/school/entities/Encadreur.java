@@ -27,6 +27,7 @@ public class Encadreur extends Enseignant {
     private String motivation;
     private String localisation;
     private String pays;
+    private String code;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

@@ -55,6 +55,10 @@ public class EncadrementController {
     @Autowired
     private ParentRepository parentRepository;
 
+
+    @Autowired
+    private ResponseRepository responseRepository;
+
     @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
@@ -273,16 +277,96 @@ public class EncadrementController {
         return "redirect:/encadrements/login";
     }
 
+    @GetMapping("/encadreurs/update/{id}")
+    public String updateForm(@PathVariable Long id, Model model){
+        Encadreur encadreur = encadreurRepository.getOne(id);
+        ArrayList<Integer> amounts = new ArrayList<>();
+        for (int i = 10;i<500;i+=10){
+            amounts.add(i);
+        }
+        model.addAttribute("amounts",amounts);
+        model.addAttribute("encadreur",encadreur);
+        return "encadrements/updateEncadreur";
+    }
+
+    @PostMapping("/encadreurs/update")
+    public String updateEnseignantSave(@Valid Encadreur encadreur, @RequestParam("file") MultipartFile file,@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes){
+        if (!(file.isEmpty())){
+            try{
+                // Get the file and save it somewhere
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Files.write(path, bytes);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            encadreur.setCv("/downloadFile/"+file.getOriginalFilename());
+        }else {
+            encadreur.setCv(encadreur.getCv());
+        }
+
+        if (!(image.isEmpty())){
+            try{
+                // Get the file and save it somewhere
+                byte[] bytes = image.getBytes();
+                Path path = Paths.get(fileStorage + image.getOriginalFilename());
+                Files.write(path, bytes);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            encadreur.setAvatar("/downloadFile/"+image.getOriginalFilename());
+        }else {
+            encadreur.setAvatar(encadreur.getAvatar());
+        }
+
+        encadreurRepository.save(encadreur);
+
+        redirectAttributes.addFlashAttribute("success","Votre modification a ete faite avec succes");
+        return "redirect:/encadrements/encadreurs";
+
+    }
+
+
+    @GetMapping("/enfants/update/{id}")
+    public String updateFormEnfant(@PathVariable Long id, Model model){
+        Enfant enfant = enfantRepository.getOne(id);
+
+        model.addAttribute("enfant",enfant);
+        return "encadrements/updateEnfant";
+    }
+
+    @PostMapping("/enfants/update")
+    public String updateEnfatnSave(@Valid Enfant enfant, RedirectAttributes redirectAttributes){
+        enfantRepository.save(enfant);
+        redirectAttributes.addFlashAttribute("success","Votre modification a ete faite avec succes");
+        return "redirect:/encadrements/eleves";
+
+    }
+
     @GetMapping("/activation/form")
     public  String activationPage(HttpServletRequest request, Model model){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
+
+        Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.name());
+        Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.name());
         if (compte.getStatus() == true){
             return "redirect:/encadrements/cours/lists";
         }
         if (compte.getCode() == null){
             compte.setCode(UUID.randomUUID().toString());
+
             compteRepository.save(compte);
+
+            if (compte.getRoles().contains(role)){
+               Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+               encadreur.setCode(compte.getCode());
+                encadreurRepository.save(encadreur);
+            }else if (compte.getRoles().contains(role1)){
+                Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
+                enfant.setCode(compte.getCode());
+                enfantRepository.save(enfant);
+            }
         }
 
         model.addAttribute("success","Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
@@ -411,6 +495,7 @@ public class EncadrementController {
                 for (Encadreur encadreur : encadreurs){
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.DEVOIRS.toString()));
                 }
+                System.out.println("je contient : "+allsCours.size());
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
@@ -466,23 +551,22 @@ public class EncadrementController {
     @GetMapping("/reponses/add/{id}")
     public String reponsesForm(@PathVariable Long id, Model model){
         Cours devoir = coursRepository.getOne(id);
-        Cours reponse = new Cours();
+        Response reponse = new Response();
         model.addAttribute("devoir",devoir);
         model.addAttribute("reponse",reponse);
         return "encadrements/reponse";
     }
 
     @PostMapping("/reponses/save/{id}")
-    public String reponseSave(Cours cours, HttpServletRequest request, @PathVariable Long id, @RequestParam("file") MultipartFile file){
+    public String reponseSave(Response response, HttpServletRequest request, @PathVariable Long id, @RequestParam("file") MultipartFile file){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        cours.setType(ECours.REPONSES.toString());
-        cours.setCompte(compte);
-        cours.setCours(coursRepository.getOne(id));
-        cours.setSalle(coursRepository.getOne(id).getSalle());
+        response.setCompte(compte);
+        response.setCours(coursRepository.getOne(id));
+        response.setSalle(coursRepository.getOne(id).getSalle());
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        cours.setDate(dateFormat.format(date));
+        response.setDate(dateFormat.format(date));
         if (!(file.isEmpty())){
             try{
                 // Get the file and save it somewhere
@@ -492,12 +576,9 @@ public class EncadrementController {
             }catch (IOException e){
                 e.printStackTrace();
             }
-            cours.setFichier("/downloadFile/"+file.getOriginalFilename());
+            response.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
-
-        cours.setStatus(false);
-        coursRepository.save(cours);
-
+        responseRepository.save(response);
         return "redirect:/encadrements/reponses/lists";
     }
 
@@ -509,22 +590,22 @@ public class EncadrementController {
         Compte compte = compteService.findByUsername(principal.getName());
 
         Collection<Enfant> allEnfants = enfantRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
-        Collection<Cours> allsCours = new ArrayList<>();
+        Collection<Response> allsCours = new ArrayList<>();
         Collection<Cours> tempCours = new ArrayList<>();
         Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
             if (compte.getRoles().contains(role)){
                 tempCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.DEVOIRS.toString()));
                 for (Cours cours : tempCours){
-                    allsCours.addAll(coursRepository.findAllByCours_Id(cours.getId()));
+                    allsCours.addAll(responseRepository.findAllByCours_Id(cours.getId()));
                 }
             }else if (compte.getRoles().contains(role1)){
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.REPONSES.toString()));
+                    allsCours.addAll(responseRepository.findAllByCompte_Id(compte.getId()));
                 System.out.println(allsCours.size());
             }else {
                 System.out.println("je suis root");
                 for (Enfant enfant : allEnfants) {
-                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getEnfant().getId(),ECours.REPONSES.toString()));
+                    allsCours.addAll(responseRepository.findAllByCompte_Id(compteRepository.findByEnfant_Id(enfant.getId()).getId()));
                 }
 
         }

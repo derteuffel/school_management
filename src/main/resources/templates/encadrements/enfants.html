@@ -218,9 +218,18 @@
                                                                 <small class="form-text text-muted" th:text="${eleve?.nbreMois}">Numero de telephone whatsapp</small>
                                                             </div>
                                                         </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Code d'activation</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${eleve?.code}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <a  th:href="@{/encadrements/enfants/update/}+${eleve?.id}" class="btn btn-primary" >Editer</a>
                                                     </div>
                                             </div>
                                         </div>

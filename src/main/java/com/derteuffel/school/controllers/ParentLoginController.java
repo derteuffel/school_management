@@ -41,6 +41,9 @@ public class ParentLoginController {
     private ParentRepository parentRepository;
 
     @Autowired
+    private ResponseRepository responseRepository;
+
+    @Autowired
     private PlanningRepository planningRepository;
 
     @Autowired
@@ -206,9 +209,9 @@ public class ParentLoginController {
         Compte compte = compteService.findByUsername(username);
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Cours> reponses = new ArrayList<>();
+        Collection<Response> reponses = new ArrayList<>();
         if (salles.contains(salle)) {
-            reponses = coursRepository.findAllByCompte_IdAndSalleAndType(compte.getId(),salle.getNiveau()+""+salle.getId(), ECours.REPONSES.toString());
+            reponses = responseRepository.findAllByCompte_IdAndSalle(compte.getId(),salle.getNiveau()+""+salle.getId());
         }else {
             model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
         }
@@ -220,34 +223,33 @@ public class ParentLoginController {
 
     @GetMapping("/reponse/delete/{id}/{salleId}")
     public String reponseDelete(Long id, Long salleId,HttpServletRequest request){
-        coursRepository.deleteById(id);
+        responseRepository.deleteById(id);
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Salle salle = salleRepository.getOne(salleId);
         Ecole ecole = salle.getEcole();
-        return "redirect;/parent/reponses/lists/"+salle.getId()+"/"+compte.getUsername()+"/"+ecole.getId();
+        return "redirect:/parent/reponses/lists/"+salle.getId()+"/"+compte.getUsername()+"/"+ecole.getId();
     }
 
     @GetMapping("/reponses/add/{id}")
     public String reponsesForm(@PathVariable Long id, Model model){
         Cours devoir = coursRepository.getOne(id);
-        Cours reponse = new Cours();
+        Response reponse = new Response();
         model.addAttribute("devoir",devoir);
         model.addAttribute("reponse",reponse);
         return "parent/reponse";
     }
 
     @PostMapping("/reponses/save/{id}")
-    public String reponseSave(Cours cours, HttpServletRequest request, @PathVariable Long id, @RequestParam("file") MultipartFile file){
+    public String reponseSave(Response response, HttpServletRequest request, @PathVariable Long id, @RequestParam("file") MultipartFile file){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        cours.setType(ECours.REPONSES.toString());
-        cours.setCompte(compte);
-        cours.setCours(coursRepository.getOne(id));
-        cours.setSalle(coursRepository.getOne(id).getSalle());
+        response.setCompte(compte);
+        response.setCours(coursRepository.getOne(id));
+        response.setSalle(coursRepository.getOne(id).getSalle());
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        cours.setDate(dateFormat.format(date));
+        response.setDate(dateFormat.format(date));
         if (!(file.isEmpty())){
             try{
                 // Get the file and save it somewhere
@@ -257,12 +259,9 @@ public class ParentLoginController {
             }catch (IOException e){
                 e.printStackTrace();
             }
-            cours.setFichier("/downloadFile/"+file.getOriginalFilename());
+            response.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
-
-        cours.setStatus(false);
-        coursRepository.save(cours);
-
+        responseRepository.save(response);
         return "redirect:/parent/reponses/lists/"+(Long)request.getSession().getAttribute("salleId")+"/"+compte.getUsername()+"/"+(Long)request.getSession().getAttribute("ecoleId");
     }
 

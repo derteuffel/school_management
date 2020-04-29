@@ -54,6 +54,9 @@ public class EnseignantLoginController {
     private CoursRepository coursRepository;
 
     @Autowired
+    private ResponseRepository responseRepository;
+
+    @Autowired
     private ExamenRepository examenRepository;
     @Autowired
     private EnseignantRepository enseignantRepository;
@@ -414,13 +417,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Cours> reponses = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.REPONSES.toString());
-        for (Cours cours : reponses){
-            if (cours.getStatus().equals(false)){
-                cours.setStatus(true);
-                coursRepository.save(cours);
-            }
-        }
+        Collection<Response> reponses = responseRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",reponses);
         model.addAttribute("classe",salle);
         model.addAttribute("salles",salles);

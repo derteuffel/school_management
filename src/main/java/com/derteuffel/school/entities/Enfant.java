@@ -1,6 +1,5 @@
 package com.derteuffel.school.entities;
 
-import com.sun.source.doctree.SerialDataTree;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -31,11 +30,13 @@ public class Enfant implements Serializable {
     private String telephone;
     private String localisation;
     private int age;
+    private String cours_reference;
     private String heureDebut;
     private String heureFin;
     private  int nbreJourParSemaine;
     private  int nbreMois;
     private String pays;
+    private String code;
     private ArrayList<String> matieres = new ArrayList<>();
 
     @ManyToMany

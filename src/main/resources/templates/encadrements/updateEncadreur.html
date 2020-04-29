@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Enseignant</title>
+
+    <!-- Fontfaces CSS-->
+    <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/font-awesome-5/css/fontawesome-all.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link th:href="@{/vendor/bootstrap-4.1/bootstrap.min.css}" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor/animsition/animsition.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/wow/animate.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+
+</head>
+
+<body th:each="role : ${session.compte.roles}" class="animsition">
+<div class="page-wrapper">
+    <!-- HEADER DESKTOP-->
+    <header th:replace="~{../templates/fragments/header_encadrement :: header_encadrement}">
+    </header>
+    <!-- END HEADER DESKTOP -->
+
+    <!-- PAGE CONTENT-->
+    <div class="page-container3">
+        <section class="alert-wrap p-t-70 p-b-70">
+            <div class="container">
+                <!-- ALERT-->
+                <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
+                    <i class="zmdi zmdi-check-circle"></i>
+                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-close-circle"></i>
+                            </span>
+                    </button>
+                </div>
+                <!-- END ALERT-->
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div th:replace="~{../templates/fragments/sidebar_encadrement :: sidebar_encadrement}">
+                    </div>
+                    <div class="col-xl-9">
+                        <!-- PAGE CONTENT-->
+                        <div class="page-content">
+
+                            <h2>Modification d'un encadreur</h2>
+                            <div class="row"  >
+                                <div class="card-content">
+                                    <form th:action="@{/encadrements/encadreurs/update}" th:object="${encadreur}" method="post" class="form-horizontal" autocomplete="off" enctype="multipart/form-data">
+                                        <div class="card-header">
+                                            <h5 class="card-title" id="addEncadreurModalLabel">Modification Encadreur</h5>
+                                            <p th:text="${error}"></p>
+                                        </div>
+                                        <div class="modal-body card-block">
+                                            <div class="form-group" >
+                                                <label class="control-label">Nom utilisateur</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{name}" placeholder="Nom utilisateur">
+                                                <input class="au-input au-input--full" type="hidden" th:field="*{id}" placeholder="Nom utilisateur">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Prenom utilisateur</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{prenom}" placeholder="Prenom utilisateur">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Post utilisateur</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{postnom}" placeholder="Postnom utilisateur">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Adresse Email</label>
+                                                <input class="au-input au-input--full" type="email" th:field="*{email}" placeholder="Email">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Votre numero de  telephone</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{telephone}"  placeholder="Numero de telephone">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Votre numero whatsapp</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{whatsapp}"  placeholder="Numero whatsapp">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Votre Localisation</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{localisation}"  placeholder="Localisation">
+                                            </div>
+                                            <div class="form-group autocomplete" >
+                                                <label class="control-label">Votre Pays</label>
+                                                <input class="au-input au-input--full" type="text" id="text-country" th:field="*{pays}"  placeholder="Votre pays">
+                                            </div>
+
+                                            <div class="form-group" >
+                                                <label class="control-label">Cours de reference</label>
+                                                <input class="au-input au-input--full" type="text" th:field="*{cour_enseigner}"  placeholder="cours enseigner">
+                                            </div>
+                                            <hr><p>Informartions sur votre disponibilite</p>
+                                            <br>
+                                            <div class="form-group" >
+                                                <label class="control-label">Heure de debut de journee</label>
+                                                <input class="au-input au-input--full" type="time" th:field="*{heureDebut}"  placeholder="Heure debut">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Heure de fin de journee</label>
+                                                <input class="au-input au-input--full" type="time" th:field="*{heureFin}"  placeholder="Heure debut">
+                                            </div>
+
+                                            <div class="form-group" >
+                                                <label class="control-label">Nombre de jour par semaine</label>
+                                                <input class="au-input au-input--full" type="number" th:field="*{nbreJourParSemaine}"  placeholder="Nombre de jour par semaine">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Nombre de mois</label>
+                                                <input class="au-input au-input--full" type="number" th:field="*{nbreMois}"  placeholder="Nombre de mois">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Salaire souhaite</label>
+                                                <select th:field="*{salaire}" class="form-control" >
+                                                    <option th:each="amount :${amounts}" th:value="${amount}" th:text="${amount+'$'}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Charger votre cv</label>
+                                                <input class="au-input au-input--full" type="file" name="file"  placeholder="Nombre de mois">
+                                                <input class="au-input au-input--full" type="text" th:field="*{cv}"  style="display: none">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Charger votre avatar</label>
+                                                <input class="au-input au-input--full" type="file" name="image"  placeholder="Nombre de mois">
+                                                <input class="au-input au-input--full" type="text" th:field="*{avatar}"  style="display: none">
+                                            </div>
+                                            <div class="form-group" >
+                                                <label class="control-label">Vos motivations</label>
+                                                <textarea th:field="*{motivation}"  class="form-control" rows="5" placeholder="Entrez en quelques mots vos motivations ici"></textarea>
+                                            </div>
+
+
+                                            <div class="card-footer">
+                                                <a th:href="@{/encadrements/encadreurs}" class="btn btn-secondary" >Retour</a>
+                                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- END PAGE CONTENT-->
+                    </div>
+                </div>
+                <!-- COPYRIGHT-->
+                <section th:replace="~{../templates/fragments/footer :: footer}"></section>
+
+                <!-- END COPYRIGHT-->
+            </div>
+        </section>
+    </div>
+    <!-- END PAGE CONTENT  -->
+
+    <!-- end modal medium -->
+
+</div>
+
+<!-- Jquery JS-->
+<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+<!-- Bootstrap JS-->
+<script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
+<!-- Vendor JS       -->
+<script th:src="@{/vendor/slick/slick.min.js}">
+</script>
+<script th:src="@{/vendor/wow/wow.min.js}"></script>
+<script th:src="@{/vendor/animsition/animsition.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js}">
+</script>
+<script th:src="@{/vendor/counter-up/jquery.waypoints.min.js}"></script>
+<script th:src="@{/vendor/counter-up/jquery.counterup.min.js}">
+</script>
+<script th:src="@{/vendor/circle-progress/circle-progress.min.js}"></script>
+<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.js}"></script>
+<script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
+<script th:src="@{/vendor/select2/select2.min.js}">
+</script>
+
+<!-- Main JS-->
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
+<!-- end document-->

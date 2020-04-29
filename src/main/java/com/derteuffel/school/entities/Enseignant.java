@@ -32,6 +32,7 @@ public class Enseignant implements Serializable {
     private String cour_enseigner;
     private String avatar;
 
+
     private ArrayList<Long> sallesIds = new ArrayList<>();
     @ManyToMany
     private Collection<Salle> salles;
