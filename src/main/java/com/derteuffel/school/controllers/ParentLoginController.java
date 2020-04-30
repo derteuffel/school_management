@@ -38,6 +38,9 @@ public class ParentLoginController {
     private EcoleRepository ecoleRepository;
 
     @Autowired
+    private LivreRepository livreRepository;
+
+    @Autowired
     private ParentRepository parentRepository;
 
     @Autowired
@@ -178,7 +181,15 @@ public class ParentLoginController {
         Ecole ecole = ecoleRepository.getOne(ecoleId);
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
+        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> alls = new ArrayList<>();
+        for (int i=0; i<livres.size();i++){
+            if (!(i>9)){
+                alls.add(livres.get(i));
+            }
+        }
 
+        model.addAttribute("lists",alls);
         model.addAttribute("ecole",ecole);
         model.addAttribute("classe",salle);
         return "parent/bibliotheques";

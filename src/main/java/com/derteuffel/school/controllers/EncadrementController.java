@@ -60,6 +60,9 @@ public class EncadrementController {
     private ResponseRepository responseRepository;
 
     @Autowired
+    private LivreRepository livreRepository;
+
+    @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
     private  String fileStorage;
@@ -439,6 +442,14 @@ public class EncadrementController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         request.getSession().setAttribute("compte",compte);
+        List<Livre> alls = new ArrayList<>();
+        List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (int i=0;i<livres.size();i++){
+            if (!(i>12)){
+                alls.add(livres.get(i));
+            }
+        }
+        model.addAttribute("lists",alls);
         return "encadrements/bibliotheques";
     }
 

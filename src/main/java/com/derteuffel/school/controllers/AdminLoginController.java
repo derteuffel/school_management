@@ -2,21 +2,30 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.Compte;
 import com.derteuffel.school.entities.Ecole;
+import com.derteuffel.school.entities.Livre;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.EcoleRepository;
+import com.derteuffel.school.repositories.LivreRepository;
 import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 23/03/2020.
@@ -27,6 +36,9 @@ public class AdminLoginController {
 
     @Autowired
     private EcoleRepository ecoleRepository;
+
+    @Autowired
+    private LivreRepository livreRepository;
 
     @Autowired
     private CompteService compteService;
@@ -63,5 +75,69 @@ public class AdminLoginController {
         compteService.save(compteDto,"/images/icon/avatar-01.jpg",ecole1.getId());
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/admin/login";
+    }
+
+    @GetMapping("/bibliotheque/lists")
+    public String lists(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal.getName());
+        Compte compte = compteService.findByUsername(principal.getName());
+        List<Livre> alls = new ArrayList<>();
+        List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (int i=0;i<livres.size();i++){
+            if (!(i>12)){
+                alls.add(livres.get(i));
+            }
+        }
+        model.addAttribute("livre",new Livre());
+        model.addAttribute("lists",alls);
+
+        return "admin/bibliotheques";
+    }
+
+    @PostMapping("/livre/save")
+    public String saveBook(@Valid Livre livre, @RequestParam("file") MultipartFile file, @RequestParam("cover") MultipartFile cover){
+        if (!(file.isEmpty())) {
+            try {
+                // Get the file and save it somewhere
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            livre.setFichier("/downloadFile/" + file.getOriginalFilename());
+        }else {
+            livre.setCouverture(livre.getCouverture());
+        }
+        if (!(cover.isEmpty())) {
+            try {
+                // Get the file and save it somewhere
+                byte[] bytes = cover.getBytes();
+                Path path = Paths.get(fileStorage + cover.getOriginalFilename());
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            livre.setCouverture("/downloadFile/" + cover.getOriginalFilename());
+        }else {
+            livre.setFichier(livre.getFichier());
+        }
+
+        livreRepository.save(livre);
+        return "redirect:/admin/bibliotheque/lists";
+    }
+
+    @GetMapping("/livre/edit/{id}")
+    public String updateLivre(@PathVariable Long id, Model model){
+        Livre livre = livreRepository.getOne(id);
+        model.addAttribute("livre",livre);
+        return "admin/updateBibliotheque";
+    }
+
+    @GetMapping("/livre/delete/{id}")
+    public String deleteLivre(@PathVariable Long id){
+        livreRepository.deleteById(id);
+        return "redirect:/admin/bibliotheque/lists";
     }
 }

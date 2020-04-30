@@ -62,8 +62,8 @@
                     <a th:href="@{/enseignant/hebdos/lists/}+${classe.id}">
                         <i class="fas fa-list"></i>Planning Hebdo</a>
                 </li>
-                <li>
-                    <a th:href="@{/enseignant/bibliotheque/lists}">
+                <li th:if="${classe}!=null">
+                    <a th:href="@{/enseignant/bibliotheque/lists/}+${classe.id}">
                         <i class="fas fa-bookmark-o"></i>Bibliotheques</a>
                 </li>
             </ul>

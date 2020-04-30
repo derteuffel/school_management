@@ -44,6 +44,9 @@ public class EnseignantLoginController {
     private SalleRepository salleRepository;
 
     @Autowired
+    private LivreRepository livreRepository;
+
+    @Autowired
     private CompteRepository compteRepository;
     @Autowired
     private EleveRepository eleveRepository;
@@ -166,6 +169,15 @@ public class EnseignantLoginController {
         Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName() + "  " + compte.getEnseignant().getPrenom());
 
         model.addAttribute("classe",salle);
+        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> alls = new ArrayList<>();
+        for (int i=0; i<livres.size();i++){
+            if (!(i>9)){
+                alls.add(livres.get(i));
+            }
+        }
+
+        model.addAttribute("lists",alls);
 
         return "enseignant/bibliotheques";
     }

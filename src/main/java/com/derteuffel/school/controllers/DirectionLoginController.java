@@ -42,6 +42,9 @@ public class DirectionLoginController {
     private CompteRepository compteRepository;
 
     @Autowired
+    private LivreRepository livreRepository;
+
+    @Autowired
     private SalleRepository salleRepository;
 
     @Autowired
@@ -259,10 +262,18 @@ public class DirectionLoginController {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
-
+        List<Livre> alls = new ArrayList<>();
+        List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (int i=0;i<livres.size();i++){
+            if (!(i>12)){
+                alls.add(livres.get(i));
+            }
+        }
+        model.addAttribute("lists",alls);
 
         return "direction/bibliotheques";
     }
+
 
     @GetMapping("/parent/lists")
     public String parentLists(Model model, HttpServletRequest request) {
@@ -533,6 +544,7 @@ public class DirectionLoginController {
         model.addAttribute("lists", parents);
         return "direction/classes/parents";
     }
+
 
     @GetMapping("/access-denied")
     public String access_denied() {
