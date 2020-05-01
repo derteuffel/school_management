@@ -35,7 +35,7 @@
 
 </head>
 
-<body class="animsition">
+<body th:each="role :${session.compte.roles}" class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_encadrement :: header_encadrement}">
