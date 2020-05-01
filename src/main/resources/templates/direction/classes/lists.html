@@ -115,20 +115,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <select th:field="*{niveau}"  class="form-control">
-                                    <option value="">Choisir</option>
-                                    <option value="PREMIERE (PIMAIRE)">PREMIERE (PIMAIRE)</option>
-                                    <option value="DEUXIEME (PIMAIRE)">DEUXIEME (PIMAIRE)</option>
-                                    <option value="TROISIEME (PIMAIRE)">TROISIEME (PIMAIRE)</option>
-                                    <option value="QUATRIEME (PIMAIRE)">QUATRIEME (PIMAIRE)</option>
-                                    <option value="CINQUIEME (PIMAIRE)">CINQUIEME (PIMAIRE)</option>
-                                    <option value="SIXIEME (PIMAIRE)">SIXIEME (PIMAIRE)</option>
-                                    <hr>
-                                    <option value="PREMIERE (SECONDAIRE)">PREMIERE (SECONDAIRE)</option>
-                                    <option value="DEUXIEME (SECONDAIRE)">DEUXIEME (SECONDAIRE)</option>
-                                    <option value="TROISIEME (SECONDAIRE)">TROISIEME (SECONDAIRE)</option>
-                                    <option value="QUATRIEME (SECONDAIRE)">QUATRIEME (SECONDAIRE)</option>
-                                    <option value="CINQUIEME (SECONDAIRE)">CINQUIEME (SECONDAIRE)</option>
-                                    <option value="SIXIEME (SECONDAIRE)">SIXIEME (SECONDAIRE)</option>
+                                    <option th:each=" name : ${T(com.derteuffel.school.enums.ENiveau).values()}" th:value="${name}" th:text="${name}"></option>
                                 </select>
                                 <small class="form-text text-muted">Niveau</small>
                             </div>
