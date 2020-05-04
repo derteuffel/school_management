@@ -1,6 +1,5 @@
 package com.derteuffel.school.entities;
 
-import com.sun.source.doctree.SerialDataTree;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
