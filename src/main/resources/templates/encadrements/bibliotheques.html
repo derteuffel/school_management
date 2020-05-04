@@ -35,7 +35,7 @@
 
 </head>
 
-<body class="animsition">
+<body th:each="role :${session.compte.roles}" class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_encadrement :: header_encadrement}">
@@ -72,8 +72,74 @@
                             <h2>Espace bibliotheque</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-lg-12" >
-                                    <h1>En cours de realisation</h1>
+                                <div class="col-md-6 col-lg-4 mx-1" th:each="item : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailLivreModal"  th:attr="data-target='#detailLivreModal'+${item?.id}">
+                                        <div class="card">
+                                            <img class="card-img-top" th:src="${item.couverture}" style="width: 268px;height:179px" alt="Card image cap">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-3" th:text="${#strings.substring(item.title,0,20)}+'...'"></h4>
+                                                <p class="card-text" th:text="${#strings.substring(item.author,0,10)}+'...'">
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <div class="modal fade" th:id="detailLivreModal+${item?.id}" tabindex="-1" role="dialog" aria-labelledby="detailLivreModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="detailModalLabel">Detail Livre</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body card-block">
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3">
+                                                            <label  class=" form-control-label">Titre</label>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <small class="form-text text-muted" th:text="${item?.title}">Prenom de l'enseignant</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3">
+                                                            <label  class=" form-control-label">Auteur</label>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <small class="form-text text-muted" th:text="${item?.author}">Nom de l'enseignant</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3">
+                                                            <label  class=" form-control-label">Classe</label>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <small class="form-text text-muted" th:text="${item?.salle}">Nom de l'enseignant</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3">
+                                                            <label class=" form-control-label">Description</label>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <small class="form-text text-muted" th:text="${item?.description}">Postnom de l'enseignant</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col col-md-3">
+                                                            <label  class=" form-control-label">Voir fichier</label>
+                                                        </div>
+                                                        <div class="col-12 col-md-9">
+                                                            <a th:href="${item.fichier}" class="form-text text-muted" th:text="${item?.fichier}">Numero de telephone</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

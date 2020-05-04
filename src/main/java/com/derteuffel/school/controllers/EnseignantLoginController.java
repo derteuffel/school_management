@@ -13,13 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,8 +25,10 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by user on 23/03/2020.
@@ -44,6 +44,9 @@ public class EnseignantLoginController {
     private SalleRepository salleRepository;
 
     @Autowired
+    private LivreRepository livreRepository;
+
+    @Autowired
     private CompteRepository compteRepository;
     @Autowired
     private EleveRepository eleveRepository;
@@ -52,6 +55,9 @@ public class EnseignantLoginController {
 
     @Autowired
     private CoursRepository coursRepository;
+
+    @Autowired
+    private ResponseRepository responseRepository;
 
     @Autowired
     private ExamenRepository examenRepository;
@@ -163,6 +169,15 @@ public class EnseignantLoginController {
         Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName() + "  " + compte.getEnseignant().getPrenom());
 
         model.addAttribute("classe",salle);
+        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> alls = new ArrayList<>();
+        for (int i=0; i<livres.size();i++){
+            if (!(i>9)){
+                alls.add(livres.get(i));
+            }
+        }
+
+        model.addAttribute("lists",alls);
 
         return "enseignant/bibliotheques";
     }
@@ -287,7 +302,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Cours> cours = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.COURS.toString());
+        Collection<Cours> cours = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.COURS.toString());
         model.addAttribute("lists",cours);
         model.addAttribute("salles",salles);
         model.addAttribute("classe",salle);
@@ -313,7 +328,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         cours.setCompte(compte);
-
+        Salle salle = (Salle)request.getSession().getAttribute("classe");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         if (!(file.isEmpty())){
@@ -330,8 +345,9 @@ public class EnseignantLoginController {
 
         cours.setDate(dateFormat.format(date));
         cours.setType(ECours.COURS.toString());
+        cours.setSalle(cours.getSalle()+""+salle.getId());
         coursRepository.save(cours);
-        Salle salle = (Salle)request.getSession().getAttribute("classe");
+
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau cours avec success");
         return "redirect:/enseignant/cours/lists/"+ salle.getId();
     }
@@ -350,7 +366,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.DEVOIRS.toString());
+        Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
         model.addAttribute("lists",devoirs);
         model.addAttribute("salles",salles);
         model.addAttribute("classe",salle);
@@ -375,6 +391,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         devoir.setCompte(compte);
+        Salle salle = (Salle)request.getSession().getAttribute("classe");
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -392,8 +409,8 @@ public class EnseignantLoginController {
 
         devoir.setDate(dateFormat.format(date));
         devoir.setType(ECours.DEVOIRS.toString());
+        devoir.setSalle(devoir.getSalle()+""+salle.getId());
         coursRepository.save(devoir);
-        Salle salle = (Salle)request.getSession().getAttribute("classe");
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
         return "redirect:/enseignant/devoirs/lists/"+ salle.getId();
     }
@@ -412,13 +429,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Cours> reponses = coursRepository.findAllBySalleAndType(salle.getNiveau(), ECours.REPONSES.toString());
-        for (Cours cours : reponses){
-            if (cours.getStatus().equals(false)){
-                cours.setStatus(true);
-                coursRepository.save(cours);
-            }
-        }
+        Collection<Response> reponses = responseRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",reponses);
         model.addAttribute("classe",salle);
         model.addAttribute("salles",salles);
@@ -433,7 +444,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
-        Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau());
+        Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",examens);
         model.addAttribute("salles",salles);
         model.addAttribute("classe",salle);
@@ -458,6 +469,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         examen.setCompte(compte);
+        Salle salle = (Salle)request.getSession().getAttribute("classe");
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -474,8 +486,8 @@ public class EnseignantLoginController {
         }
 
         examen.setDate(dateFormat.format(date));
+        examen.setSalle(examen.getSalle()+""+salle.getId());
         examenRepository.save(examen);
-        Salle salle = (Salle)request.getSession().getAttribute("classe");
         redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
         return "redirect:/enseignant/examens/lists/"+ salle.getId();
     }

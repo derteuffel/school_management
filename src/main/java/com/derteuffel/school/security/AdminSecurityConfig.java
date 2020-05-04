@@ -1,18 +1,13 @@
 package com.derteuffel.school.security;
 
-import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -28,12 +23,12 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/admin/**").authorizeRequests()
-                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
                     .and()
                     .formLogin()
                     .loginPage("/admin/login")
                     .loginProcessingUrl("/admin/login/process")
-                    .defaultSuccessUrl("/admin/home")
+                    .defaultSuccessUrl("/admin/bibliotheque/lists")
                     .permitAll()
                     .and()
                     .logout()
@@ -60,6 +55,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
                 .ignoring()
                 .antMatchers("/js/**",
                         "/css/**",
+                        "/img/**",
                         "/img/**",
                         "/vendor/**",
                         "/fonts/**",
