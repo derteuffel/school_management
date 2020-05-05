@@ -72,7 +72,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h1 class="title-4">Bienvenue dans l'espace école en ligne
+                            <h1 class="title-4">Bienvenue dans l'espace école/instition en ligne
                             </h1>
                             <hr class="line-seprate">
                         </div>
@@ -89,7 +89,7 @@
                         <div class="col-md-6 col-lg-6">
                             <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit" >
                                 <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">Connexion à votre</br> école </h2>
+                                    <h2 class="number">Connexion à votre</br> école/institution </h2>
                                     <p class="desc">Eleves, Parents et Enseignants</p>
                                     <div class="icon">
                                         <img th:src="@{/images/search.png}">
@@ -101,8 +101,8 @@
                         <div class="col-md-6 col-lg-6">
                             <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
                                 <div class="statistic__item statistic__item--primary">
-                                    <h2 class="number">Enregistrez votre </br> école</h2>
-                                    <p class="desc">Seuls les Directeurs</p>
+                                    <h2 class="number">Enregistrez votre </br> école/université/ </br>centre de formation</h2>
+                                    <p class="desc">Reservé au responsable </br> de l'institution/école</p>
                                     <div class="icon">
                                         <img th:src="@{/images/school.png}">
                                     </div>
@@ -126,7 +126,7 @@
                                 <div class="modal-content" style="background-color: #00a2e3">
                                     <form th:action="@{/ecole/save}" autocomplete="off" method="post" th:object="${ecole}" class="form-horizontal" enctype="multipart/form-data">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="addModalLabel">Nouvelle école</h5>
+                                            <h5 class="modal-title" id="addModalLabel">Nouvelle école/institution</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -224,6 +224,7 @@
                                                         <option  value="PRIMAIRE">PRIMAIRE</option>
                                                         <option  value="SECONDAIRE">SECONDAIRE</option>
                                                         <option  value="UNIVERSITE">UNIVERSITE</option>
+                                                        <option  value="PROFESSIONNELLE">PROFESSIONNELLE</option>
                                                     </select>
                                                     <small class="form-text text-muted">Cycle de votre école</small>
                                                 </div>
@@ -247,7 +248,7 @@
                                                     <div class="col col-md-3">
                                                         <label class=" form-control-label">Conditions d'utilisation</label>
                                                     </div>
-                                                    <div class="col col-md-9">
+                                                    <div class="col-12 col-md-9">
                                                         <div class="form-check">
                                                             <div class="checkbox">
                                                                 <label for="terms" class="form-check-label ">
@@ -281,16 +282,16 @@
                         <div class="col-md-12">
                             <h3 class="title-5 m-b-35">A propos</h3>
                             <div class="px-3">
-                                <p>L’espace virtuel <a href="http://www.ecoles.yesbanana.org">ecoles.yesbanana.org</a> permet de garder un réel contact avec l’école de votre enfant pour poursuivre l’enseignement à la maison. Il a l’avantage que l’enseignement est dispensé par l’école de l’enfant. Ce contact est assuré par les élèves, les enseignants, la direction et les parents à travers les cours, les devoirs et une communication en temps réel.
+                                <p>L’espace virtuel <a href="http://www.ecoles.yesbanana.org">ecoles.yesbanana.org</a> permet de garder un réel contact avec votre école/institution pour poursuivre l’enseignement à la maison ou a distance. Il a l’avantage que l’enseignement est dispensé par l’école/institution de l’enfant/étudiants. Ce contact reste assuré par les étudiants, élèves, les enseignants, la direction/responsable et les parents à travers les cours, les devoirs et une communication en temps réel.
 
-                                    Il est un complément de l’enseignement dispensé à l’école et en temps normal. Et au cas où les enfants et enseignants n’ont pas accès à la salle physique, ce cadre permet de combler le gap.
+                                    Il est une continuation de l’enseignement dispensé à l’école/institution et en temps normal. Et au cas où l'étudiant et enseignants/professeurs n’ont pas accès à la salle physique, ce cadre permet de combler le gap.
                                     </br>
 
 
 
-                                    Le site <a href="http://www.ecoles.yesbanana.org">ecoles.yesbanana.org</a> est une entite de la plateforme <a href="http://www.yesbanana.org">Yesbanana</a> qui est une propriété de la fondation Joseph B. dédiée à l’amélioration de la qualité de la formation.  Plusieurs domaines sur l’encadrement des étudiants et élèves est en plein développement sur le site yesbanana.org.
+                                    Le site <a href="http://www.ecoles.yesbanana.org">ecoles.yesbanana.org</a> est une entité de la plateforme <a href="http://www.yesbanana.org">Yesbanana</a> qui est une propriété de la fondation Joseph B. dédiée à l’amélioration de la qualité de la formation.  Plusieurs domaines sur l’encadrement des étudiants et élèves sont en plein développement sur le site www.yesbanana.org.
 
-                                    En partenariat avec plusieurs institutions, ce cadre reponds aux objectifs des Ministères de l’éducation en Afrique dont l’EPSP en R.D.Congo.</p>
+                                    En partenariat avec plusieurs institutions, ce cadre reponds aux objectifs des Ministères de l’éducation en Afrique de multiplier des espaces de formation des jeunes et enfants africain</p>
                             </div>
                         </div>
                     </div>

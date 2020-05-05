@@ -53,7 +53,7 @@
                     <div class="login-form">
                         <form th:action="@{/encadrements/registration1}" th:object="${compte}" method="post" autocomplete="off" class="form-horizontal" >
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addEnfantModalLabel">Nouvel Eleve</h5>
+                                <h5 class="modal-title" id="addEnfantModalLabel">Nouvel Eleve/étudiant</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -119,20 +119,7 @@
                                 <div class="form-group" >
                                     <label class="control-label">Niveau</label>
                                     <select th:field="*{niveau}" class="form-control">
-                                        <option value="">Choisir</option>
-                                        <option value="PREMIERE (PIMAIRE)">PREMIERE (PIMAIRE)</option>
-                                        <option value="DEUXIEME (PIMAIRE)">DEUXIEME (PIMAIRE)</option>
-                                        <option value="TROISIEME (PIMAIRE)">TROISIEME (PIMAIRE)</option>
-                                        <option value="QUATRIEME (PIMAIRE)">QUATRIEME (PIMAIRE)</option>
-                                        <option value="CINQUIEME (PIMAIRE)">CINQUIEME (PIMAIRE)</option>
-                                        <option value="SIXIEME (PIMAIRE)">SIXIEME (PIMAIRE)</option>
-                                        <hr>
-                                        <option value="PREMIERE (SECONDAIRE)">PREMIERE (SECONDAIRE)</option>
-                                        <option value="DEUXIEME (SECONDAIRE)">DEUXIEME (SECONDAIRE)</option>
-                                        <option value="TROISIEME (SECONDAIRE)">TROISIEME (SECONDAIRE)</option>
-                                        <option value="QUATRIEME (SECONDAIRE)">QUATRIEME (SECONDAIRE)</option>
-                                        <option value="CINQUIEME (SECONDAIRE)">CINQUIEME (SECONDAIRE)</option>
-                                        <option value="SIXIEME (SECONDAIRE)">SIXIEME (SECONDAIRE)</option>
+                                        <option th:each="name : ${T(com.derteuffel.school.enums.ENiveau).values()}" th:value="${name}" th:text="${name}">Choisir</option>
                                     </select>
                                 </div>
                                 <hr><p>Informartions sur votre disponibilite</p>
@@ -161,11 +148,7 @@
                                 <div class="form-group" >
                                     <label class="control-label">Votre mode de paiement</label>
                                     <select th:field="*{modePaiement}" class="form-control">
-                                        <option value="">Choisir</option>
-                                        <option value="CARTE BANCAIRE">CARTE BANCAIRE</option>
-                                        <option value="AIRTEL MONEY">AIRTEL MONEY</option>
-                                        <option value="ORANGE MONEY">ORANGE MONEY</option>
-                                        <option value="M-PESA">M-PESA</option>
+                                        <option th:each="name : ${T(com.derteuffel.school.enums.EPaiment).values()}" th:value="${name}" th:text="${name}">Choisir</option>
                                     </select>
                                 </div>
 
