@@ -25,9 +25,10 @@ stopVideoBtn.onclick = () => {
         })
     VoxeetSDK.conference.leave()
         .then(() => {
-
+            document.getElementById('video-super-container').style.display = "none"
         })
         .catch((err) => {
+            document.getElementById('video-super-container').style.display = "none"
             console.log(err);
         })
 }

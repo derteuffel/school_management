@@ -1,6 +1,8 @@
 package com.derteuffel.school.controllers;
 
+import com.derteuffel.school.entities.Compte;
 import com.derteuffel.school.entities.Ecole;
+import com.derteuffel.school.repositories.CompteRepository;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,8 @@ public class HomeController {
 
     @Autowired
     private EcoleRepository ecoleRepository;
-
+    @Autowired
+    private CompteRepository compteRepository;
     @GetMapping("/home")
     public String home(){
         return "home";
@@ -38,14 +41,17 @@ public class HomeController {
     public String admin(){
         return "login/admin";
     }
-    @GetMapping("/sendMail/{sender}")
-    public String sendMail(@PathVariable String sender){
+    @GetMapping("/sendMail/{sender}/{conferenceId}")
+    public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){
+        Compte compte = compteRepository.findByEmail(sender);
+        compte.setConferenceId(conferenceId);
+        compteRepository.save(compte);
         MailService mailService = new MailService();
         mailService.sendSimpleMessage(
                 sender,
                 "YesBanana School: VideoCall live",
                 "Go to your profile at https://ecoles.yesbanana.org, to join the call");
-        return "login/admin";
+        return "index1";
     }
 
 

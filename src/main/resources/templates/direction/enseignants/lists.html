@@ -195,37 +195,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal fade" th:id="contacts" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Contacts</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body card-block" >
-                                                    <ul class="text-left list-group" th:each="enseignant : ${lists}">
-                                                        <li class="list-group-item mb-2 d-flex flex-row justify-content-between">
-                                                            <div>
-                                                                <span th:text="${enseignant?.name}"></span>
-                                                            </div>
-                                                            <div>
 
-                                                                <button type="button" data-toggle="modal" data-target="#contacts" class="btn btn-success call">&nbsp;<i class="zmdi zmdi-phone"></i></button>
-                                                                &nbsp;
-                                                                <button type="button" data-toggle="modal" data-target="#contacts" class="btn btn-primary">&nbsp;<i class="zmdi zmdi-check"></i></button>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Appel de groupe</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
@@ -327,7 +297,38 @@
         </div>
     </div>
     <!-- end modal medium -->
+    <div class="modal fade" th:id="contacts" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Contacts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body card-block" >
+                    <ul class="text-left list-group" th:each="enseignant : ${lists}">
+                        <li class="list-group-item mb-2 d-flex flex-row justify-content-between">
+                            <div>
+                                <span th:text="${enseignant?.name}"></span>
 
+                            </div>
+                            <div>
+
+                                <button type="button" data-dismiss="modal" class="btn btn-success call">&nbsp;<i class="zmdi zmdi-phone"></i></button>
+                                &nbsp;<input class="callInput" th:value="${enseignant?.email}" type="hidden" />
+                                <button type="button"  data-dismiss="modal" class="btn btn-primary">&nbsp;<i class="zmdi zmdi-check"></i></button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Appel de groupe</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Jquery JS-->
