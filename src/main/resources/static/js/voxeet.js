@@ -1,9 +1,20 @@
+const removeVideoNode = (participant) => {
+    let videoNode = document.getElementById('video-' + participant.id);
+
+    if (videoNode) {
+        videoNode.parentNode.removeChild(videoNode);
+    }
+}
 const main = async (name,to) => {
     console.log(to)
     VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
     VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
         addVideoNode(participant, stream);
     })
+    VoxeetSDK.conference.on('streamRemoved', (participant) => {
+        removeVideoNode(participant);
+    });
+
     try {
         await VoxeetSDK.session.open({name})
         VoxeetSDK.conference.create({ alias: name })
@@ -21,7 +32,7 @@ const main = async (name,to) => {
                         $('#body').preloader('remove')
                         document.getElementById('video-super-container').style.display='flex'
                           }
-                ).catch(e=>console.log(e))
+                ).catch(e=>{console.log(e);$('#body').preloader('remove')})
 
 
 
