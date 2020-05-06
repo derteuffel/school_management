@@ -1,14 +1,27 @@
-var conferenceId
-const main = async (name) => {
+const removeVideoNode = (participant) => {
+    let videoNode = document.getElementById('video-' + participant.id);
+
+    if (videoNode) {
+        videoNode.parentNode.removeChild(videoNode);
+    }
+}
+const main = async (name,to) => {
+    console.log(to)
     VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
     VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
         addVideoNode(participant, stream);
     })
+    VoxeetSDK.conference.on('streamRemoved', (participant) => {
+        removeVideoNode(participant);
+    });
+
     try {
         await VoxeetSDK.session.open({name})
         VoxeetSDK.conference.create({ alias: name })
             .then((conference) =>{
-                conferenceId = conference
+                    fetch(`http://localhost:8080/sendMail/${to}/${conference.id}`).then(()=>{
+                        console.log('great')
+                    })
                     return VoxeetSDK.conference.join(conference, {})
             }
             )
@@ -19,7 +32,7 @@ const main = async (name) => {
                         $('#body').preloader('remove')
                         document.getElementById('video-super-container').style.display='flex'
                           }
-                ).catch(e=>console.log(e))
+                ).catch(e=>{console.log(e);$('#body').preloader('remove')})
 
 
 
@@ -34,14 +47,14 @@ const main = async (name) => {
     }
 }
 const callsButton = document.getElementsByClassName('call')
-const call = ()=>{
+const callInput = document.getElementsByClassName('callInput')
+const current=0
+const call = (e)=>{
     $('#body').preloader()
-    fetch('http://localhost:8080/sendMail/newordn@gmail.com').then(()=>{
-        console.log('test')
-    })
-    main(document.getElementById('directorFirstName').value)
+    main(document.getElementById('directorFirstName').value,e.currentTarget.param)
 }
-for(i=0;i<callsButton.length;i++){
+for(i=0;i<=callInput.length-1;i++){
+    callsButton[i].param = callInput[i].value
     callsButton[i].addEventListener('click',call)
 }
 

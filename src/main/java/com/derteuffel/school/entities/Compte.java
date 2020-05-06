@@ -27,6 +27,7 @@ public class Compte implements Serializable{
     private String avatar;
     private String resetToken;
     private String code;
+    private String conferenceId;
     private Boolean status;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
