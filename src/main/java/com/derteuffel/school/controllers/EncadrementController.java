@@ -105,7 +105,7 @@ public class EncadrementController {
 
     @PostMapping("/registration2")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid EncadrementRegistrationDto encadrementRegistrationDto,
-                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file ){
+                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file, @RequestParam("picture") MultipartFile picture ){
 
         Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
@@ -131,6 +131,7 @@ public class EncadrementController {
             encadreur.setSalaire(encadrementRegistrationDto.getSalaire()+" $");
             encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
             encadreur.setPays(encadrementRegistrationDto.getPays());
+            encadreur.setDescription(encadrementRegistrationDto.getDescription());
             if (!(file.isEmpty())) {
                 try {
                     // Get the file and save it somewhere
@@ -143,8 +144,20 @@ public class EncadrementController {
                 encadreur.setCv("/downloadFile/" + file.getOriginalFilename());
             }
 
+        if (!(picture.isEmpty())) {
+            try {
+                // Get the file and save it somewhere
+                byte[] bytes = picture.getBytes();
+                Path path = Paths.get(fileStorage + picture.getOriginalFilename());
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            encadreur.setAvatar("/downloadFile/" + picture.getOriginalFilename());
+        }
+
             encadreurRepository.save(encadreur);
-            compteService.saveEncadreur(encadrementRegistrationDto,"/images/profile.jpeg",encadreur);
+            compteService.saveEncadreur(encadrementRegistrationDto,encadreur.getAvatar(),encadreur);
 
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";
@@ -167,7 +180,7 @@ public class EncadrementController {
     }
 
 
-    @GetMapping("/encadreur/delete/")
+    @GetMapping("/encadreur/delete/{id}")
     public String deleteEncadreur(@PathVariable Long id){
         encadreurRepository.deleteById(id);
         return "redirect:/encadrements/encadreurs";
@@ -238,7 +251,7 @@ public class EncadrementController {
         return "redirect:/encadrements/enseignant/eleves/"+encadreur.getId();
     }
 
-    @GetMapping("/eleves/delete/")
+    @GetMapping("/eleves/delete/{id}")
     public String deleteEnfants(@PathVariable Long id){
         encadreurRepository.deleteById(id);
         return "redirect:/encadrements/eleves";
