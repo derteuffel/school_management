@@ -499,7 +499,7 @@ public class EncadrementController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         cours.setCompte(compte);
-
+        System.out.println("jesuis entrain d'enregistrer");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         if (!(file.isEmpty())){
@@ -514,6 +514,7 @@ public class EncadrementController {
             cours.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
 
+        System.out.println("je fait un enregistrement");
         cours.setDate(dateFormat.format(date));
         cours.setType(ECours.COURS.toString());
         coursRepository.save(cours);

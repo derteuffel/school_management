@@ -107,8 +107,6 @@ public class AdminLoginController {
                 e.printStackTrace();
             }
             livre.setFichier("/downloadFile/" + file.getOriginalFilename());
-        }else {
-            livre.setCouverture(livre.getCouverture());
         }
         if (!(cover.isEmpty())) {
             try {
@@ -120,8 +118,6 @@ public class AdminLoginController {
                 e.printStackTrace();
             }
             livre.setCouverture("/downloadFile/" + cover.getOriginalFilename());
-        }else {
-            livre.setFichier(livre.getFichier());
         }
 
         livreRepository.save(livre);

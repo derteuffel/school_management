@@ -73,7 +73,7 @@
                             <h2>Espace bibliotheque</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 col-lg-4 mx-1" th:each="item : ${lists}">
+                                <div class="col-md-6 col-lg-4 " th:each="item : ${lists}">
                                     <button type="button" data-toggle="modal" data-target="#detailLivreModal"  th:attr="data-target='#detailLivreModal'+${item?.id}">
                                         <div class="card">
                                             <img class="card-img-top" th:src="${item.couverture}" style="width: 268px;height:179px" alt="Card image cap">
