@@ -113,7 +113,7 @@ public class DirectionLoginController {
             compteService.save(compteDto, "/images/profile.jpeg", ecole1.getId());
             Mail sender = new Mail();
             sender.sender(
-                    "solutionsarl02@gmail.com",
+                    "confirmation@yesbanana.org",
                     "Enregistrement d'un directeur ou responsable",
                     "Viens de s'enregistrer comme directeur de l'ecole :" + ecole1.getName() + " de " + ecole1.getProvince());
 
@@ -222,7 +222,7 @@ public class DirectionLoginController {
                 "vos identifiants : username:" + compte1.getUsername() + " et password : " + compte1.getPassword());
 
         sender.sender(
-                "solutionsarl02@gmail.com",
+                "confirmation@yesbanana.org",
                 "Enregistrement d'un enseignant",
                 "L'utilisateur " + compte1.getUsername() + " avec l'email :" +
                         compte1.getEmail() + "  Vient d'etre ajouter " +

@@ -272,7 +272,7 @@ public class EnseignantLoginController {
             );
 
             mailService.sendSimpleMessage(
-                    "solutionsarl02@gmail.com",
+                    "confirmation@yesbanana.org",
                     "YesBanana: Notification Inscription d'un enseignant",
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
                             compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
