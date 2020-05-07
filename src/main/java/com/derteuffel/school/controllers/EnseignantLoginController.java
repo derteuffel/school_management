@@ -7,6 +7,7 @@ import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.helpers.PresenceForm;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -531,36 +532,34 @@ public class EnseignantLoginController {
         }
 
         messageRepository.save(message);
-        MailService mailService = new MailService();
+        Mail sender = new Mail();
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
         for (Compte compte1 : comptes){
             if (message.getVisibilite().toString().contains(EVisibilite.DIRECTION.toString())){
                 if (compte1.getEcole() == salle.getEcole()){
-                    mailService.sendSimpleMessage(
-                            compte.getEmail(),
-                            "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                            "avec un visibilite ----> "+message.getVisibilite()
 
-                    );
+                    sender.sender(
+                            compte1.getEmail(),
+                            "Envoi d'un message",
+                            "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+
                 }
             }else {
-                mailService.sendSimpleMessage(
+                sender.sender(
                         compte.getEmail(),
-                        "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                        "avec un visibilite ----> "+message.getVisibilite()
+                        "Envoi d'un message",
+                        "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-                );
             }
         }
 
 
-        mailService.sendSimpleMessage(
+        sender.sender(
                 compte.getEmail(),
-                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         return "redirect:/enseignant/message/"+salle.getId();
 
     }

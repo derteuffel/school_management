@@ -5,7 +5,7 @@ import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
-import com.derteuffel.school.services.MailService;
+import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -443,14 +443,13 @@ public class ParentLoginController {
         }
 
         messageRepository.save(message);
-        MailService mailService = new MailService();
+        Mail sender = new Mail();
 
-        mailService.sendSimpleMessage(
+        sender.sender(
                 compte.getEmail(),
-                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         return "redirect:/parent/classe/detail/"+salle.getId();
 
     }

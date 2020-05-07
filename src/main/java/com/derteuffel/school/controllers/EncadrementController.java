@@ -8,6 +8,7 @@ import com.derteuffel.school.helpers.EleveEncadreurHelper;
 import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -159,6 +160,12 @@ public class EncadrementController {
             encadreurRepository.save(encadreur);
             compteService.saveEncadreur(encadrementRegistrationDto,encadreur.getAvatar(),encadreur);
 
+        Mail sender = new Mail();
+        sender.sender(
+                encadrementRegistrationDto.getEmail(),
+                "Enregistrement Espace encadrement",
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Encadreur/Expert YesB, contacter l'equipe de YesB");
+
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";
     }
@@ -289,6 +296,12 @@ public class EncadrementController {
             enfant.setPays(encadrementRegistrationDto.getPays());
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
+        Mail sender = new Mail();
+        sender.sender(
+                encadrementRegistrationDto.getEmail(),
+                "Enregistrement Espace encadrement",
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Etudiant/Eleve, contacter l'equipe de YesB");
+
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse info@yesbanana.org pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
         return "redirect:/encadrements/login";
     }
@@ -753,6 +766,14 @@ public class EncadrementController {
         }
 
         messageRepository.save(message);
+        Mail sender = new Mail();
+        sender.sender(
+                compte.getEmail(),
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+        Role roleEncadreur = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
+        Role roleParent = roleRepository.findByName(ERole.ROLE_PARENT.toString());
+
         return "redirect:/encadrements/message";
 
     }
