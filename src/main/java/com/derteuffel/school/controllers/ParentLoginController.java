@@ -2,6 +2,7 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
@@ -182,6 +183,10 @@ public class ParentLoginController {
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         List<Livre> alls = new ArrayList<>();
         for (int i=0; i<livres.size();i++){
             if (!(i>9)){

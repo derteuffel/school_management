@@ -2,6 +2,7 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.EleveEncadreurHelper;
@@ -470,9 +471,14 @@ public class EncadrementController {
         request.getSession().setAttribute("compte",compte);
         List<Livre> alls = new ArrayList<>();
         List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         for (int i=0;i<livres.size();i++){
             if (!(i>12)){
                 alls.add(livres.get(i));
+
             }
         }
         model.addAttribute("lists",alls);

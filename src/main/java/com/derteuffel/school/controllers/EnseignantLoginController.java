@@ -2,6 +2,7 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.helpers.PresenceForm;
@@ -171,6 +172,10 @@ public class EnseignantLoginController {
 
         model.addAttribute("classe",salle);
         List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         List<Livre> alls = new ArrayList<>();
         for (int i=0; i<livres.size();i++){
             if (!(i>9)){
