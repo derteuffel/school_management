@@ -71,7 +71,7 @@
 
                             <button type="button" th:if="${role.name} == 'ROLE_ENCADREUR'" data-toggle="modal" data-target="#addDevoirModal" class="btn btn-primary">Nouveau devoir&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Ensemble des devoirs de la classe</h2>
+                            <h2>Ensemble des Travaux pratiques de la classe</h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2" th:each="devoir : ${lists}">
@@ -86,7 +86,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail devoir</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail travail</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -138,7 +138,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Suppression Devoir</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Suppression travail</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -174,7 +174,7 @@
             <div class="modal-content">
                 <form th:action="@{/encadrements/devoirs/save}" autocomplete="off" method="post" th:object="${devoir}" enctype="multipart/form-data" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouveau devoir</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouveau travail</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
