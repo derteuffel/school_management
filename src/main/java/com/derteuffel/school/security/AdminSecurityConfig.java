@@ -56,7 +56,7 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/js/**",
                         "/css/**",
                         "/img/**",
-                        "/img/**",
+                        "/downloadFile/**",
                         "/vendor/**",
                         "/fonts/**",
                         "/images/**",
