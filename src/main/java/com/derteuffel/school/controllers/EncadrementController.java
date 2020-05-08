@@ -11,7 +11,6 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,8 +65,8 @@ public class EncadrementController {
 
     @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage;
+    //@Value("${file.upload-dir}")
+    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String login(){
@@ -150,7 +149,7 @@ public class EncadrementController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = picture.getBytes();
-                Path path = Paths.get(fileStorage+"/"+picture.getOriginalFilename());
+                Path path = Paths.get(fileStorage+picture.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -325,7 +324,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -339,7 +338,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = image.getBytes();
-                Path path = Paths.get(fileStorage+"/"+image.getOriginalFilename());
+                Path path = Paths.get(fileStorage+image.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -506,7 +505,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -577,7 +576,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -615,7 +614,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -723,7 +722,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -764,7 +763,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();

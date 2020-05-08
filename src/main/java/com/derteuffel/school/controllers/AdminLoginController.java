@@ -8,7 +8,6 @@ import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.repositories.LivreRepository;
 import com.derteuffel.school.services.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,8 +41,8 @@ public class AdminLoginController {
 
     @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage;
+    //@Value("${file.upload-dir}")
+    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(){
@@ -108,7 +107,7 @@ public class AdminLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
                 System.out.println("je suis le path+ "+path);
             } catch (IOException e) {
@@ -120,7 +119,7 @@ public class AdminLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes1 = cover.getBytes();
-                Path path1 = Paths.get(fileStorage+"/"+cover.getOriginalFilename());
+                Path path1 = Paths.get(fileStorage+cover.getOriginalFilename());
                 Files.write(path1, bytes1);
                 System.out.println("je suis + "+path1);
             } catch (IOException e) {

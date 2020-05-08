@@ -8,7 +8,6 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,8 +66,8 @@ public class ParentLoginController {
 
     @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage;
+    //@Value("${file.upload-dir}")
+    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(Model model){
@@ -270,7 +269,7 @@ public class ParentLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -439,7 +438,7 @@ public class ParentLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
