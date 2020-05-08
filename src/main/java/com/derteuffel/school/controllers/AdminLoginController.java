@@ -103,6 +103,7 @@ public class AdminLoginController {
                 byte[] bytes = file.getBytes();
                 Path path = Paths.get(fileStorage + file.getOriginalFilename());
                 Files.write(path, bytes);
+                System.out.println("je suis le path+ "+path);
             } catch (IOException e) {
                 e.printStackTrace();
             }

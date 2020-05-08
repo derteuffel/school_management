@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by user on 22/03/2020.
@@ -35,7 +34,8 @@ public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
                     .logout()
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/admin/logout"))
+                    .and()
+                    .logout().logoutUrl("/admin/logout")
                     .logoutSuccessUrl("/admin/login?logout")
                     .and()
                     .exceptionHandling().accessDeniedPage("/admin/access-denied");
