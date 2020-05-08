@@ -341,7 +341,7 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -569,12 +569,12 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            message.setFichier("/downloadFile/" + file.getOriginalFilename());
+            message.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
@@ -619,12 +619,12 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            message.setFichier("/downloadFile/" + file.getOriginalFilename());
+            message.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 

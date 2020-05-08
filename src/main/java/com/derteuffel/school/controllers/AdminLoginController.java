@@ -108,25 +108,25 @@ public class AdminLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+"/"+file.getOriginalFilename());
                 Files.write(path, bytes);
                 System.out.println("je suis le path+ "+path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            livre.setFichier("/downloadFile/" + file.getOriginalFilename());
+            livre.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         if (!(cover.isEmpty())) {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes1 = cover.getBytes();
-                Path path1 = Paths.get(fileStorage + cover.getOriginalFilename());
+                Path path1 = Paths.get(fileStorage+"/"+cover.getOriginalFilename());
                 Files.write(path1, bytes1);
                 System.out.println("je suis + "+path1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            livre.setCouverture("/downloadFile/" + cover.getOriginalFilename());
+            livre.setCouverture("/downloadFile/"+cover.getOriginalFilename());
         }
 
         livreRepository.save(livre);
