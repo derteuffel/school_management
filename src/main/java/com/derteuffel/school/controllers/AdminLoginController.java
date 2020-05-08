@@ -77,6 +77,13 @@ public class AdminLoginController {
         return "redirect:/admin/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/admin/login";
+    }
+
     @GetMapping("/bibliotheque/lists")
     public String lists(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -112,9 +119,10 @@ public class AdminLoginController {
         if (!(cover.isEmpty())) {
             try {
                 // Get the file and save it somewhere
-                byte[] bytes = cover.getBytes();
-                Path path = Paths.get(fileStorage + cover.getOriginalFilename());
-                Files.write(path, bytes);
+                byte[] bytes1 = cover.getBytes();
+                Path path1 = Paths.get(fileStorage + cover.getOriginalFilename());
+                Files.write(path1, bytes1);
+                System.out.println("je suis + "+path1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
