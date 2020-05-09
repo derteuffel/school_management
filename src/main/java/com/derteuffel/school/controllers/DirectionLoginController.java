@@ -8,6 +8,7 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,8 +59,8 @@ public class DirectionLoginController {
 
     @Autowired
     private EleveRepository eleveRepository;
-    //@Value("${file.upload-dir}")
-    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    @Value("${file.upload-dir}")
+    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director() {
@@ -187,6 +188,7 @@ public class DirectionLoginController {
         System.out.println(enseignants.size());
 
         model.addAttribute("lists",enseignants);
+        model.addAttribute("classes", salles);
         model.addAttribute("ecole",ecole);
 
         return "direction/enseignants";
@@ -197,14 +199,16 @@ public class DirectionLoginController {
 
     //--- Enseignant management start ----///
     @PostMapping("/enseignant/save")
-    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, ArrayList<Long> classes) {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
+
         CompteRegistrationDto compte1 = new CompteRegistrationDto();
         Enseignant enseignant1 = enseignantRepository.findByEmail(enseignant.getEmail());
         if (enseignant1 != null) {
             model.addAttribute("error", "il existe un enseignant deja enregistrer avec cet adresse email");
+            model.addAttribute("message",new Message());
             return "direction/home";
         }
         compte1.setUsername(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
@@ -213,17 +217,23 @@ public class DirectionLoginController {
         compte1.setConfirmPassword(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
         enseignant.setAvatar("/images/profile.jpeg");
         enseignantRepository.save(enseignant);
-
+        if (!(classes.isEmpty())){
+            for (Long ids : classes){
+                Salle salle = salleRepository.getOne(ids);
+                salle.getEnseignants().add(enseignant);
+                salleRepository.save(salle);
+            }
+        }
         compteService.saveEnseignant(compte1, "/images/profile.jpeg", compte.getEcole().getId(), enseignant);
         Mail sender = new Mail();
         sender.sender(
                 enseignant.getEmail(),
-                "Enregistrement d'un enseignant",
+                "Enregistrement d'un enseignant dans l'ecole : "+compte.getEcole().getName(),
                 "vos identifiants : username:" + compte1.getUsername() + " et password : " + compte1.getPassword());
 
         sender.sender(
                 "confirmation@yesbanana.org",
-                "Enregistrement d'un enseignant",
+                "Enregistrement d'un enseignant dans l'ecole : "+compte.getEcole().getName(),
                 "L'utilisateur " + compte1.getUsername() + " avec l'email :" +
                         compte1.getEmail() + "  Vient d'etre ajouter " +
                         "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
@@ -240,6 +250,7 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
 
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
         List<Enseignant> enseignants = new ArrayList<>();
 
         for (Compte compte1 : comptes) {
@@ -248,6 +259,7 @@ public class DirectionLoginController {
             }
         }
 
+        model.addAttribute("classes",salles);
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("lists", enseignants);
 
@@ -479,11 +491,14 @@ public class DirectionLoginController {
     }
 
     @PostMapping("/eleves/save/{id}")
-    public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes){
+    public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request){
 
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
         Parent existParent = parentRepository.findByNomComplet(eleve.getNomCompletTuteur().toUpperCase());
         Salle salle = salleRepository.getOne(id);
         eleve.setSalle(salle);
+        eleve.setPays(compte.getEcole().getCountry());
 
         if (existParent != null){
             eleve.setParent(existParent);
@@ -505,14 +520,14 @@ public class DirectionLoginController {
             Mail sender = new Mail();
             sender.sender(
                     compteRegistrationDto.getEmail(),
-                    "Enregistrement d'un parent",
+                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " avec mot de passe :" +
                             compteRegistrationDto.getPassword() + "  Vient d'etre ajouter " +
                             "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
 
             sender.sender(
                     "confirmation@yesbanana.org",
-                    "Enregistrement d'un parent",
+                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " avec email :" +
                             compteRegistrationDto.getEmail() + "  Vient d'etre ajouter " +
                             "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");

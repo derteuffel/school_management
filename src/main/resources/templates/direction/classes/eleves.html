@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecte successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -71,7 +71,7 @@
 
                             <button  type="button" data-toggle="modal" data-target="#addEleveModal" class="btn btn-primary">Nouvel eleve&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Liste des eleves de la classe</h2>
+                            <h2>Liste des éleves de la classe <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2 px-1" th:each="eleve : ${lists}">
@@ -108,10 +108,10 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Postnom</label>
+                                                                <label  class=" form-control-label">Pays</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${eleve?.postnom}">Postnom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.pays}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
@@ -184,7 +184,7 @@
                         <!-- END PAGE CONTENT-->
                     </div>
                     <div class="col-xl-3">
-                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <h2 class="title-1 m-b-25">Gestion de la classe</h2>
                         <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                             <div class="au-card-inner">
                                 <div class="table-responsive">
@@ -223,7 +223,7 @@
             <div class="modal-content">
                 <form th:action="@{/direction/eleves/save/}+${classe.id}" autocomplete="off" method="post" th:object="${student}" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvel eleve</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouvel éleve</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -231,11 +231,11 @@
                     <div class="modal-body card-block">
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-prenom" class=" form-control-label">Prenom</label>
+                                <label for="text-prenom" class=" form-control-label">Prénom</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prenom" class="form-control">
-                                <small class="form-text text-muted">Prenom de l'eleve</small>
+                                <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prénom" class="form-control">
+                                <small class="form-text text-muted">Prénom de l'éleve</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -244,25 +244,17 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
-                                <small class="form-text text-muted">Nom de l'eleve</small>
+                                <small class="form-text text-muted">Nom de l'éleve</small>
                             </div>
                         </div>
+
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-postnom" class=" form-control-label">Postnom</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-postnom" th:field="*{postnom}" placeholder="Post nom" class="form-control">
-                                <small class="form-text text-muted">Postnom de l'eleve</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-nomCompletTuteur" class=" form-control-label">nom complet du parent</label>
+                                <label for="text-nomCompletTuteur" class=" form-control-label">Nom complet du parent</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nomCompletTuteur" th:field="*{nomCompletTuteur}" placeholder="Nom complet" class="form-control">
-                                <small class="form-text text-muted">Nom complet de telephone</small>
+                                <small class="form-text text-muted">Nom complet de tuteur</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -271,7 +263,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-telephone" th:field="*{telephoneTuteur}" placeholder="Telephone" class="form-control">
-                                <small class="form-text text-muted">Numero de telephone</small>
+                                <small class="form-text text-muted">Numero de téléphone</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -306,13 +298,13 @@
                                 <label for="text-localisation" class=" form-control-label">Localisation</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-localisation" th:field="*{localisation}" placeholder="Localisation" class="form-control">
-                                <small class="form-text text-muted">Localisation de l'eleve</small>
+                                <input type="text" id="text-localisation" th:field="*{localisation}" placeholder="(Ville, quartier)" class="form-control">
+                                <small class="form-text text-muted">Localisation de l'éleve</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-autre" class=" form-control-label">Localisation</label>
+                                <label for="text-autre" class=" form-control-label">Autres informations</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <textarea th:field="*{autreInformation}" id="text-autre" class="form-control" rows="5" placeholder="Autre information"></textarea>

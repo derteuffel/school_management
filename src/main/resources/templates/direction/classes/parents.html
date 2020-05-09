@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des parents d'eleve de la classe</h2>
+                            <h2>Liste des parents d'eleve de la classe <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2 px-1" th:each="parent : ${lists}">
@@ -88,7 +88,7 @@
                         <!-- END PAGE CONTENT-->
                     </div>
                     <div class="col-xl-3">
-                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <h2 class="title-1 m-b-25">Gestion de la classe</h2>
                         <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                             <div class="au-card-inner">
                                 <div class="table-responsive">

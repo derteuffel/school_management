@@ -11,6 +11,7 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +66,8 @@ public class EncadrementController {
 
     @Autowired
     private CompteService compteService;
-    //@Value("${file.upload-dir}")
-    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    @Value("${file.upload-dir}")
+    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String login(){

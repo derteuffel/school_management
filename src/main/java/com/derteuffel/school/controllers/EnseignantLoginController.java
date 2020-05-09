@@ -11,6 +11,7 @@ import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,8 +68,8 @@ public class EnseignantLoginController {
 
     @Autowired
     private CompteService compteService;
-    //@Value("${file.upload-dir}")
-    private  String fileStorage =System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    @Value("${file.upload-dir}")
+    private  String fileStorage ;//=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(Model model){
@@ -194,7 +195,7 @@ public class EnseignantLoginController {
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(compte.getEnseignant().getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         model.addAttribute("lists",salles);
         return "enseignant/classes";
     }
@@ -321,7 +322,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours cours = coursRepository.getOne(id);
         model.addAttribute("cours",cours);
         model.addAttribute("salles",salles);
@@ -369,7 +370,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
         model.addAttribute("lists",devoirs);
@@ -384,7 +385,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours devoir = coursRepository.getOne(id);
         model.addAttribute("devoir",devoir);
         model.addAttribute("salles",salles);
@@ -432,7 +433,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Response> reponses = responseRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",reponses);
@@ -447,7 +448,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",examens);
@@ -462,7 +463,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours examen = coursRepository.getOne(id);
         model.addAttribute("examen",examen);
         model.addAttribute("salles",salles);
@@ -605,7 +606,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Hebdo> hebdos = hebdoRepository.findAllByCompte_IdAndSalle_Id(compte.getId(),salle.getId(), Sort.by(Sort.Direction.DESC,"id"));
         Collection<Presence> presences = new ArrayList<>();
@@ -644,7 +645,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Hebdo hebdo = hebdoRepository.getOne(id);
         Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
         Collection<Presence> presences = presenceRepository.findAllByHebdo_Id(hebdo.getId());

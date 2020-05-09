@@ -61,8 +61,8 @@
                 <!-- ALERT-->
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
-                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecté successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -83,8 +83,9 @@
 
                             <button type="button" data-toggle="modal" data-target="#addEnseignantModal" class="btn btn-primary">Nouvel enseignant&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <button type="button" id="startCall" data-toggle="modal" data-target="#contacts" class="btn btn-success">Passer un appel&nbsp;<i class="zmdi zmdi-phone"></i></button>
+                            <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
                             <hr>
-                            <h2>Liste des enseignants de l'ecole</h2>
+                            <h2>Liste des enseignants de l'école</h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-5 col-md-6 m-2" th:each="enseignant : ${lists}">
@@ -218,7 +219,7 @@
             <div class="modal-content">
                 <form th:action="@{/direction/enseignant/save}" autocomplete="off" method="post" th:object="${teacher}" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvel enseignant</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouvel enseignant/nouveau professeur</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -226,11 +227,11 @@
                     <div class="modal-body card-block">
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-prenom" class=" form-control-label">Prenom</label>
+                                <label for="text-prenom" class=" form-control-label">Prénom(Nom d'utilisateur)</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prenom" class="form-control">
-                                <small class="form-text text-muted">Prenom de l'enseignant</small>
+                                <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prénom" class="form-control">
+                                <small class="form-text text-muted">Prénom de l'enseignant</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -240,15 +241,6 @@
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
                                 <small class="form-text text-muted">Nom de l'enseignant</small>
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-postnom" class=" form-control-label">Postnom</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-postnom" th:field="*{postnom}" placeholder="Post nom" class="form-control">
-                                <small class="form-text text-muted">Postnom de l'enseignant</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -275,22 +267,32 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-whatsapp" th:field="*{whatsapp}" placeholder="Whatsapp" class="form-control">
-                                <small class="form-text text-muted">Numero de telephone whatsapp</small>
+                                <small class="form-text text-muted">Numero de téléphone whatsapp</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-cours" class=" form-control-label">Cours enseigner</label>
+                                <label for="text-cours" class=" form-control-label">Cours enseigné</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-cours" th:field="*{cour_enseigner}" placeholder="Cours" class="form-control">
-                                <small class="form-text text-muted">Cours enseigner</small>
+                                <small class="form-text text-muted">Cours enseigné</small>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label  class=" form-control-label">Classes </label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <select name="classes" class="form-control" multiple>
+                                    <option th:each="item : ${classes}" th:value="${item.id}" th:text="${item.niveau}"></option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
                     </div>
                 </form>
             </div>

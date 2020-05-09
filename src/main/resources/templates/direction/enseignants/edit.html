@@ -58,7 +58,7 @@
 
                             <h2>Modification d'un enseignant</h2>
                             <div class="row"  >
-                                <form th:action="@{/direction/enseignant/update}" autocomplete="off" method="post" th:object="${teacher}" class="form-horizontal">
+                                <form th:action="@{/direction/enseignant/update}" autocomplete="off" method="post" th:object="${teacher}" class="form-horizontal" enctype="multipart/form-data">
                                     <div class="card-body card-block">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
