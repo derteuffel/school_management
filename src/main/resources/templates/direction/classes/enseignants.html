@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecte successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -71,7 +71,7 @@
 
                             <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Liste des enseignants de la classe</h2>
+                            <h2>Liste des enseignants de la classe <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2 py-1" th:each="enseignant : ${lists}">
@@ -168,7 +168,7 @@
                         <!-- END PAGE CONTENT-->
                     </div>
                     <div class="col-xl-3">
-                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <h2 class="title-1 m-b-25">Gestion de la classe</h2>
                         <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                             <div class="au-card-inner">
                                 <div class="table-responsive">

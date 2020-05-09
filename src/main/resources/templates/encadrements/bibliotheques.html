@@ -72,16 +72,21 @@
                             <h2>Espace bibliotheque</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 col-lg-4 mx-1" th:each="item : ${lists}">
+                                <div class="col-md-6 col-lg-4 " th:each="item : ${lists}">
                                     <button type="button" data-toggle="modal" data-target="#detailLivreModal"  th:attr="data-target='#detailLivreModal'+${item?.id}">
                                         <div class="card">
                                             <img class="card-img-top" th:src="${item.couverture}" style="width: 268px;height:179px" alt="Card image cap">
                                             <div class="card-body">
-                                                <h4 class="card-title mb-3" th:text="${#strings.substring(item.title,0,20)}+'...'"></h4>
-                                                <p class="card-text" th:text="${#strings.substring(item.author,0,10)}+'...'">
+                                                <h4 class="card-title mb-3" th:if="${#strings.length(item.title)}>19" th:text="${#strings.substring(item.title,0,20)}+'...'"></h4>
+                                                <h4 class="card-title mb-3" th:unless="${#strings.length(item.title)}>19" th:text="${item.title}"></h4>
+                                                <p class="card-text" th:if="${#strings.length(item.author)}>9" th:text="${#strings.substring(item.author,0,10)}+'...'">
+                                                <p class="card-text" th:unless="${#strings.length(item.author)}>9" th:text="${item.author}">
                                                 </p>
                                             </div>
                                         </div>
+                                    </button>
+                                    <button type="button" data-toggle="modal" data-target="#deleteLivreModal"  th:attr="data-target='#deleteLivreModal'+${item?.id}">
+                                        <i class="fa fa-trash"></i>
                                     </button>
                                     <div class="modal fade" th:id="detailLivreModal+${item?.id}" tabindex="-1" role="dialog" aria-labelledby="detailLivreModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -95,7 +100,7 @@
                                                 <div class="modal-body card-block">
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Titre</label>
+                                                            <label for="text-prenom" class=" form-control-label">Titre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.title}">Prenom de l'enseignant</small>
@@ -103,18 +108,10 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Auteur</label>
+                                                            <label for="text-nom" class=" form-control-label">Auteur</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.author}">Nom de l'enseignant</small>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Classe</label>
-                                                        </div>
-                                                        <div class="col-12 col-md-9">
-                                                            <small class="form-text text-muted" th:text="${item?.salle}">Nom de l'enseignant</small>
                                                         </div>
                                                     </div>
                                                     <div class="row form-group">
@@ -127,15 +124,35 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Voir fichier</label>
+                                                            <label  class=" form-control-label">Telecharger votre livre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
-                                                            <a th:href="${item.fichier}" class="form-text text-muted" th:text="${item?.fichier}">Numero de telephone</a>
+                                                            <a th:href="@{${item.fichier}}"  th:text="${item?.fichier}">Numero de telephone</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                    <a  class="btn btn-primary" th:href="@{/admin/livre/edit/}+${item?.id}">Editer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" th:id="deleteLivreModal+${item?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteLivreModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Suppression Livre</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body card-block">
+                                                    <p>Voulez vous vraiment supprimer cet element??</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                    <a  class="btn btn-primary" th:href="@{/admin/livre/delete/}+${item?.id}">Supprimer</a>
                                                 </div>
                                             </div>
                                         </div>

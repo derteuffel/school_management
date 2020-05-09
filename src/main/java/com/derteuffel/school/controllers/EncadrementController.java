@@ -2,12 +2,14 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.EleveEncadreurHelper;
 import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -65,7 +67,7 @@ public class EncadrementController {
     @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
-    private  String fileStorage;
+    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String login(){
@@ -105,7 +107,7 @@ public class EncadrementController {
 
     @PostMapping("/registration2")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid EncadrementRegistrationDto encadrementRegistrationDto,
-                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file ){
+                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file, @RequestParam("picture") MultipartFile picture ){
 
         Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
@@ -131,6 +133,7 @@ public class EncadrementController {
             encadreur.setSalaire(encadrementRegistrationDto.getSalaire()+" $");
             encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
             encadreur.setPays(encadrementRegistrationDto.getPays());
+            encadreur.setDescription(encadrementRegistrationDto.getDescription());
             if (!(file.isEmpty())) {
                 try {
                     // Get the file and save it somewhere
@@ -143,8 +146,26 @@ public class EncadrementController {
                 encadreur.setCv("/downloadFile/" + file.getOriginalFilename());
             }
 
+        if (!(picture.isEmpty())) {
+            try {
+                // Get the file and save it somewhere
+                byte[] bytes = picture.getBytes();
+                Path path = Paths.get(fileStorage+picture.getOriginalFilename());
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            encadreur.setAvatar("/downloadFile/"+picture.getOriginalFilename());
+        }
+
             encadreurRepository.save(encadreur);
-            compteService.saveEncadreur(encadrementRegistrationDto,"/images/profile.jpeg",encadreur);
+            compteService.saveEncadreur(encadrementRegistrationDto,encadreur.getAvatar(),encadreur);
+
+        Mail sender = new Mail();
+        sender.sender(
+                encadrementRegistrationDto.getEmail(),
+                "Enregistrement Espace encadrement",
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Encadreur/Expert YesB, contacter l'equipe de YesB");
 
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/encadrements/login";
@@ -167,7 +188,7 @@ public class EncadrementController {
     }
 
 
-    @GetMapping("/encadreur/delete/")
+    @GetMapping("/encadreur/delete/{id}")
     public String deleteEncadreur(@PathVariable Long id){
         encadreurRepository.deleteById(id);
         return "redirect:/encadrements/encadreurs";
@@ -238,7 +259,7 @@ public class EncadrementController {
         return "redirect:/encadrements/enseignant/eleves/"+encadreur.getId();
     }
 
-    @GetMapping("/eleves/delete/")
+    @GetMapping("/eleves/delete/{id}")
     public String deleteEnfants(@PathVariable Long id){
         encadreurRepository.deleteById(id);
         return "redirect:/encadrements/eleves";
@@ -276,6 +297,12 @@ public class EncadrementController {
             enfant.setPays(encadrementRegistrationDto.getPays());
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
+        Mail sender = new Mail();
+        sender.sender(
+                encadrementRegistrationDto.getEmail(),
+                "Enregistrement Espace encadrement",
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Etudiant/Eleve, contacter l'equipe de YesB");
+
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse info@yesbanana.org pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
         return "redirect:/encadrements/login";
     }
@@ -298,7 +325,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -312,7 +339,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = image.getBytes();
-                Path path = Paths.get(fileStorage + image.getOriginalFilename());
+                Path path = Paths.get(fileStorage+image.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -444,9 +471,14 @@ public class EncadrementController {
         request.getSession().setAttribute("compte",compte);
         List<Livre> alls = new ArrayList<>();
         List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         for (int i=0;i<livres.size();i++){
             if (!(i>12)){
                 alls.add(livres.get(i));
+
             }
         }
         model.addAttribute("lists",alls);
@@ -467,14 +499,14 @@ public class EncadrementController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         cours.setCompte(compte);
-
+        System.out.println("jesuis entrain d'enregistrer");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         if (!(file.isEmpty())){
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -482,6 +514,7 @@ public class EncadrementController {
             cours.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
 
+        System.out.println("je fait un enregistrement");
         cours.setDate(dateFormat.format(date));
         cours.setType(ECours.COURS.toString());
         coursRepository.save(cours);
@@ -544,7 +577,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -582,7 +615,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -690,7 +723,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -731,7 +764,7 @@ public class EncadrementController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -740,6 +773,14 @@ public class EncadrementController {
         }
 
         messageRepository.save(message);
+        Mail sender = new Mail();
+        sender.sender(
+                compte.getEmail(),
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+        Role roleEncadreur = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
+        Role roleParent = roleRepository.findByName(ERole.ROLE_PARENT.toString());
+
         return "redirect:/encadrements/message";
 
     }

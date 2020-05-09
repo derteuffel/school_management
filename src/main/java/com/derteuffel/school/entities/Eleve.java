@@ -1,13 +1,11 @@
 package com.derteuffel.school.entities;
 
 import lombok.Data;
-import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  * Created by user on 25/03/2020.
@@ -31,6 +29,7 @@ public class Eleve implements Serializable{
     private int age;
     private String localisation;
     private String autreInformation;
+    private String pays;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Salle salle;

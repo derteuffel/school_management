@@ -2,11 +2,13 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.helpers.PresenceForm;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
+import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +69,7 @@ public class EnseignantLoginController {
     @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
-    private  String fileStorage;
+    private  String fileStorage ;//=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(Model model){
@@ -170,6 +172,10 @@ public class EnseignantLoginController {
 
         model.addAttribute("classe",salle);
         List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         List<Livre> alls = new ArrayList<>();
         for (int i=0; i<livres.size();i++){
             if (!(i>9)){
@@ -189,7 +195,7 @@ public class EnseignantLoginController {
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(compte.getEnseignant().getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         model.addAttribute("lists",salles);
         return "enseignant/classes";
     }
@@ -271,7 +277,7 @@ public class EnseignantLoginController {
             );
 
             mailService.sendSimpleMessage(
-                    "solutionsarl02@gmail.com",
+                    "confirmation@yesbanana.org",
                     "YesBanana: Notification Inscription d'un enseignant",
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
                             compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
@@ -316,7 +322,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours cours = coursRepository.getOne(id);
         model.addAttribute("cours",cours);
         model.addAttribute("salles",salles);
@@ -335,7 +341,7 @@ public class EnseignantLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -364,7 +370,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
         model.addAttribute("lists",devoirs);
@@ -379,7 +385,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours devoir = coursRepository.getOne(id);
         model.addAttribute("devoir",devoir);
         model.addAttribute("salles",salles);
@@ -399,7 +405,7 @@ public class EnseignantLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -427,7 +433,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Response> reponses = responseRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",reponses);
@@ -442,7 +448,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Examen> examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         model.addAttribute("lists",examens);
@@ -457,7 +463,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Cours examen = coursRepository.getOne(id);
         model.addAttribute("examen",examen);
         model.addAttribute("salles",salles);
@@ -477,7 +483,7 @@ public class EnseignantLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -522,7 +528,7 @@ public class EnseignantLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -531,36 +537,34 @@ public class EnseignantLoginController {
         }
 
         messageRepository.save(message);
-        MailService mailService = new MailService();
+        Mail sender = new Mail();
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
         for (Compte compte1 : comptes){
             if (message.getVisibilite().toString().contains(EVisibilite.DIRECTION.toString())){
                 if (compte1.getEcole() == salle.getEcole()){
-                    mailService.sendSimpleMessage(
-                            compte.getEmail(),
-                            "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                            "avec un visibilite ----> "+message.getVisibilite()
 
-                    );
+                    sender.sender(
+                            compte1.getEmail(),
+                            "Envoi d'un message",
+                            "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+
                 }
             }else {
-                mailService.sendSimpleMessage(
+                sender.sender(
                         compte.getEmail(),
-                        "Vous avez recu ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                        "avec un visibilite ----> "+message.getVisibilite()
+                        "Envoi d'un message",
+                        "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-                );
             }
         }
 
 
-        mailService.sendSimpleMessage(
+        sender.sender(
                 compte.getEmail(),
-                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         return "redirect:/enseignant/message/"+salle.getId();
 
     }
@@ -602,7 +606,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Hebdo> hebdos = hebdoRepository.findAllByCompte_IdAndSalle_Id(compte.getId(),salle.getId(), Sort.by(Sort.Direction.DESC,"id"));
         Collection<Presence> presences = new ArrayList<>();
@@ -641,7 +645,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(enseignantRepository.findByEmail(compte.getEmail()).getId());
         Hebdo hebdo = hebdoRepository.getOne(id);
         Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
         Collection<Presence> presences = presenceRepository.findAllByHebdo_Id(hebdo.getId());

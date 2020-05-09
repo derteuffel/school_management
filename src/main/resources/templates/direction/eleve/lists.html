@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des eleves de l'ecole : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
+                            <h2>Liste des éleves de l'école : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class=" col-md-4 m-2" th:each="eleve : ${lists}">
@@ -90,7 +90,7 @@
                                                     <div class="modal-body card-block">
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Prenom</label>
+                                                                <label  class=" form-control-label">Prénom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.prenom}">Prenom de l'enseignant</small>
@@ -106,10 +106,10 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Postnom</label>
+                                                                <label  class=" form-control-label">Pays</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${eleve?.postnom}">Postnom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${eleve?.pays}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">

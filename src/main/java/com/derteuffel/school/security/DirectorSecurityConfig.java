@@ -24,7 +24,9 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
                 .antMatcher("/direction/**").authorizeRequests()
+                .antMatchers("/downloadFile/**").permitAll()
                 .antMatchers("/direction/**").access("hasAnyRole('ROLE_ROOT','ROLE_DIRECTEUR')")
                 .and()
                 .formLogin()
@@ -63,6 +65,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/img/**",
                         "/vendor/**",
                         "/fonts/**",
+                        "/downloadFile/**",
                         "/images/**",
                         "/static/**",
                         "/ecole/connexion",

@@ -2,10 +2,11 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
-import com.derteuffel.school.services.MailService;
+import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -67,7 +68,7 @@ public class ParentLoginController {
     @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
-    private  String fileStorage;
+    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(Model model){
@@ -182,6 +183,10 @@ public class ParentLoginController {
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
         List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         List<Livre> alls = new ArrayList<>();
         for (int i=0; i<livres.size();i++){
             if (!(i>9)){
@@ -265,7 +270,7 @@ public class ParentLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -434,7 +439,7 @@ public class ParentLoginController {
             try{
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             }catch (IOException e){
                 e.printStackTrace();
@@ -443,14 +448,13 @@ public class ParentLoginController {
         }
 
         messageRepository.save(message);
-        MailService mailService = new MailService();
+        Mail sender = new Mail();
 
-        mailService.sendSimpleMessage(
+        sender.sender(
                 compte.getEmail(),
-                "Vous avez ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         return "redirect:/parent/classe/detail/"+salle.getId();
 
     }

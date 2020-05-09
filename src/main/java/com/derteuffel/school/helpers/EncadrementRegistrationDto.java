@@ -41,5 +41,6 @@ public class EncadrementRegistrationDto {
     private String salaire;
     private String whatsapp;
     private String motivation;
+    private String description;
     private String modePaiement;
 }

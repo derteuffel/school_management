@@ -43,7 +43,7 @@ public class AdminLoginController {
     @Autowired
     private CompteService compteService;
     @Value("${file.upload-dir}")
-    private  String fileStorage;
+    private  String fileStorage ;//=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(){
@@ -77,6 +77,13 @@ public class AdminLoginController {
         return "redirect:/admin/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().invalidate();
+        System.out.println("je suis deconnectee");
+        return "redirect:/admin/login";
+    }
+
     @GetMapping("/bibliotheque/lists")
     public String lists(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -101,27 +108,25 @@ public class AdminLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
+                System.out.println("je suis le path+ "+path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            livre.setFichier("/downloadFile/" + file.getOriginalFilename());
-        }else {
-            livre.setCouverture(livre.getCouverture());
+            livre.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         if (!(cover.isEmpty())) {
             try {
                 // Get the file and save it somewhere
-                byte[] bytes = cover.getBytes();
-                Path path = Paths.get(fileStorage + cover.getOriginalFilename());
-                Files.write(path, bytes);
+                byte[] bytes1 = cover.getBytes();
+                Path path1 = Paths.get(fileStorage+cover.getOriginalFilename());
+                Files.write(path1, bytes1);
+                System.out.println("je suis + "+path1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            livre.setCouverture("/downloadFile/" + cover.getOriginalFilename());
-        }else {
-            livre.setFichier(livre.getFichier());
+            livre.setCouverture("/downloadFile/"+cover.getOriginalFilename());
         }
 
         livreRepository.save(livre);

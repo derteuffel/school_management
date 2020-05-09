@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,12 +69,12 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des parents d'eleve de l'ecole : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
+                            <h2>Liste des parents d'éleve de l'école : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <div class="row"  >
                                 <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists}">
                                         <div class="alert alert-dark text-left" role="alert">
                                             <strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> <br>
-                                            <strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span> <br>
+                                            <strong>Téléphone  : </strong><span th:text="${parent?.telephone}"></span> <br>
                                             <strong>E-mail  : </strong><span th:text="${parent?.email}"></span> <br>
                                             <strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span>
                                     </div>

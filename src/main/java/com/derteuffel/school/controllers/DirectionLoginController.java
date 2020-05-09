@@ -1,11 +1,12 @@
 package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.*;
+import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
-import com.derteuffel.school.services.MailService;
+import com.derteuffel.school.services.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -59,7 +60,7 @@ public class DirectionLoginController {
     @Autowired
     private EleveRepository eleveRepository;
     @Value("${file.upload-dir}")
-    private String fileStorage;
+    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director() {
@@ -111,13 +112,12 @@ public class DirectionLoginController {
                 return "direction/registration";
             }
             compteService.save(compteDto, "/images/profile.jpeg", ecole1.getId());
-            MailService mailService = new MailService();
-            mailService.sendSimpleMessage(
-                    "solutionsarl02@gmail.com",
-                    "Viens de s'enregistrer comme directeur de l'ecole :" + ecole1.getName() + " de " + ecole1.getProvince(),
-                    "...."
+            Mail sender = new Mail();
+            sender.sender(
+                    "confirmation@yesbanana.org",
+                    "Enregistrement d'un directeur ou responsable",
+                    "Viens de s'enregistrer comme directeur de l'ecole :" + ecole1.getName() + " de " + ecole1.getProvince());
 
-            );
         } else {
             model.addAttribute("error", "Aucune ecole n'est enregistrer avec ce code, veillez contacter l'administrateur sur info@yesbanana.org");
             return "direction/registration";
@@ -188,6 +188,7 @@ public class DirectionLoginController {
         System.out.println(enseignants.size());
 
         model.addAttribute("lists",enseignants);
+        model.addAttribute("classes", salles);
         model.addAttribute("ecole",ecole);
 
         return "direction/enseignants";
@@ -198,14 +199,16 @@ public class DirectionLoginController {
 
     //--- Enseignant management start ----///
     @PostMapping("/enseignant/save")
-    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, ArrayList<Long> classes) {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
+
         CompteRegistrationDto compte1 = new CompteRegistrationDto();
         Enseignant enseignant1 = enseignantRepository.findByEmail(enseignant.getEmail());
         if (enseignant1 != null) {
             model.addAttribute("error", "il existe un enseignant deja enregistrer avec cet adresse email");
+            model.addAttribute("message",new Message());
             return "direction/home";
         }
         compte1.setUsername(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
@@ -214,22 +217,26 @@ public class DirectionLoginController {
         compte1.setConfirmPassword(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
         enseignant.setAvatar("/images/profile.jpeg");
         enseignantRepository.save(enseignant);
-
+        if (!(classes.isEmpty())){
+            for (Long ids : classes){
+                Salle salle = salleRepository.getOne(ids);
+                salle.getEnseignants().add(enseignant);
+                salleRepository.save(salle);
+            }
+        }
         compteService.saveEnseignant(compte1, "/images/profile.jpeg", compte.getEcole().getId(), enseignant);
-        MailService mailService = new MailService();
-        mailService.sendSimpleMessage(
+        Mail sender = new Mail();
+        sender.sender(
                 enseignant.getEmail(),
-                "Vous venez d'etre ajouter en tant que enseignant dans votre ecole virtuelle :",
-                "vos identifiants : username:" + compte1.getUsername() + " et password : " + compte1.getPassword()
+                "Enregistrement d'un enseignant dans l'ecole : "+compte.getEcole().getName(),
+                "vos identifiants : username:" + compte1.getUsername() + " et password : " + compte1.getPassword());
 
-        );
-
-        mailService.sendSimpleMessage(
-                "solutionsarl02@gmail.com",
-                "YesBanana: Notification Inscription d'un enseignant",
-                "L'utilisateur " + compte1.getUsername() + " dont l'email est " +
-                        compte1.getEmail() + "  Vient de s'inscrire " +
-                        "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+        sender.sender(
+                "confirmation@yesbanana.org",
+                "Enregistrement d'un enseignant dans l'ecole : "+compte.getEcole().getName(),
+                "L'utilisateur " + compte1.getUsername() + " avec l'email :" +
+                        compte1.getEmail() + "  Vient d'etre ajouter " +
+                        "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
 
         redirectAttributes.addFlashAttribute("success", "Vous avez enregistrer avec success ce nouvel enseignant : " + enseignant.getPrenom() + " " + enseignant.getName() + " " + enseignant.getPostnom());
         return "redirect:/direction/enseignant/lists";
@@ -243,6 +250,7 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
 
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
         List<Enseignant> enseignants = new ArrayList<>();
 
         for (Compte compte1 : comptes) {
@@ -251,6 +259,7 @@ public class DirectionLoginController {
             }
         }
 
+        model.addAttribute("classes",salles);
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("lists", enseignants);
 
@@ -264,6 +273,10 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         List<Livre> alls = new ArrayList<>();
         List<Livre> livres = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals = livreRepository.findAllBySalle(ENiveau.GENERALE_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.GENERALE_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        livres.addAll(generals);
+        livres.addAll(generals1);
         for (int i=0;i<livres.size();i++){
             if (!(i>12)){
                 alls.add(livres.get(i));
@@ -339,7 +352,7 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -478,11 +491,14 @@ public class DirectionLoginController {
     }
 
     @PostMapping("/eleves/save/{id}")
-    public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes){
+    public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request){
 
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
         Parent existParent = parentRepository.findByNomComplet(eleve.getNomCompletTuteur().toUpperCase());
         Salle salle = salleRepository.getOne(id);
         eleve.setSalle(salle);
+        eleve.setPays(compte.getEcole().getCountry());
 
         if (existParent != null){
             eleve.setParent(existParent);
@@ -501,20 +517,20 @@ public class DirectionLoginController {
             compteService.saveParent(compteRegistrationDto,"/images/profile.jpeg",parent);
             eleve.setParent(parent);
             eleveRepository.save(eleve);
-            MailService mailService = new MailService();
-            mailService.sendSimpleMessage(
+            Mail sender = new Mail();
+            sender.sender(
                     compteRegistrationDto.getEmail(),
-                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle  :",
-                    "vos identifiants : username:" +compteRegistrationDto.getUsername()+" et password : "+compteRegistrationDto.getPassword()
+                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
+                    "L'utilisateur " + compteRegistrationDto.getUsername() + " avec mot de passe :" +
+                            compteRegistrationDto.getPassword() + "  Vient d'etre ajouter " +
+                            "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
 
-            );
-
-            mailService.sendSimpleMessage(
-                    "solutionsarl02@gmail.com",
-                    "YesBanana: Notification Inscription d'un enseignant",
-                    "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
-                            compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
-                            "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+            sender.sender(
+                    "confirmation@yesbanana.org",
+                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
+                    "L'utilisateur " + compteRegistrationDto.getUsername() + " avec email :" +
+                            compteRegistrationDto.getEmail() + "  Vient d'etre ajouter " +
+                            "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
 
 
 
@@ -567,32 +583,30 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            message.setFichier("/downloadFile/" + file.getOriginalFilename());
+            message.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
-        MailService mailService = new MailService();
-        mailService.sendSimpleMessage(
+        Mail sender = new Mail();
+        sender.sender(
                 compte.getEmail(),
-                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         for (Compte compte1: comptes){
 
             if (compte1.getEcole() == salle.getEcole()) {
-                mailService.sendSimpleMessage(
+                sender.sender(
                         compte1.getEmail(),
-                        "Message de la direction ---> " + message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier(),
-                        "Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org"
+                        "Message de la direction",
+                        message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org");
 
-                );
             }
         }
         return "redirect:/direction/salle/detail/" + salle.getId();
@@ -619,30 +633,28 @@ public class DirectionLoginController {
             try {
                 // Get the file and save it somewhere
                 byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage + file.getOriginalFilename());
+                Path path = Paths.get(fileStorage+file.getOriginalFilename());
                 Files.write(path, bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            message.setFichier("/downloadFile/" + file.getOriginalFilename());
+            message.setFichier("/downloadFile/"+file.getOriginalFilename());
         }
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
-        MailService mailService = new MailService();
-        mailService.sendSimpleMessage(
+        Mail sender = new Mail();
+        sender.sender(
                 compte.getEmail(),
-                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                "avec un visibilite ----> "+message.getVisibilite()
+                "Envoi d'un message",
+                "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
 
-        );
         for (Compte compte1: comptes){
 
-            mailService.sendSimpleMessage(
+            sender.sender(
                     compte1.getEmail(),
-                    "Message de la direction ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier(),
-                    "Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org"
+                    "Message de la direction",
+                    message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org");
 
-            );
         }
 
         messageRepository.save(message);

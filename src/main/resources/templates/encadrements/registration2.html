@@ -42,8 +42,8 @@
             <div class="login-wrap">
                 <div class="login-content">
                     <div class="login-logo">
-                        <a th:href="@{/}">
-                            <i class="fa fa-long-arrow-left"></i> &nbsp;Retourner à la page d’accueil
+                        <a th:href="@{/}" class="text-light">
+                            <i class="fa fa-arrow-left"></i> &nbsp;Retourner à la page d’accueil
                         </a><br>
                         <h2>ESPACE ENCADREMENT</h2>
                         <a href="#">
@@ -71,6 +71,10 @@
                                        th:each="error: ${#fields.errors('username')}"
                                        th:text="${error}">Validation error</p>
                                 </div>
+                                <div class="form-group" >
+                                    <label class="control-label">Votre nom de famille</label>
+                                    <input class="au-input au-input--full" type="text" th:field="*{name}"  placeholder="Nom">
+                                </div>
                                 <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
                                     <label class="control-label">Adresse Email</label>
                                     <input class="au-input au-input--full" type="email" th:field="*{email}" placeholder="Email">
@@ -92,13 +96,14 @@
                                        th:each="error: ${#fields.errors('confirmPassword')}"
                                        th:text="${error}">Validation error</p>
                                 </div>
-                                <div class="form-group" >
-                                    <label class="control-label">Votre nom de famille</label>
-                                    <input class="au-input au-input--full" type="text" th:field="*{name}"  placeholder="Nom">
-                                </div>
+
                                 <div class="form-group" >
                                     <label class="control-label">Votre numero de  telephone</label>
                                     <input class="au-input au-input--full" type="text" th:field="*{telephone}"  placeholder="Numero de telephone">
+                                </div>
+                                <div class="form-group" >
+                                    <label class="control-label">Photo</label>
+                                    <input class="au-input au-input--full" type="file" name="picture"  >
                                 </div>
                                 <div class="form-group" >
                                     <label class="control-label">Votre numero whatsapp</label>
@@ -136,12 +141,12 @@
                                     <label class="control-label">Nombre de mois</label>
                                     <input class="au-input au-input--full" type="number" th:field="*{nbreMois}"  placeholder="Nombre de mois">
                                 </div>
-                                <div class="form-group" >
+                                <!--<div class="form-group" >
                                     <label class="control-label">Salaire souhaite</label>
                                     <select th:field="*{salaire}" class="form-control" >
                                         <option th:each="amount :${amounts}" th:value="${amount}" th:text="${amount+'$'}"></option>
                                     </select>
-                                </div>
+                                </div>-->
                                 <div class="form-group" >
                                     <label class="control-label">Charger votre cv</label>
                                     <input class="au-input au-input--full" type="file" name="file"  placeholder="Nombre de mois">
@@ -149,6 +154,17 @@
                                 <div class="form-group" >
                                     <label class="control-label">Vos motivations</label>
                                     <textarea th:field="*{motivation}"  class="form-control" rows="5" placeholder="Entrez en quelques mots vos motivations ici"></textarea>
+                                </div>
+                                <div class="form-group" >
+                                    <label class="control-label">Profil visible au public:</label>
+                                    <textarea th:field="*{description}"  class="form-control" rows="7" placeholder="(Notez que ce qui est écrit sera visible par le public )
+- Nombre d’année d’expérience
+- un mot pour motiver les futurs étudiants et élèves
+- les avantages pour quelqu’un de suivre cette formation, ça débouche à quoi?
+- Qui sont ceux qui peuvent suivre cette formation
+
+-"></textarea>
+
                                 </div>
 
 

@@ -21,13 +21,19 @@
                     <a th:href="@{/encadrements/cours/lists}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
-                <li >
-                    <a th:href="@{/encadrements/devoirs/lists}">
-                        <i class="fas fa-address-book"></i>Devoirs</a>
-                </li>
-                <li >
-                    <a th:href="@{/encadrements/reponses/lists}">
-                        <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-tasks"></i>Travaux pratiques/Devoirs</a>
+                    <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <li >
+                            <a th:href="@{/encadrements/devoirs/lists}">
+                                <i class="fas fa-address-book"></i>TPratiques</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/encadrements/reponses/lists}">
+                                <i class="fas fa-bookmark-o"></i>Reponses aux travaux</a>
+                        </li>
+                    </ul>
                 </li>
                 <li >
                     <a th:href="@{/encadrements/examens/lists}">

@@ -58,7 +58,7 @@
                         <div class="page-content">
                             <h2>Gestion de la classe&nbsp;&nbsp; <span th:text="${classe.niveau}"></span></h2>
                             <hr>
-                            <h3>Professeur principal : <span class="text-primary" th:text="${classe.principal}"></span></h3>
+                            <h3>Professeur/Enseignant : <span class="text-primary" th:text="${classe.principal}"></span> <span>(</span><span th:text="${}"></span></h3>
                             <br>
                             <div class="row">
                                 <h2>Messages</h2>
@@ -70,7 +70,7 @@
                                                 <hr>
                                                 <p><span th:text="${message.content}"></span></p>
                                                 <br>
-                                                <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                                <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Telecharger le (s) fichier(s)</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                         <!-- END PAGE CONTENT-->
                     </div>
                     <div class="col-xl-3">
-                        <h2 class="title-1 m-b-25">Autres</h2>
+                        <h2 class="title-1 m-b-25">Gestion de la classe</h2>
                         <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
                             <div class="au-card-inner">
                                 <div class="table-responsive">
@@ -154,7 +154,7 @@
             <div class="modal-content">
                 <form th:action="@{/direction/message/save/}+${classe.id}" autocomplete="off" method="post" th:object="${message}" enctype="multipart/form-data" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouveau message</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouveau message pour la gestion de la classe</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -193,7 +193,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
                     </div>
                 </form>
             </div>
