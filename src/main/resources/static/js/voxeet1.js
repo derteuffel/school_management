@@ -7,16 +7,7 @@ const removeVideoNode = (participant) => {
 }
 const constraints = {
     audio: true,
-    video: {
-        width: {
-            min: "320",
-            max: "1280"
-        },
-        height: {
-            min: "240",
-            max: "720"
-        }
-    }
+    video: true
 }
 
     VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
@@ -31,6 +22,14 @@ const join = async ()=>{
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
     const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    console.log(conference)
+    if(!conference){
+
+            $('#body').preloader('remove')
+            $('#joinError').css('display','block')
+    }
+    else
+    {
     VoxeetSDK.conference.join(conference,{constraints}).then(()=>{
             $('#body').preloader('remove')
             document.getElementById('video-super-container').style.display='flex'
@@ -41,7 +40,10 @@ const join = async ()=>{
     )
         .catch(e=>{
             $('#body').preloader('remove')
+            $('#joinError').css('display','block')
+            VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
             console.log(e)
         })
+    }
 }
 joinButton.addEventListener('click',join)
