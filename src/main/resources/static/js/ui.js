@@ -8,6 +8,7 @@ const addVideoNode = (participant, stream) => {
 
         videoNode.setAttribute('id', 'video-' + participant.id);
         videoNode.setAttribute('width', 320);
+        videoNode.setAttribute('style','backgroundColor: "rgb(50,50,50)"')
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 
