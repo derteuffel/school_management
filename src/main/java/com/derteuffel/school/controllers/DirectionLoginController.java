@@ -199,7 +199,7 @@ public class DirectionLoginController {
 
     //--- Enseignant management start ----///
     @PostMapping("/enseignant/save")
-    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, Long[] classes) {
+    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, Long[] classes,String cour_enseigners) {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
@@ -221,6 +221,15 @@ public class DirectionLoginController {
             model.addAttribute("message",new Message());
             return "direction/home";
         }
+
+        if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+            for (String item : cours){
+                enseignant.getCour_enseigner().add(item.toUpperCase());
+            }
+        }
+        System.out.println(enseignant.getCour_enseigner());
         compte1.setUsername(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
         compte1.setEmail(enseignant.getEmail());
         compte1.setPassword(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
@@ -358,7 +367,7 @@ public class DirectionLoginController {
 
 
     @PostMapping("/enseignant/update")
-    public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file) {
+    public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file, String cour_enseigners) {
 
         if (!(file.isEmpty())) {
             try {
@@ -371,11 +380,23 @@ public class DirectionLoginController {
             }
             enseignant.setAvatar("/downloadFile/" + file.getOriginalFilename());
         }
+        if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+            enseignant.getCour_enseigner().clear();
+            for (String item : cours){
+                enseignant.getCour_enseigner().add(item.toUpperCase());
+            }
+        }else {
+            enseignant.setCour_enseigner(enseignant.getCour_enseigner());
+        }
 
         enseignantRepository.save(enseignant);
 
         return "redirect:/direction/enseignant/lists";
     }
+
+
 
     @GetMapping("/eleve/edit/{id}")
     public String eleveEdit(@PathVariable Long id, Model model) {
@@ -799,6 +820,13 @@ public class DirectionLoginController {
         model.addAttribute("ecole",hebdo.getSalle().getEcole());
         return "direction/classes/presenceDetail";
 
+    }
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "direction/account";
     }
 
 

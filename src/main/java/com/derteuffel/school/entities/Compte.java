@@ -30,7 +30,7 @@ public class Compte implements Serializable{
     private String conferenceId;
     private Boolean status;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "comptes_roles",
             joinColumns = @JoinColumn(

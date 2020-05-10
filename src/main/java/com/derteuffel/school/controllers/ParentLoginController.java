@@ -459,5 +459,16 @@ public class ParentLoginController {
 
     }
 
+    @Autowired
+    private CompteRepository compteRepository;
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "parent/account";
+    }
+
+
 
 }

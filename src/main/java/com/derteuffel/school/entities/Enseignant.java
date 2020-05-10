@@ -29,7 +29,7 @@ public class Enseignant implements Serializable {
     private String telephone;
     private String email;
     private String whatsapp;
-    private String cour_enseigner;
+    private ArrayList<String> cour_enseigner= new ArrayList<>();
     private String avatar;
 
 

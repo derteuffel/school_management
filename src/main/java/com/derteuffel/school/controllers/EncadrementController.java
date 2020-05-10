@@ -124,7 +124,7 @@ public class EncadrementController {
             encadreur.setTelephone(encadrementRegistrationDto.getTelephone());
             encadreur.setName(encadrementRegistrationDto.getName());
             encadreur.setEmail(encadrementRegistrationDto.getEmail());
-            encadreur.setCour_enseigner(encadrementRegistrationDto.getCours_reference());
+            //encadreur.setCour_enseigners(encadrementRegistrationDto.getCours_reference());
             encadreur.setHeureDebut(encadrementRegistrationDto.getHeureDebut());
             encadreur.setHeureFin(encadrementRegistrationDto.getHeureFin());
             encadreur.setMotivation(encadrementRegistrationDto.getMotivation());
@@ -218,9 +218,9 @@ public class EncadrementController {
         Collection<Enfant> enfantCollection = enfantRepository.findAll();
         Collection<Enfant> eleves = new ArrayList<>();
         for (Enfant enfant : enfantCollection){
-            if (enfant.getMatieres().contains(encadreur.getCour_enseigner())){
+            /*if (enfant.getMatieres().contains(encadreur.getCour_enseigners())){
                 eleves.add(enfant);
-            }
+            }*/
         }
         Collection<Enfant> enfants = encadreur.getEnfants();
         System.out.println(enfants.size());
@@ -815,5 +815,13 @@ public class EncadrementController {
         model.addAttribute("message",new Message());
         return "encadrements/messages";
     }
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "encadrements/account";
+    }
+
 
 }

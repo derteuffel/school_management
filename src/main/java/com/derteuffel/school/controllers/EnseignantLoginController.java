@@ -766,4 +766,12 @@ public class EnseignantLoginController {
         return "enseignant/presenceDetail";
     }
 
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "enseignant/account";
+    }
+
+
 }
