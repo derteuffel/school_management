@@ -4,20 +4,20 @@ package com.derteuffel.school.enums;
  * Created by user on 03/04/2020.
  */
 public enum ENiveau {
-    PREMIERE_PRIMAIRE,
-    DEUXIEME_PRIMAIRE,
-    TROISIEME_PRIMAIRE,
-    QUATRIEME_PRIMAIRE,
-    CINQUIEME_PRIMAIRE,
-    SIXIEME_PRIMAIRE,
-    PREMIERE_SECONDAIRE,
-    DEUXIEME_SECONDAIRE,
-    TROISIEME_SECONDAIRE,
-    QUATRIEME_SECONDAIRE,
-    CINQUIEME_SECONDAIRE,
-    SIXIEME_SECONDAIRE,
-    SEPTIEME_SECONDAIRE,
-    GENERALE_PRIMAIRE,
-    GENERALE_SECONDAIRE
+    premiere_primaire,
+    deuxieme_primaire,
+    troisieme_primaire,
+    quatrieme_primaire,
+    cinquieme_primaire,
+    sixieme_primaire,
+    premiere_secondaire,
+    deuxieme_secondaire,
+    troisieme_secondaire,
+    quatrieme_secondaire,
+    cinquieme_secondaire,
+    sixieme_secondaire,
+    septieme_secondaire,
+    generale_secondaire,
+    generale_primaire
 
 }

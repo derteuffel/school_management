@@ -133,7 +133,7 @@
             <div class="modal-content">
                 <form th:action="@{/direction/message/save}" autocomplete="off" method="post" th:object="${message}" enctype="multipart/form-data" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouveau message pour la gestion de l'ecole</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouveau méssage pour la gestion de l'école</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -141,23 +141,23 @@
                     <div class="modal-body card-block">
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-content" class=" form-control-label">Corps du message</label>
+                                <label for="text-content" class=" form-control-label">Corps du méssage</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
-                                <small class="form-text text-muted">Ajouter votre message</small>
+                                <small class="form-text text-muted">Ajoutez votre méssage</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-salle" class=" form-control-label">Visibilite du message</label>
+                                <label for="text-salle" class=" form-control-label">Visibilité du méssage</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <select th:field="*{visibilite}" th id="text-salle" class="form-control">
                                     <option value="">Choisir</option>
                                     <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
                                 </select>
-                                <small class="form-text text-muted">Choisir la porte de votre message </small>
+                                <small class="form-text text-muted">Choisir la porté de votre méssage </small>
                             </div>
                         </div>
                         <div class="row form-group">

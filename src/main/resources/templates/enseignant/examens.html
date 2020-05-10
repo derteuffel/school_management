@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -71,17 +71,17 @@
 
                             <button type="button" data-toggle="modal" data-target="#addExamenModal" class="btn btn-primary">Nouveau resultat d'examen&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Ensemble des resultats examens de la classe : <span th:text="${classe.niveau}"></span></h2>
+                            <h2>Ensemble des resultats examens  : <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2" th:each="examen : ${lists}">
-                                        <div class="alert alert-dark text-left" role="alert">
-                                            <p><strong>Publier le : </strong><span  th:text="${examen?.date}"></span></p>
+                                        <div class="alert alert-dark text-left" role="alert" style="width: 100%">
+                                            <p><strong>Publié le : </strong><span  th:text="${examen?.date}"></span></p>
                                             <p><strong>Titre : </strong><span class="text-primary underline" th:text="${examen?.title}"></span></p>
                                             <p><strong>Session de  : </strong><span class="text-primary underline" th:text="${examen?.session}"></span></p>
                                             <p><strong>Classe de  : </strong><span class="text-primary underline" th:text="${examen?.salle}"></span></p>
                                             <a th:if="${examen.fichier}" th:href="${examen.fichier}">Telecharger le document&nbsp;<i class="fa fa-file"></i></a>
-                                            <span th:unless="${examen.fichier}">Aucun fichier associe</span>
+                                            <span th:unless="${examen.fichier}">Aucun fichier associ</span>
                                             <a th:href="@{enseignant/examen/update/}+${examen.id}" class="btn btn-primary py-2">Modifier</a>
                                             <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${examen?.id}"><i class="fas fa-trash"></i></a>
                                             <div class="modal fade" th:id="deleteModal+${examen?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -125,7 +125,7 @@
             <div class="modal-content">
                 <form th:action="@{/enseignant/examens/save}" autocomplete="off" method="post" th:object="${examen}" enctype="multipart/form-data" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouveau resultat</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouveau résultat</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -152,7 +152,7 @@
 
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-salle" class=" form-control-label">Classe concerne</label>
+                                <label for="text-salle" class=" form-control-label">Classe concerné</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <select th:field="*{salle}" id="text-salle" class="form-control">
@@ -168,13 +168,13 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="file" id="text-file" name="file"  class="form-control-file">
-                                <small class="form-text text-muted">Charger un support numerique </small>
+                                <small class="form-text text-muted">Charger un support numérique </small>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
                     </div>
                 </form>
             </div>

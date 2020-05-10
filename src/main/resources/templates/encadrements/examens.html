@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -76,7 +76,7 @@
                             <div class="row"  >
                                 <div class="col-md-6 my-2" th:each="examen : ${lists}">
                                         <div class="alert alert-dark  text-left" role="alert" style="width: 100%">
-                                            <p><strong>Publie le : </strong><span  th:text="${examen?.date}"></span></p>
+                                            <p><strong>Publié le : </strong><span  th:text="${examen?.date}"></span></p>
                                             <p><strong>Titre : </strong><span class="text-primary underline" th:text="${examen?.title}"></span></p>
                                             <p><strong>Session de  : </strong><span class="text-primary underline" th:text="${examen?.session}"></span></p>
                                             <p><strong>Classe de  : </strong><span class="text-primary underline" th:text="${examen?.salle}"></span></p>
@@ -147,17 +147,17 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-session" th:field="*{session}" placeholder="Titre" class="form-control">
-                                <small class="form-text text-muted">Session de l'annee</small>
+                                <small class="form-text text-muted">Session de l'année</small>
                             </div>
                         </div>
 
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-salle" class=" form-control-label">Classe concerne</label>
+                                <label for="text-salle" class=" form-control-label">Classe concerné</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-salle" th:field="*{salle}" placeholder="Classe concerner" class="form-control">
-                                <small class="form-text text-muted">Choisir la classe concerner par ce cours </small>
+                                <small class="form-text text-muted">Choisir la classe concerné par ce cours </small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -172,7 +172,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
                     </div>
                 </form>
             </div>

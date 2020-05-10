@@ -161,7 +161,6 @@ strong {
 }
 
 .title-1 {
-    text-transform: capitalize;
     font-weight: 400;
     font-size: 30px;
 }
@@ -4989,7 +4988,7 @@ section {
 
 .statistic__item .desc {
     font-size: 16px;
-    text-transform: uppercase;
+    text-transform: lowercase;
     font-weight: 300;
     color: rgba(128, 128, 128, 0.6);
 }

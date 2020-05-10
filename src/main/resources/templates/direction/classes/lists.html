@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -74,8 +74,8 @@
                             <h2>Liste des Classes</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-lg-3 col-md-6 m-2" th:each="salle : ${lists}">
-                                    <a class="btn" th:href="@{/direction/salle/detail/}+${salle?.id}">
+                                <div class="col-lg-5 col-md-6 m-2" th:each="salle : ${lists}">
+                                    <a class="btn" th:href="@{/direction/salle/detail/}+${salle?.id}" style="width: 100%">
                                         <div class="alert alert-dark row" role="alert">
                                         <div class="text-left">
                                             <strong th:text="${salle?.niveau}">Nom : </strong> <br>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
                     </div>
                 </form>
             </div>
