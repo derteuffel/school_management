@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des eleves</h2>
+                            <h2>Liste des élèves</h2>
                             <hr>
                             <div class="row"  >
                                 <div class=" col-md-4 m-2" th:each="eleve : ${lists}">
@@ -83,13 +83,13 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer Eleve</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer élève</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body card-block">
-                                                    <p>Vous voulez vraiment supprimer cet eleve??</p>
+                                                    <p>Vous voulez vraiment supprimer cet élève??</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -102,7 +102,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Eleve   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail Elève   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                             <a th:href="@{/encadrements/eleves/enseignant/}+${eleve?.id}">Voir les encadreurs de l'eleve</a>
                                                         </h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,7 +169,7 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Telephone</label>
+                                                                <label  class=" form-control-label">Téléphone</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.telephone}">Numero de telephone whatsapp</small>
@@ -177,18 +177,18 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Matiere souhaite</label>
+                                                                <label  class=" form-control-label">Matière souhaite</label>
                                                             </div>
                                                             <div class="col-12 col-md-9" th:each=" matiere : ${eleve.matieres}">
                                                                 <small class="form-text text-muted" th:text="${matiere}">Cours enseigner</small>
                                                             </div>
                                                         </div>
                                                         <hr>
-                                                        <p>Informations sur la disponibilite de l'eleve</p>
+                                                        <p>Informations sur la disponibilite de l'élève</p>
                                                         <br>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Heure de debut journalier</label>
+                                                                <label  class=" form-control-label">Heure de debut journalière</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.heureDebut}">Numero de telephone</small>
@@ -196,7 +196,7 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Heure de fin journaliere</label>
+                                                                <label  class=" form-control-label">Heure de fin journalière</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.heureFin}">Numero de telephone</small>

@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des éleves de l'école : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
+                            <h2>Liste des élèves : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class=" col-md-4 m-2" th:each="eleve : ${lists}">
@@ -82,7 +82,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Eleve</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail élève</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -138,7 +138,7 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Telephone tuteur</label>
+                                                                <label  class=" form-control-label">Téléphone tuteur</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.telephoneTuteur}">Numero de telephone</small>

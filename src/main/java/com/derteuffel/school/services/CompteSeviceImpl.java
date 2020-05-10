@@ -117,13 +117,12 @@ public class CompteSeviceImpl implements CompteService{
         compte.setEnseignant(enseignant);
         compte.setStatus(false);
 
+        Role role = new Role();
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENSEIGNANT.toString());
         if (existRole != null){
             compte.setRoles(Arrays.asList(existRole));
         }else {
-
-            Role role = new Role();
             role.setName(ERole.ROLE_ENSEIGNANT.toString());
             roleRepository.save(role);
             compte.setRoles(Arrays.asList(role));

@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Messages</h2>
+                            <h2>Méssages</h2>
                             <hr>
                             <div class="page-content row container-fluid" style="overflow: scroll" th:each="message : ${lists}">
                                 <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
@@ -79,20 +79,20 @@
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>
-                                            <p>Fichier(s) associe(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                            <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-8 col-md-6" th:unless="${session.compte.username}!= ${message.sender}">
                                     <div class="au-card m-b-30 alert alert-success" >
                                         <div class="au-card-inner">
-                                            <p class=" m-b-20"><span class="text-warning" >Vous</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publier le : <span class="text-primary" th:text="${message.date}"></span>
+                                            <p class=" m-b-20"><span class="text-warning" >Vous</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;publié le : <span class="text-primary" th:text="${message.date}"></span>
                                                 <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${message?.id}"><i class="fas fa-trash"></i></a>
                                             </p>
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>
-                                            <p>Fichier(s) associe(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                            <p>Fichier(s) associe(s)&nbsp; <a th:href="${message.fichier}">Télécharger le fichier</a></p>
                                         </div>
                                     </div>
                                     <div class="modal fade" th:id="deleteModal+${message?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -150,7 +150,7 @@
                                                             <option value="">Choisir</option>
                                                             <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
                                                         </select>
-                                                        <small class="form-text text-muted">Choisir la portee de votre message </small>
+                                                        <small class="form-text text-muted">Choisir la portée de votre message </small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">

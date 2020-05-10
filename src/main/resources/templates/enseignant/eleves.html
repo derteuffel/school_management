@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -71,7 +71,7 @@
 
                             <!--button th:if="${session.compte.enseignant.name+'  '+session.compte.enseignant.prenom}== ${classe.principal}" type="button" data-toggle="modal" data-target="#addEleveModal" class="btn btn-primary">Nouvel eleve&nbsp;<i class="zmdi zmdi-plus"></i></button-->
                             <hr>
-                            <h2>Liste des eleves de la classe : <span th:text="${classe.niveau}"></span></h2>
+                            <h2>Liste des eleves  : <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-4 col-md-6 m-2" th:each="eleve : ${lists}">
@@ -79,7 +79,7 @@
                                         <div class="alert alert-dark row text-center" role="alert">
                                             <p><strong>Nom : </strong><span th:text="${eleve?.name}"></span></p>
                                             <br>
-                                            <p><strong>Telephone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span></p>
+                                            <p><strong>Téléphone tuteur : </strong><span th:text="${eleve?.telephoneTuteur}"></span></p>
                                     </div>
                                     </button>
                                     <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${eleve?.id}"><i class="fas fa-trash"></i></a>
@@ -87,7 +87,7 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Eleve</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail élève</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -95,7 +95,7 @@
                                                     <div class="modal-body card-block">
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Prenom</label>
+                                                                <label  class=" form-control-label">Prénom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${eleve?.prenom}">Prenom de l'enseignant</small>
@@ -109,14 +109,7 @@
                                                                 <small class="form-text text-muted" th:text="${eleve?.name}">Nom de l'enseignant</small>
                                                             </div>
                                                         </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Postnom</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${eleve?.postnom}">Postnom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
+
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
                                                                 <label  class=" form-control-label">Age</label>
@@ -185,13 +178,13 @@
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer Eleve</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer élève</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body card-block">
-                                                    <p>Vous voulez vraiment supprimer cet eleve??</p>
+                                                    <p>Vous voulez vraiment supprimer cet élève??</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -221,7 +214,7 @@
             <div class="modal-content">
                 <form th:action="@{/enseignant/eleves/save/}+${classe.id}" autocomplete="off" method="post" th:object="${student}" class="form-horizontal">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Nouvel eleve</h5>
+                        <h5 class="modal-title" id="addModalLabel">Nouvel élève</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -229,11 +222,11 @@
                     <div class="modal-body card-block">
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-prenom" class=" form-control-label">Prenom</label>
+                                <label for="text-prenom" class=" form-control-label">Prénom</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-prenom" th:field="*{prenom}" placeholder="Prenom" class="form-control">
-                                <small class="form-text text-muted">Prenom de l'eleve</small>
+                                <small class="form-text text-muted">Prénom de l'élève</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -242,34 +235,26 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
-                                <small class="form-text text-muted">Nom de l'eleve</small>
+                                <small class="form-text text-muted">Nom de l'élève</small>
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-postnom" class=" form-control-label">Postnom</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="text" id="text-postnom" th:field="*{postnom}" placeholder="Post nom" class="form-control">
-                                <small class="form-text text-muted">Postnom de l'eleve</small>
-                            </div>
-                        </div>
+
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="text-nomCompletTuteur" class=" form-control-label">nom complet du parent</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-nomCompletTuteur" th:field="*{nomCompletTuteur}" placeholder="Nom complet" class="form-control">
-                                <small class="form-text text-muted">Nom complet de telephone</small>
+                                <small class="form-text text-muted">Nom complet de téléphone</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-telephone" class=" form-control-label">Telephone du parent</label>
+                                <label for="text-telephone" class=" form-control-label">Téléphone du parent</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-telephone" th:field="*{telephoneTuteur}" placeholder="Telephone" class="form-control">
-                                <small class="form-text text-muted">Numero de telephone</small>
+                                <small class="form-text text-muted">Numéro de téléphone</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -287,7 +272,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-whatsapp" th:field="*{whatsappTuteur}" placeholder="Whatsapp" class="form-control">
-                                <small class="form-text text-muted">Numero de telephone whatsapp</small>
+                                <small class="form-text text-muted">Numéro de téléphone whatsapp</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -296,7 +281,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="number" id="text-age" th:field="*{age}" placeholder="age" class="form-control">
-                                <small class="form-text text-muted">Age de l'eleve</small>
+                                <small class="form-text text-muted">Age de l'élève</small>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -305,22 +290,22 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-localisation" th:field="*{localisation}" placeholder="Localisation" class="form-control">
-                                <small class="form-text text-muted">Localisation de l'eleve</small>
+                                <small class="form-text text-muted">Localisation de l'élève</small>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="text-autre" class=" form-control-label">Localisation</label>
+                                <label for="text-autre" class=" form-control-label">Autres informations</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <textarea th:field="*{autreInformation}" id="text-autre" class="form-control" rows="5" placeholder="Autre information"></textarea>
-                                <small class="form-text text-muted">Autre information sur l'eleve</small>
+                                <small class="form-text text-muted">Autre information sur l'élève</small>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                        <button type="submit" class="btn btn-primary">Creer</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
                     </div>
                 </form>
             </div>

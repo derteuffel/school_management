@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -93,7 +93,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
-                                                    <small class="form-text text-muted">Ajouter un resumer du resultat</small>
+                                                    <small class="form-text text-muted">Ajouter un resumé du résultat</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
@@ -103,7 +103,7 @@
                                                 <div class="col-12 col-md-9">
                                                     <input type="file" id="text-file" name="file"  class="form-control-file">
                                                     <input type="text"  th:field="*{fichier}" style="display: none" placeholder="Leçon " class="form-control">
-                                                    <small class="form-text text-muted">Charger un support numerique </small>
+                                                    <small class="form-text text-muted">Charger un support numérique </small>
                                                 </div>
                                             </div>
                                         </div>

@@ -85,7 +85,7 @@
                             <button type="button" id="startCall" data-toggle="modal" data-target="#contacts" class="btn btn-success">Passer un appel&nbsp;<i class="zmdi zmdi-phone"></i></button>
                             <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
                             <hr>
-                            <h2>Liste des enseignants de l'école</h2>
+                            <h2>Liste des enseignants</h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-5 col-md-6 m-2" th:each="enseignant : ${lists}">
@@ -126,14 +126,6 @@
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${enseignant?.name}">Nom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label for="text-postnom" class=" form-control-label">Postnom</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.postnom}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
@@ -284,9 +276,10 @@
                                 <label  class=" form-control-label">Classes </label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <select name="classes" class="form-control" multiple>
+                                <input type="checkbox" th:each="item : ${classes}" th:value="${item.id}" th:text="${item.niveau}" name="classes">
+                                <!--<select name="classes" class="form-control" multiple>
                                     <option th:each="item : ${classes}" th:value="${item.id}" th:text="${item.niveau}"></option>
-                                </select>
+                                </select>-->
                             </div>
                         </div>
                     </div>

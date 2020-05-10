@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -71,7 +71,7 @@
 
                             <button type="button" data-toggle="modal" th:if="${role.name}=='ROLE_ENCADREUR' or ${role.name}=='ROLE_ROOT'" data-target="#addCoursModal" class="btn btn-primary">Nouveau cours&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Ensemble des cours de la classe</h2>
+                            <h2>Ensemble des cours </h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-md-6 my-2" th:each="cours : ${lists}">

@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -75,7 +75,7 @@
                          <div class="page-content container" >
                              <form th:action="@{/encadrements/reponses/save/}+${devoir.id}" autocomplete="off" method="post" th:object="${reponse}" enctype="multipart/form-data" class="form-horizontal">
                                  <div class="card-header">
-                                     <h5 class="card-title">Reponse au devoir <span th:text="${devoir.title}"></span> du <span th:text="${devoir.date}"></span></h5>
+                                     <h5 class="card-title">Réponse au devoir <span th:text="${devoir.title}"></span> du <span th:text="${devoir.date}"></span></h5>
                                  </div>
                                  <div class="card-body card-block">
                                      <div class="row form-group">

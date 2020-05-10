@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,11 +69,11 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Espace bibliotheque</h2>
+                            <h2>Espace bibliothèque</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 col-lg-4 " th:each="item : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailLivreModal"  th:attr="data-target='#detailLivreModal'+${item?.id}">
+                                <div class="col-md-6" th:each="item : ${lists}">
+                                    <button type="button" data-toggle="modal" data-target="#detailLivreModal"  th:attr="data-target='#detailLivreModal'+${item?.id}" style="width: 100%">
                                         <div class="card">
                                             <img class="card-img-top" th:src="${item.couverture}" style="width: 268px;height:179px" alt="Card image cap">
                                             <div class="card-body">
@@ -100,7 +100,7 @@
                                                 <div class="modal-body card-block">
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label for="text-prenom" class=" form-control-label">Titre</label>
+                                                            <label  class=" form-control-label">Titre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.title}">Prenom de l'enseignant</small>
@@ -108,7 +108,7 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label for="text-nom" class=" form-control-label">Auteur</label>
+                                                            <label  class=" form-control-label">Auteur</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.author}">Nom de l'enseignant</small>
@@ -124,7 +124,7 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label  class=" form-control-label">Telecharger votre livre</label>
+                                                            <label  class=" form-control-label">Télécharger votre livre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <a th:href="@{${item.fichier}}"  th:text="${item?.fichier}">Numero de telephone</a>
@@ -148,7 +148,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body card-block">
-                                                    <p>Voulez vous vraiment supprimer cet element??</p>
+                                                    <p>Voulez vous vraiment supprimer cet élément??</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

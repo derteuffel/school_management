@@ -50,7 +50,7 @@
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
                     <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
-                    <span th:unless="${success}" class="content">Vous etes connecter successivement a votre compte</span>
+                    <span th:unless="${success}" class="content">Vous etes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="zmdi zmdi-close-circle"></i>
@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Messages</h2>
+                            <h2>Méssages</h2>
                             <hr>
                             <div class="page-content row container-fluid" style="overflow: scroll" th:each="message : ${lists}">
                                 <div class="col-lg-8 col-md-6" th:if="${session.compte.username}!= ${message.sender}">
@@ -117,34 +117,34 @@
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
-                                                        <small class="form-text text-muted">Ajouter votre message</small>
+                                                        <small class="form-text text-muted">Ajoutez votre méssage</small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label for="text-salle" class=" form-control-label">Visibilite du message</label>
+                                                        <label for="text-salle" class=" form-control-label">Visibilité du message</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <select th:field="*{visibilite}" id="text-salle" class="form-control">
                                                             <option value="">Choisir</option>
                                                             <option th:each=" item : ${T(com.derteuffel.school.enums.EVisibilite).values()}" th:value="${item}" th:text="${item}">Choisir</option>
                                                         </select>
-                                                        <small class="form-text text-muted">Choisir la porte de votre message </small>
+                                                        <small class="form-text text-muted">Choisir la porté de votre message </small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label for="text-file" class=" form-control-label">Fichier numerique</label>
+                                                        <label for="text-file" class=" form-control-label">Fichié numerique</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <input type="file" id="text-file" name="file"  class="form-control-file">
-                                                        <small class="form-text text-muted">Charger un support numerique </small>
+                                                        <small class="form-text text-muted">Charger un support numérique </small>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                                                <button type="submit" class="btn btn-primary">Creer</button>
+                                                <button type="submit" class="btn btn-primary">Créer</button>
                                             </div>
                                         </form>
                                     </div>
