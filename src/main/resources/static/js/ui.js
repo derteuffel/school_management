@@ -7,8 +7,8 @@ const addVideoNode = (participant, stream) => {
         videoNode = document.createElement('video');
 
         videoNode.setAttribute('id', 'video-' + participant.id);
-        videoNode.setAttribute('width', 320);
-        videoNode.setAttribute('style','backgroundColor: "rgb(50,50,50)"')
+        videoNode.setAttribute('width', '100%');
+        videoNode.setAttribute('class','col-md-6 p-1');
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 
@@ -24,12 +24,10 @@ stopVideoBtn.onclick = () => {
     VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
         .then(() => {
             document.getElementById('video-super-container').style.display = "none"
-            videoContainer.remove()
         })
     VoxeetSDK.conference.leave()
         .then(() => {
             document.getElementById('video-super-container').style.display = "none"
-            videoContainer.remove()
         })
         .catch((err) => {
             document.getElementById('video-super-container').style.display = "none"

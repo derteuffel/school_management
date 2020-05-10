@@ -39,8 +39,8 @@
 </head>
 
 <body class="animsition " >
-<div id="video-super-container" style="height:100vh;z-index:1999999999"  class="position-fixed row  w-100 bg-dark flex-column justify-content-center align-items-center">
-    <div id="video-container" class="col-md-6"></div>
+<div id="video-super-container" style="min-height:100vh;z-index:1999999999"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
+    <div id="video-container" class="row "></div>
     <div >
         <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end"></i></button>
     </div>
@@ -310,7 +310,7 @@
                             <div>
 
                                 <button type="button" data-dismiss="modal" class="btn btn-success call">&nbsp;<i class="zmdi zmdi-phone"></i></button>
-                                &nbsp;<input class="callInput" th:value="${enseignant?.email}" type="hidden" />
+                                &nbsp;<input class="callInput" th:value="${enseignant?.id}" type="hidden" />
                                 <button type="button"  class="btn btn-primary crewCall">&nbsp;<i class="zmdi zmdi-check"></i></button>
                                 <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>
                             </div>

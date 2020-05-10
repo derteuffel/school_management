@@ -43,12 +43,12 @@ public class HomeController {
     }
     @GetMapping("/sendMail/{sender}/{conferenceId}")
     public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){
-        Compte compte = compteRepository.findByEmail(sender);
+        Compte compte = compteRepository.findByEnseignant_Id(Long.parseLong(sender));
         compte.setConferenceId(conferenceId);
         compteRepository.save(compte);
         MailService mailService = new MailService();
         mailService.sendSimpleMessage(
-                sender,
+                compte.getEmail(),
                 "YesBanana School: VideoCall live",
                 "Go to your profile at https://ecoles.yesbanana.org, to join the call");
         return "index1";
