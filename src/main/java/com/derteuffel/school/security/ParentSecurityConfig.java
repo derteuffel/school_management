@@ -20,13 +20,14 @@ public class ParentSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/parent/**").authorizeRequests()
-                .antMatchers("/downloadFile/**","/experts/**").permitAll()
+                .antMatchers("/upload-dir/**","/experts/**","/files/**").permitAll()
                 .antMatchers("/parent/**").access("hasAnyRole('ROLE_ROOT','ROLE_PARENT')")
                 .antMatchers(
                         "/js/**",
                         "/css/**",
                         "/img/**",
                         "/downloadFile/**",
+                        "/upload-dir/**",
                         "/vendor/**",
                         "/fonts/**",
                         "/images/**",

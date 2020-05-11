@@ -66,6 +66,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/vendor/**",
                         "/fonts/**",
                         "/downloadFile/**",
+                        "/upload-dir/**",
                         "/images/**",
                         "/static/**",
                         "/ecole/connexion",
