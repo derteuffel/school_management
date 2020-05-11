@@ -22,7 +22,7 @@ public class EncadrementSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/encadrements/**").authorizeRequests()
-                .antMatchers("/downloadFile/**").permitAll()
+                .antMatchers("/downloadFile/**","/experts/**").permitAll()
                 .antMatchers("/encadrements/**").access("hasAnyRole('ROLE_ROOT','ROLE_ENCADREUR','ROLE_ENFANT')")
                 .and()
                 .formLogin()

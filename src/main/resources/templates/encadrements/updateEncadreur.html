@@ -87,10 +87,7 @@
                                                 <label class="control-label">Prenom utilisateur</label>
                                                 <input class="au-input au-input--full" type="text" th:field="*{prenom}" placeholder="Prenom utilisateur">
                                             </div>
-                                            <div class="form-group" >
-                                                <label class="control-label">Post utilisateur</label>
-                                                <input class="au-input au-input--full" type="text" th:field="*{postnom}" placeholder="Postnom utilisateur">
-                                            </div>
+
                                             <div class="form-group" >
                                                 <label class="control-label">Adresse Email</label>
                                                 <input class="au-input au-input--full" type="email" th:field="*{email}" placeholder="Email">
@@ -111,10 +108,18 @@
                                                 <label class="control-label">Votre Pays</label>
                                                 <input class="au-input au-input--full" type="text" id="text-country" th:field="*{pays}"  placeholder="Votre pays">
                                             </div>
+                                            <div class="form-group autocomplete" >
+                                                <label class="control-label">Categorie</label>
+                                                <select th:field="*{category}" class="form-control">
+                                                    <option th:each="item : ${T(com.derteuffel.school.enums.ECategory).values()}" th:value="${item}" th:text="${item}"></option>
+                                                </select>
+                                            </div>
 
                                             <div class="form-group" >
                                                 <label class="control-label">Cours de reférence</label>
-                                                <input class="au-input au-input--full" type="text" th:field="*{cour_enseigner}"  placeholder="cours enseigner">
+                                                <input class="au-input au-input--full" type="text" name="cour_enseigners"  placeholder="cours enseigner">
+                                                <input type="text"  th:field="*{cour_enseigner}" style="display: none" placeholder="Cours" class="form-control">
+                                                <small class="form-text text-muted">Cours enseigné <span th:each="item :${encadreur.cour_enseigner}" th:text="${item}+', '"></span></small>
                                             </div>
                                             <hr><p>Informartions sur votre disponibilité</p>
                                             <br>

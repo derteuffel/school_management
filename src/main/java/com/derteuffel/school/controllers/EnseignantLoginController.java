@@ -10,8 +10,8 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.MailService;
+import com.derteuffel.school.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,9 +64,11 @@ public class EnseignantLoginController {
 
     @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage ;//=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    /*@Value("${file.upload-dir}")
+    private  String fileStorage ;*///=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
+    @Autowired
+    private StorageService storageService;
     @GetMapping("/login")
     public String director(Model model){
 
@@ -306,7 +304,7 @@ public class EnseignantLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        Collection<Salle> salles = salleRepository.findAllByEnseignants_Id(compte.getEnseignant().getId());
         Salle salle = salleRepository.getOne(id);
         Collection<Cours> cours = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.COURS.toString());
         model.addAttribute("lists",cours);
@@ -330,27 +328,21 @@ public class EnseignantLoginController {
     }
 
     @PostMapping("/cours/save")
-    public String saveCourse(Cours cours, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request){
+    public String saveCourse(Cours cours, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpServletRequest request,Long id){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         cours.setCompte(compte);
-        Salle salle = (Salle)request.getSession().getAttribute("classe");
+        Salle salle = salleRepository.getOne(id);
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            cours.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        cours.setFichier("/downloadFile/"+file.getOriginalFilename());
+
 
         cours.setDate(dateFormat.format(date));
         cours.setType(ECours.COURS.toString());
+        System.out.println(cours.getSalle());
+        System.out.println(salle.getNiveau());
         cours.setSalle(cours.getSalle()+""+salle.getId());
         coursRepository.save(cours);
 
@@ -401,17 +393,9 @@ public class EnseignantLoginController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            devoir.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        devoir.setFichier("/downloadFile/"+file.getOriginalFilename());
+
 
         devoir.setDate(dateFormat.format(date));
         devoir.setType(ECours.DEVOIRS.toString());
@@ -479,17 +463,9 @@ public class EnseignantLoginController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            examen.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        examen.setFichier("/downloadFile/"+file.getOriginalFilename());
+
 
         examen.setDate(dateFormat.format(date));
         examen.setSalle(examen.getSalle()+""+salle.getId());
@@ -524,17 +500,9 @@ public class EnseignantLoginController {
         message.setSalle(salle.getNiveau()+""+salle.getId());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            message.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        message.setFichier("/downloadFile/"+file.getOriginalFilename());
+
 
         messageRepository.save(message);
         Mail sender = new Mail();

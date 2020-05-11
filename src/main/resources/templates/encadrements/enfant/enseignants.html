@@ -139,10 +139,10 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Cours enseigner</label>
+                                                                <label  class=" form-control-label">Cours enseigné</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.cour_enseigner}">Cours enseigner</small>
+                                                                <small class="form-text text-muted" th:each="item:${enseignant?.cour_enseigner}" th:text="${item}">Cours enseigner</small>
                                                             </div>
                                                         </div>
 
