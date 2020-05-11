@@ -100,7 +100,7 @@
                                                 <div class="modal-body card-block">
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label for="text-prenom" class=" form-control-label">Titre</label>
+                                                            <label  class=" form-control-label">Titre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.title}">Prenom de l'enseignant</small>
@@ -108,7 +108,7 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col col-md-3">
-                                                            <label for="text-nom" class=" form-control-label">Auteur</label>
+                                                            <label  class=" form-control-label">Auteur</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
                                                             <small class="form-text text-muted" th:text="${item?.author}">Nom de l'enseignant</small>
@@ -127,7 +127,7 @@
                                                             <label  class=" form-control-label">Telecharger votre livre</label>
                                                         </div>
                                                         <div class="col-12 col-md-9">
-                                                            <a th:href="@{${item.fichier}}"  th:text="${item?.fichier}">Numero de telephone</a>
+                                                            <a th:href="${item.fichier}"  th:text="${item?.fichier}">Numero de telephone</a>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -266,7 +266,7 @@ public class ParentLoginController {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         response.setDate(dateFormat.format(date));
         storageService.store(file);
-        response.setFichier("/downloadFile/"+file.getOriginalFilename());
+        response.setFichier("/upload-dir/"+file.getOriginalFilename());
 
         responseRepository.save(response);
         return "redirect:/parent/reponses/lists/"+(Long)request.getSession().getAttribute("salleId")+"/"+compte.getUsername()+"/"+(Long)request.getSession().getAttribute("ecoleId");
@@ -427,7 +427,7 @@ public class ParentLoginController {
         System.out.println(message.getVisibilite().toString());
         message.setVisibilite(message.getVisibilite().toString());
        storageService.store(file);
-       message.setFichier("/downloadFile/"+file.getOriginalFilename());
+       message.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         messageRepository.save(message);

@@ -336,7 +336,8 @@ public class EnseignantLoginController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        cours.setFichier("/downloadFile/"+file.getOriginalFilename());
+
+        cours.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         cours.setDate(dateFormat.format(date));
@@ -394,7 +395,7 @@ public class EnseignantLoginController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        devoir.setFichier("/downloadFile/"+file.getOriginalFilename());
+        devoir.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         devoir.setDate(dateFormat.format(date));
@@ -464,7 +465,7 @@ public class EnseignantLoginController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        examen.setFichier("/downloadFile/"+file.getOriginalFilename());
+        examen.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         examen.setDate(dateFormat.format(date));
@@ -501,7 +502,7 @@ public class EnseignantLoginController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         storageService.store(file);
-        message.setFichier("/downloadFile/"+file.getOriginalFilename());
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         messageRepository.save(message);

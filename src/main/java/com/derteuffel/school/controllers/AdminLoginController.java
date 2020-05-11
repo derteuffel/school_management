@@ -104,9 +104,9 @@ public class AdminLoginController {
     @PostMapping("/livre/save")
     public String saveBook(@Valid Livre livre, @RequestParam("file") MultipartFile file, @RequestParam("cover") MultipartFile cover){
         storageService.store(file);
-        livre.setFichier("/downloadFile/"+file.getOriginalFilename());
+        livre.setFichier("/upload-dir/"+file.getOriginalFilename());
         storageService.store(cover);
-        livre.setCouverture("/downloadFile/"+cover.getOriginalFilename());
+        livre.setCouverture("/upload-dir/"+cover.getOriginalFilename());
 
         livreRepository.save(livre);
         return "redirect:/admin/bibliotheque/lists";

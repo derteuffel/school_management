@@ -22,7 +22,7 @@ public class EnseignantSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .antMatcher("/enseignant/**").authorizeRequests()
-                .antMatchers("/downloadFile/**","/experts/**").permitAll()
+                .antMatchers("/upload-dir/**","/files/**").permitAll()
                 .antMatchers("/enseignant/**").access("hasAnyRole('ROLE_ROOT','ROLE_ENSEIGNANT')")
                 .and()
                 .formLogin()

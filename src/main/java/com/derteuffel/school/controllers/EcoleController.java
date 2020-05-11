@@ -50,7 +50,7 @@ public class EcoleController {
         ecole.setStatus(false);
         ecole.setCode(UUID.randomUUID().toString());
         storageService.store(file);
-        ecole.setLogo("/downloadFile/"+file.getOriginalFilename());
+        ecole.setLogo("/upload-dir/"+file.getOriginalFilename());
         ecoleRepository.save(ecole);
 
         Mail sender = new Mail();

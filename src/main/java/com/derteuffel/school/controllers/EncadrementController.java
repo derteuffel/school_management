@@ -139,9 +139,9 @@ public class EncadrementController {
             encadreur.setPays(encadrementRegistrationDto.getPays());
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
             storageService.store(file);
-            encadreur.setCv("/downloadFile/" + file.getOriginalFilename());
+            encadreur.setCv(file.getOriginalFilename());
             storageService.store(picture);
-            encadreur.setAvatar("/downloadFile/"+picture.getOriginalFilename());
+            encadreur.setAvatar(picture.getOriginalFilename());
 
 
             encadreurRepository.save(encadreur);
@@ -309,14 +309,14 @@ public class EncadrementController {
     public String updateEnseignantSave(@Valid Encadreur encadreur, @RequestParam("file") MultipartFile file,@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes, String cour_enseigners){
         if (!(file.isEmpty())){
         storageService.store(file);
-        encadreur.setCv("/downloadFile/"+file.getOriginalFilename());
+        encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
         }else {
             encadreur.setCv(encadreur.getCv());
         }
 
         if (!(image.isEmpty())){
             storageService.store(image);
-            encadreur.setAvatar("/downloadFile/"+image.getOriginalFilename());
+            encadreur.setAvatar("/upload-dir/"+image.getOriginalFilename());
         }else {
             encadreur.setAvatar(encadreur.getAvatar());
         }
@@ -488,7 +488,7 @@ public class EncadrementController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        cours.setFichier("/downloadFile/"+file.getOriginalFilename());
+        cours.setFichier("/upload-dir/"+file.getOriginalFilename());
 
         System.out.println("je fait un enregistrement");
         cours.setDate(dateFormat.format(date));
@@ -550,7 +550,7 @@ public class EncadrementController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        devoir.setFichier("/downloadFile/"+file.getOriginalFilename());
+        devoir.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         devoir.setDate(dateFormat.format(date));
@@ -580,7 +580,7 @@ public class EncadrementController {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         response.setDate(dateFormat.format(date));
         storageService.store(file);
-        response.setFichier("/downloadFile/"+file.getOriginalFilename());
+        response.setFichier("/upload-dir/"+file.getOriginalFilename());
 
         responseRepository.save(response);
         return "redirect:/encadrements/reponses/lists";
@@ -680,7 +680,7 @@ public class EncadrementController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         storageService.store(file);
-        examen.setFichier("/downloadFile/"+file.getOriginalFilename());
+        examen.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         examen.setDate(dateFormat.format(date));
@@ -713,7 +713,7 @@ public class EncadrementController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         storageService.store(file);
-        message.setFichier("/downloadFile/"+file.getOriginalFilename());
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
         messageRepository.save(message);

@@ -369,7 +369,7 @@ public class DirectionLoginController {
     public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file, String cour_enseigners) {
 
         storageService.store(file);
-        enseignant.setAvatar("/downloadFile/" + file.getOriginalFilename());
+        enseignant.setAvatar("/upload-dir/"+file.getOriginalFilename());
         if (!(cour_enseigners.isEmpty())){
             String[]cours= cour_enseigners.split(",");
             System.out.println(cours.length);
@@ -626,7 +626,7 @@ public class DirectionLoginController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         storageService.store(file);
-        message.setFichier("/downloadFile/"+file.getOriginalFilename());
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
@@ -667,7 +667,7 @@ public class DirectionLoginController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
         storageService.store(file);
-        message.setFichier("/downloadFile/"+file.getOriginalFilename());
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
         Mail sender = new Mail();
