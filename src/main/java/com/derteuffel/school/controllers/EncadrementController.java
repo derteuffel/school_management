@@ -118,7 +118,6 @@ public class EncadrementController {
         }
 
             Encadreur encadreur = new Encadreur();
-            encadreur.setAvatar("/images/icon/avatar-01.jpg");
             encadreur.setTelephone(encadrementRegistrationDto.getTelephone());
             encadreur.setName(encadrementRegistrationDto.getName());
             encadreur.setEmail(encadrementRegistrationDto.getEmail());
@@ -139,9 +138,9 @@ public class EncadrementController {
             encadreur.setPays(encadrementRegistrationDto.getPays());
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
             multipart.store(file);
-            encadreur.setCv(file.getOriginalFilename());
+            encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
             multipart.store(picture);
-            encadreur.setAvatar(picture.getOriginalFilename());
+            encadreur.setAvatar("/upload-dir/"+picture.getOriginalFilename());
 
 
             encadreurRepository.save(encadreur);
@@ -429,7 +428,9 @@ public class EncadrementController {
 
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                        allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
+                    if (!(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()).isEmpty())) {
+                        allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(), ECours.COURS.toString()));
+                    }
                 }
             }
 
