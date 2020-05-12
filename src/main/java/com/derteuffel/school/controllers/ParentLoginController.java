@@ -7,7 +7,7 @@ import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -62,7 +62,7 @@ public class ParentLoginController {
     private ExamenRepository examenRepository;
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
 
     @Autowired
     private CompteService compteService;
@@ -265,7 +265,7 @@ public class ParentLoginController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         response.setDate(dateFormat.format(date));
-        storageService.store(file);
+        multipart.store(file);
         response.setFichier("/upload-dir/"+file.getOriginalFilename());
 
         responseRepository.save(response);
@@ -426,7 +426,7 @@ public class ParentLoginController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         System.out.println(message.getVisibilite().toString());
         message.setVisibilite(message.getVisibilite().toString());
-       storageService.store(file);
+       multipart.store(file);
        message.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 

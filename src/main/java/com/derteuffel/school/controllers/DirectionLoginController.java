@@ -7,7 +7,7 @@ import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -57,7 +57,7 @@ public class DirectionLoginController {
     private EleveRepository eleveRepository;
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
     /*@Value("${file.upload-dir}")
     private  String fileStorage ;*/ //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
@@ -370,7 +370,7 @@ public class DirectionLoginController {
     @PostMapping("/enseignant/update")
     public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file, String cour_enseigners) {
 
-        storageService.store(file);
+        multipart.store(file);
         enseignant.setAvatar("/upload-dir/"+file.getOriginalFilename());
         if (!(cour_enseigners.isEmpty())){
             String[]cours= cour_enseigners.split(",");
@@ -627,7 +627,7 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        storageService.store(file);
+        multipart.store(file);
         message.setFichier("/upload-dir/"+file.getOriginalFilename());
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
@@ -689,7 +689,7 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        storageService.store(file);
+        multipart.store(file);
         message.setFichier("/upload-dir/"+file.getOriginalFilename());
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 

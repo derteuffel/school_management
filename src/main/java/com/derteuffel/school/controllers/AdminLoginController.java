@@ -7,7 +7,7 @@ import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.repositories.LivreRepository;
 import com.derteuffel.school.services.CompteService;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -40,7 +40,7 @@ public class AdminLoginController {
     private CompteService compteService;
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
     /*@Value("${file.upload-dir}")
     private  String fileStorage ;*///=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
@@ -103,9 +103,9 @@ public class AdminLoginController {
 
     @PostMapping("/livre/save")
     public String saveBook(@Valid Livre livre, @RequestParam("file") MultipartFile file, @RequestParam("cover") MultipartFile cover){
-        storageService.store(file);
+        multipart.store(file);
         livre.setFichier("/upload-dir/"+file.getOriginalFilename());
-        storageService.store(cover);
+        multipart.store(cover);
         livre.setCouverture("/upload-dir/"+cover.getOriginalFilename());
 
         livreRepository.save(livre);

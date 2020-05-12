@@ -3,7 +3,7 @@ package com.derteuffel.school.controllers;
 import com.derteuffel.school.entities.Ecole;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.services.Mail;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +30,7 @@ public class EcoleController {
     private  String fileStorage ;*/ //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
     @GetMapping("/connexion")
     public String home(){
         return "index";
@@ -49,7 +49,7 @@ public class EcoleController {
         ecole.setQuartier(ecole.getQuartier().toUpperCase());
         ecole.setStatus(false);
         ecole.setCode(UUID.randomUUID().toString());
-        storageService.store(file);
+        multipart.store(file);
         ecole.setLogo("/upload-dir/"+file.getOriginalFilename());
         ecoleRepository.save(ecole);
 
