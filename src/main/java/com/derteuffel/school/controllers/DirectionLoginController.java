@@ -7,8 +7,8 @@ import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
+import com.derteuffel.school.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,8 +55,11 @@ public class DirectionLoginController {
 
     @Autowired
     private EleveRepository eleveRepository;
-    @Value("${file.upload-dir}")
-    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+
+    @Autowired
+    private StorageService storageService;
+    /*@Value("${file.upload-dir}")
+    private  String fileStorage ;*/ //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director() {
@@ -199,7 +198,7 @@ public class DirectionLoginController {
 
     //--- Enseignant management start ----///
     @PostMapping("/enseignant/save")
-    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, Long[] classes) {
+    public String teacherSave(Enseignant enseignant, Model model, RedirectAttributes redirectAttributes, HttpServletRequest request, Long[] classes,String cour_enseigners) {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
@@ -221,6 +220,15 @@ public class DirectionLoginController {
             model.addAttribute("message",new Message());
             return "direction/home";
         }
+
+        if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+            for (String item : cours){
+                enseignant.getCour_enseigner().add(item.toUpperCase());
+            }
+        }
+        System.out.println(enseignant.getCour_enseigner());
         compte1.setUsername(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
         compte1.setEmail(enseignant.getEmail());
         compte1.setPassword(enseignant.getName() + "" + compteRepository.findAllByEcole_Id(compte.getEcole().getId()).size());
@@ -358,24 +366,27 @@ public class DirectionLoginController {
 
 
     @PostMapping("/enseignant/update")
-    public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file) {
+    public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file, String cour_enseigners) {
 
-        if (!(file.isEmpty())) {
-            try {
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
+        storageService.store(file);
+        enseignant.setAvatar("/upload-dir/"+file.getOriginalFilename());
+        if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+            enseignant.getCour_enseigner().clear();
+            for (String item : cours){
+                enseignant.getCour_enseigner().add(item.toUpperCase());
             }
-            enseignant.setAvatar("/downloadFile/" + file.getOriginalFilename());
+        }else {
+            enseignant.setCour_enseigner(enseignant.getCour_enseigner());
         }
 
         enseignantRepository.save(enseignant);
 
         return "redirect:/direction/enseignant/lists";
     }
+
+
 
     @GetMapping("/eleve/edit/{id}")
     public String eleveEdit(@PathVariable Long id, Model model) {
@@ -614,17 +625,8 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        if (!(file.isEmpty())) {
-            try {
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            message.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
@@ -664,17 +666,8 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        if (!(file.isEmpty())) {
-            try {
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            message.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
         Mail sender = new Mail();
@@ -799,6 +792,13 @@ public class DirectionLoginController {
         model.addAttribute("ecole",hebdo.getSalle().getEcole());
         return "direction/classes/presenceDetail";
 
+    }
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "direction/account";
     }
 
 

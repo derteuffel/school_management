@@ -7,8 +7,8 @@ import com.derteuffel.school.enums.EVisibilite;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
+import com.derteuffel.school.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -66,9 +62,12 @@ public class ParentLoginController {
     private ExamenRepository examenRepository;
 
     @Autowired
+    private StorageService storageService;
+
+    @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    /*@Value("${file.upload-dir}")
+    private  String fileStorage ; *///=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @GetMapping("/login")
     public String director(Model model){
@@ -266,17 +265,9 @@ public class ParentLoginController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         response.setDate(dateFormat.format(date));
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            response.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        response.setFichier("/upload-dir/"+file.getOriginalFilename());
+
         responseRepository.save(response);
         return "redirect:/parent/reponses/lists/"+(Long)request.getSession().getAttribute("salleId")+"/"+compte.getUsername()+"/"+(Long)request.getSession().getAttribute("ecoleId");
     }
@@ -435,17 +426,9 @@ public class ParentLoginController {
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         System.out.println(message.getVisibilite().toString());
         message.setVisibilite(message.getVisibilite().toString());
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            message.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+       storageService.store(file);
+       message.setFichier("/upload-dir/"+file.getOriginalFilename());
+
 
         messageRepository.save(message);
         Mail sender = new Mail();
@@ -458,6 +441,17 @@ public class ParentLoginController {
         return "redirect:/parent/classe/detail/"+salle.getId();
 
     }
+
+    @Autowired
+    private CompteRepository compteRepository;
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "parent/account";
+    }
+
 
 
 }

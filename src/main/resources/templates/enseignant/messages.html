@@ -79,7 +79,7 @@
                                             <hr>
                                             <p><span th:text="${message.content}"></span></p>
                                             <br>
-                                            <p>Fichier(s) associé(s)&nbsp; <a th:href="${message.fichier}">Voir</a></p>
+                                            <p>Fichier(s) associé(s)&nbsp; <a th:href="@{/files/}+${message.fichier}">Telecharger le fichier</a></p>
                                         </div>
                                     </div>
                                 </div>

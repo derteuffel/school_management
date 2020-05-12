@@ -26,7 +26,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
         http
 
                 .antMatcher("/direction/**").authorizeRequests()
-                .antMatchers("/downloadFile/**").permitAll()
+                .antMatchers("/upload-dir/**","/experts/**","/files/**").permitAll()
                 .antMatchers("/direction/**").access("hasAnyRole('ROLE_ROOT','ROLE_DIRECTEUR')")
                 .and()
                 .formLogin()
@@ -66,6 +66,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/vendor/**",
                         "/fonts/**",
                         "/downloadFile/**",
+                        "/upload-dir/**",
                         "/images/**",
                         "/static/**",
                         "/ecole/connexion",

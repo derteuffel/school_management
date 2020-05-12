@@ -13,4 +13,5 @@ import java.util.Collection;
 @Repository
 public interface EncadreurRepository extends JpaRepository<Encadreur, Long> {
     Collection<Encadreur> findAllByEnfants_Id(Long id, Sort sort);
+    Collection<Encadreur> findAllByCategory(String name, Sort sort);
 }

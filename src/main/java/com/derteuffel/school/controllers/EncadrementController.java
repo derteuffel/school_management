@@ -10,8 +10,8 @@ import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
+import com.derteuffel.school.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -66,9 +62,11 @@ public class EncadrementController {
 
     @Autowired
     private CompteService compteService;
-    @Value("${file.upload-dir}")
-    private  String fileStorage ; //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
+    /*@Value("${file.upload-dir}")
+    private  String fileStorage ; *///=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
+    @Autowired
+    private StorageService storageService;
     @GetMapping("/login")
     public String login(){
         return "encadrements/login";
@@ -107,7 +105,7 @@ public class EncadrementController {
 
     @PostMapping("/registration2")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid EncadrementRegistrationDto encadrementRegistrationDto,
-                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file, @RequestParam("picture") MultipartFile picture ){
+                                            BindingResult result, RedirectAttributes redirectAttributes,  @RequestParam("file") MultipartFile file, @RequestParam("picture") MultipartFile picture , String cour_enseigners){
 
         Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
@@ -124,7 +122,13 @@ public class EncadrementController {
             encadreur.setTelephone(encadrementRegistrationDto.getTelephone());
             encadreur.setName(encadrementRegistrationDto.getName());
             encadreur.setEmail(encadrementRegistrationDto.getEmail());
-            encadreur.setCour_enseigner(encadrementRegistrationDto.getCours_reference());
+            if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+                for (String item : cours){
+                encadreur.getCour_enseigner().add(item.toUpperCase());
+                }
+            }
             encadreur.setHeureDebut(encadrementRegistrationDto.getHeureDebut());
             encadreur.setHeureFin(encadrementRegistrationDto.getHeureFin());
             encadreur.setMotivation(encadrementRegistrationDto.getMotivation());
@@ -134,29 +138,11 @@ public class EncadrementController {
             encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
             encadreur.setPays(encadrementRegistrationDto.getPays());
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
-            if (!(file.isEmpty())) {
-                try {
-                    // Get the file and save it somewhere
-                    byte[] bytes = file.getBytes();
-                    Path path = Paths.get(fileStorage + file.getOriginalFilename());
-                    Files.write(path, bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                encadreur.setCv("/downloadFile/" + file.getOriginalFilename());
-            }
+            storageService.store(file);
+            encadreur.setCv(file.getOriginalFilename());
+            storageService.store(picture);
+            encadreur.setAvatar(picture.getOriginalFilename());
 
-        if (!(picture.isEmpty())) {
-            try {
-                // Get the file and save it somewhere
-                byte[] bytes = picture.getBytes();
-                Path path = Paths.get(fileStorage+picture.getOriginalFilename());
-                Files.write(path, bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            encadreur.setAvatar("/downloadFile/"+picture.getOriginalFilename());
-        }
 
             encadreurRepository.save(encadreur);
             compteService.saveEncadreur(encadrementRegistrationDto,encadreur.getAvatar(),encadreur);
@@ -218,9 +204,9 @@ public class EncadrementController {
         Collection<Enfant> enfantCollection = enfantRepository.findAll();
         Collection<Enfant> eleves = new ArrayList<>();
         for (Enfant enfant : enfantCollection){
-            if (enfant.getMatieres().contains(encadreur.getCour_enseigner())){
+            /*if (enfant.getMatieres().contains(encadreur.getCour_enseigners())){
                 eleves.add(enfant);
-            }
+            }*/
         }
         Collection<Enfant> enfants = encadreur.getEnfants();
         System.out.println(enfants.size());
@@ -320,34 +306,33 @@ public class EncadrementController {
     }
 
     @PostMapping("/encadreurs/update")
-    public String updateEnseignantSave(@Valid Encadreur encadreur, @RequestParam("file") MultipartFile file,@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes){
+    public String updateEnseignantSave(@Valid Encadreur encadreur, @RequestParam("file") MultipartFile file,@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes, String cour_enseigners){
         if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            encadreur.setCv("/downloadFile/"+file.getOriginalFilename());
+        storageService.store(file);
+        encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
         }else {
             encadreur.setCv(encadreur.getCv());
         }
 
         if (!(image.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = image.getBytes();
-                Path path = Paths.get(fileStorage+image.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            encadreur.setAvatar("/downloadFile/"+image.getOriginalFilename());
+            storageService.store(image);
+            encadreur.setAvatar("/upload-dir/"+image.getOriginalFilename());
         }else {
             encadreur.setAvatar(encadreur.getAvatar());
         }
+
+        if (!(cour_enseigners.isEmpty())){
+            String[]cours= cour_enseigners.split(",");
+            System.out.println(cours.length);
+            encadreur.getCour_enseigner().clear();
+            for (String item : cours){
+                encadreur.getCour_enseigner().add(item.toUpperCase());
+            }
+        }else {
+            encadreur.setCour_enseigner(encadreur.getCour_enseigner());
+        }
+
+        encadreur.setCategory(encadreur.getCategory().toString());
 
         encadreurRepository.save(encadreur);
 
@@ -502,17 +487,8 @@ public class EncadrementController {
         System.out.println("jesuis entrain d'enregistrer");
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            cours.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        cours.setFichier("/upload-dir/"+file.getOriginalFilename());
 
         System.out.println("je fait un enregistrement");
         cours.setDate(dateFormat.format(date));
@@ -573,17 +549,9 @@ public class EncadrementController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            devoir.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        devoir.setFichier("/upload-dir/"+file.getOriginalFilename());
+
 
         devoir.setDate(dateFormat.format(date));
         devoir.setType(ECours.DEVOIRS.toString());
@@ -611,17 +579,9 @@ public class EncadrementController {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         response.setDate(dateFormat.format(date));
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            response.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        response.setFichier("/upload-dir/"+file.getOriginalFilename());
+
         responseRepository.save(response);
         return "redirect:/encadrements/reponses/lists";
     }
@@ -719,17 +679,9 @@ public class EncadrementController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            examen.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        examen.setFichier("/upload-dir/"+file.getOriginalFilename());
+
 
         examen.setDate(dateFormat.format(date));
         examenRepository.save(examen);
@@ -760,17 +712,9 @@ public class EncadrementController {
         message.setSender(compte.getUsername());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        if (!(file.isEmpty())){
-            try{
-                // Get the file and save it somewhere
-                byte[] bytes = file.getBytes();
-                Path path = Paths.get(fileStorage+file.getOriginalFilename());
-                Files.write(path, bytes);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-            message.setFichier("/downloadFile/"+file.getOriginalFilename());
-        }
+        storageService.store(file);
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
+
 
         messageRepository.save(message);
         Mail sender = new Mail();
@@ -815,5 +759,13 @@ public class EncadrementController {
         model.addAttribute("message",new Message());
         return "encadrements/messages";
     }
+
+    @GetMapping("/account/detail/{id}")
+    public String getAccount(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "encadrements/account";
+    }
+
 
 }

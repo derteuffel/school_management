@@ -2,16 +2,26 @@ package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.Compte;
 import com.derteuffel.school.entities.Ecole;
+import com.derteuffel.school.entities.Encadreur;
+import com.derteuffel.school.enums.ECategory;
 import com.derteuffel.school.repositories.CompteRepository;
 import com.derteuffel.school.repositories.EcoleRepository;
+import com.derteuffel.school.repositories.EncadreurRepository;
 import com.derteuffel.school.services.MailService;
+import com.derteuffel.school.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import com.derteuffel.school.services.MailService;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Collection;
+
 
 /**
  * Created by user on 22/03/2020.
@@ -24,6 +34,11 @@ public class HomeController {
     private EcoleRepository ecoleRepository;
     @Autowired
     private CompteRepository compteRepository;
+    @Autowired
+    private EncadreurRepository encadreurRepository;
+
+    @Autowired
+    private StorageService storageService;
     @GetMapping("/home")
     public String home(){
         return "home";
@@ -63,5 +78,39 @@ public class HomeController {
     @GetMapping("/login/enseignant")
     public String enseignant(){
         return "login/enseignant";
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+
+        Resource file = storageService.loadAsResource(filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+
+    @GetMapping("/experts/ecoles")
+    public String getExpert1(Model model){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id")));
+        model.addAttribute("lists",encadreurs);
+        return "expertsProfiles";
+    }
+
+    @GetMapping("/experts/universites")
+    public String getExpert2(Model model){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_UNIVERSITAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        return "expertsProfiles";
+    }
+    @GetMapping("/experts/professionnels")
+    public String getExpert3(Model model){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_PROFESSIONNEL.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        return "expertsProfiles";
     }
 }

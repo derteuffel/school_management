@@ -148,7 +148,7 @@
                                                                 <label  class=" form-control-label">Fichier join</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <a th:if="${cours?.fichier}" th:href="${cours?.fichier}"><small class="form-text text-muted" >Voir le fichier</small></a>
+                                                                <a th:if="${cours?.fichier}" th:href="${cours?.fichier}"><small  >Telecharger le fichier</small></a>
                                                                 <a th:unless="${cours?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
                                                             </div>
                                                         </div>
@@ -193,6 +193,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="text" id="text-title" th:field="*{title}" placeholder="Titre" class="form-control">
+                                <input type="hidden"  name="id" th:value="${classe.id}" >
                                 <small class="form-text text-muted">Titre du cours</small>
                             </div>
                         </div>
@@ -201,7 +202,7 @@
                                 <label for="text-content" class=" form-control-label">Contenue</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea th:field="*{content}" id="text-content" class="form-control" rows="15" placeholder="Contenue"></textarea>
+                                <textarea th:field="*{content}" id="text-content" class="form-control" rows="5" placeholder="Contenue"></textarea>
                                 <small class="form-text text-muted">Ajouter un resumer du cours</small>
                             </div>
                         </div>

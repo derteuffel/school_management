@@ -97,7 +97,7 @@
                                         <div class="text-left">
                                             <strong>Nom : </strong><span th:text="${enseignant?.name}"></span> <br>
                                             <strong>Tel : </strong><span th:text="${enseignant?.telephone}"></span> <br>
-                                            <strong>Cours : </strong><span th:text="${enseignant?.cour_enseigner}"></span>
+                                            <!--strong>Cours : </strong><span th:text="${enseignant?.cour_enseigner}"></span-->
                                         </div>
                                     </div>
                                     </button>
@@ -157,7 +157,7 @@
                                                                 <label for="text-cours" class=" form-control-label">Cours enseigner</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.cour_enseigner}">Cours enseigner</small>
+                                                                <small th:each="item : ${enseignant?.cour_enseigner}" class="form-text text-muted" th:text="${item}">Cours enseigner</small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -165,7 +165,6 @@
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                                                         <a  class="btn btn-primary" th:href="@{/direction/enseignant/edit/}+${enseignant?.id}">Editer</a>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -267,7 +266,7 @@
                                 <label for="text-cours" class=" form-control-label">Cours enseigné</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-cours" th:field="*{cour_enseigner}" placeholder="Cours" class="form-control">
+                                <input type="text" id="text-cours" name="cour_enseigners" placeholder="Cours(entrer l'ensemble de vos matieres enseigner separer par une virgule)" class="form-control">
                                 <small class="form-text text-muted">Cours enseigné</small>
                             </div>
                         </div>
