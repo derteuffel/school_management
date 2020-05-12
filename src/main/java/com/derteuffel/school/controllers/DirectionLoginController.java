@@ -168,6 +168,8 @@ public class DirectionLoginController {
         return "direction/home";
     }
 
+
+
     @GetMapping("/enseignant/lists/{id}")
     public String enseignants(@PathVariable Long id, Model model){
         Ecole ecole = ecoleRepository.getOne(id);
@@ -650,6 +652,27 @@ public class DirectionLoginController {
 
     }
 
+    @GetMapping("/message/lists")
+    public String messagesDirecteur(HttpServletRequest request, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndEcole(EVisibilite.DIRECTION.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.ENSEIGNANT.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PARENT.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
+        for (Message message : messages1) {
+            if (!(messages.contains(message))) {
+                messages.add(message);
+            }
+        }
+        model.addAttribute("lists", messages);
+        model.addAttribute("message", new Message());
+        model.addAttribute("ecole", ecole);
+        return "direction/messages";
+    }
+
     @GetMapping("/message/delete/{id}")
     public String deleteMessage(@PathVariable Long id){
         messageRepository.deleteById(id);
@@ -686,7 +709,7 @@ public class DirectionLoginController {
         }
 
         messageRepository.save(message);
-        return "redirect:/direction/home";
+        return "redirect:/direction/message/lists";
     }
 
 

@@ -560,6 +560,21 @@ public class EnseignantLoginController {
         return "enseignant/messages";
     }
 
+    @GetMapping("/messages")
+    public String messageClasse(Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+
+        Ecole ecole = compte.getEcole();
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndEcole(EVisibilite.ENSEIGNANT.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC,"id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC, "id")));
+        model.addAttribute("lists",messages);
+        model.addAttribute("message", new Message());
+        return "enseignant/messages1";
+
+
+    }
+
     @Autowired
     private HebdoRepository hebdoRepository;
 
