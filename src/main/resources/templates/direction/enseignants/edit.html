@@ -111,7 +111,7 @@
                                                 <label for="text-cours" class=" form-control-label">Cours enseigné</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="text-cours" name="cour_enseigners" placeholder="Cours" class="form-control">
+                                                <input type="text" id="text-cours" name="cour_enseigners" placeholder="Pour Plus d'un cours separe les par une virgule" class="form-control">
                                                 <input type="text"  th:field="*{cour_enseigner}" style="display: none" placeholder="Cours" class="form-control">
                                                 <small class="form-text text-muted">Cours enseigné <span th:each="item :${teacher.cour_enseigner}" th:text="${item}+', '"></span></small>
                                             </div>
