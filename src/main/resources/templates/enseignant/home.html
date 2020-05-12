@@ -39,7 +39,7 @@
 </head>
 
 <body class="animsition">
-<div id="video-super-container" style="min-height:100vh;z-index:1999999999"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
+<div id="video-super-container" style="min-height:100%;z-index:1999999999"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
     <div id="video-container" class="row "></div>
     <div >
         <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end"></i></button>
@@ -221,6 +221,23 @@
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/ui.js}" type="text/javascript"></script>
 <script th:src="@{/js/voxeet1.js}" type="text/javascript"></script>
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBH1FWI_3NrDWxFPhAU7Sxm5zvcDPl7gf4",
+        authDomain: "yesbanana-7ddd4.firebaseapp.com",
+        databaseURL: "https://yesbanana-7ddd4.firebaseio.com",
+        projectId: "yesbanana-7ddd4",
+        storageBucket: "yesbanana-7ddd4.appspot.com",
+        messagingSenderId: "745771380195",
+        appId: "1:745771380195:web:994ae55d1c9fe51bfb44d6",
+        measurementId: "G-PNX6BWLBCQ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
+<script th:src="@{/js/message.js}"></script>
 </body>
 
 </html>
