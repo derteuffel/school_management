@@ -8,7 +8,7 @@ const addVideoNode = (participant, stream) => {
 
         videoNode.setAttribute('id', 'video-' + participant.id);
         videoNode.setAttribute('width', '100%');
-        videoNode.setAttribute('class','col-md-6 p-1');
+        videoNode.setAttribute('class','col-md-6 p-3');
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 
