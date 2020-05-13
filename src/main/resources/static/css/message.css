@@ -1,0 +1,28 @@
+.forumDiv{
+    height:500px;
+    width:400px;
+    display:none;
+    background-color: rgb(230,230,230);
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    border:1px solid rgb(200,200,200);
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+#forumCloseBtn:hover{
+    cursor:pointer;
+}
+.forumItem{
+    width: 300px;
+    border-radius:16px;
+    display:flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+#chatRoom{
+    display: flex;
+    flex-direction: column;
+    overflow-y:scroll;
+}
