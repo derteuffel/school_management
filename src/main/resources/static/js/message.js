@@ -28,20 +28,20 @@ const createMessageItem= (name1,avatar,message,date)=>`<div  class="bg-light mb-
 <div class="d-flex flex-column justify-content-between align-items-end">
 <p>${message}</p>
 <div class="text-align-right">
-<span>${moment(date).fromNow()}</span>
+<span class="font-italic " style="font-size: 0.7rem">${moment(date).fromNow()}</span>
 </div>
 </div>
 
 </div>`
 const getMessageAndListen = async (ecoleId)=>{
    const chatRoom= $("#chatRoom")
-
-
+    console.log(ecoleId)
     db.collection(`ecole${ecoleId}`).onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
                     const data= change.doc.data()
                     chatRoom.append(createMessageItem(data.name,data.avatar,data.message,data.createdDate))
+                    chatRoom.scrollTop(chatRoom.prop("scrollHeight"))
                 }
 
             });
