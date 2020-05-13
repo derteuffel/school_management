@@ -18,8 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 
@@ -56,6 +58,7 @@ public class HomeController {
     public String admin(){
         return "login/admin";
     }
+
     @GetMapping("/sendMail/{sender}/{conferenceId}")
     public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){
         Compte compte = compteRepository.findByEnseignant_Id(Long.parseLong(sender));
@@ -66,6 +69,16 @@ public class HomeController {
                 compte.getEmail(),
                 "YesBanana School: VideoCall live",
                 "Go to your profile at https://ecoles.yesbanana.org, to join the call");
+        return "index1";
+    }
+    @GetMapping("/planning/{sender}")
+    public String planning(@PathVariable String sender, @RequestParam String date){
+        MailService mailService = new MailService();
+        mailService.sendSimpleMessage(
+                sender,
+                "YesBanana School: Reunion du " + date ,
+                "Allez a votre profil, a l'adresse:  https://ecoles.yesbanana.org, pour participer a la " +
+                        "reunion du " + date);
         return "index1";
     }
 
