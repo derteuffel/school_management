@@ -10,7 +10,7 @@ import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.MailService;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -68,7 +68,7 @@ public class EnseignantLoginController {
     private  String fileStorage ;*///=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
     @GetMapping("/login")
     public String director(Model model){
 
@@ -335,7 +335,7 @@ public class EnseignantLoginController {
         Salle salle = salleRepository.getOne(id);
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        storageService.store(file);
+        multipart.store(file);
 
         cours.setFichier("/upload-dir/"+file.getOriginalFilename());
 
@@ -394,7 +394,7 @@ public class EnseignantLoginController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        storageService.store(file);
+        multipart.store(file);
         devoir.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
@@ -464,7 +464,7 @@ public class EnseignantLoginController {
 
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        storageService.store(file);
+        multipart.store(file);
         examen.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
@@ -501,7 +501,7 @@ public class EnseignantLoginController {
         message.setSalle(salle.getNiveau()+""+salle.getId());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        storageService.store(file);
+        multipart.store(file);
         message.setFichier("/upload-dir/"+file.getOriginalFilename());
 
 
@@ -558,6 +558,21 @@ public class EnseignantLoginController {
         model.addAttribute("classe",salle);
         model.addAttribute("message",new Message());
         return "enseignant/messages";
+    }
+
+    @GetMapping("/messages")
+    public String messageClasse(Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+
+        Ecole ecole = compte.getEcole();
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndEcole(EVisibilite.ENSEIGNANT.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC,"id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC, "id")));
+        model.addAttribute("lists",messages);
+        model.addAttribute("message", new Message());
+        return "enseignant/messages1";
+
+
     }
 
     @Autowired

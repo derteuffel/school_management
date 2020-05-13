@@ -7,7 +7,7 @@ import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
-import com.derteuffel.school.storage.StorageService;
+import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -57,7 +57,7 @@ public class DirectionLoginController {
     private EleveRepository eleveRepository;
 
     @Autowired
-    private StorageService storageService;
+    private Multipart multipart;
     /*@Value("${file.upload-dir}")
     private  String fileStorage ;*/ //=System.getProperty("user.dir")+"/src/main/resources/static/downloadFile/";
 
@@ -167,6 +167,8 @@ public class DirectionLoginController {
         model.addAttribute("ecole", ecole);
         return "direction/home";
     }
+
+
 
     @GetMapping("/enseignant/lists/{id}")
     public String enseignants(@PathVariable Long id, Model model){
@@ -368,7 +370,7 @@ public class DirectionLoginController {
     @PostMapping("/enseignant/update")
     public String enseignantUpdate(Enseignant enseignant, @RequestParam("file") MultipartFile file, String cour_enseigners) {
 
-        storageService.store(file);
+        multipart.store(file);
         enseignant.setAvatar("/upload-dir/"+file.getOriginalFilename());
         if (!(cour_enseigners.isEmpty())){
             String[]cours= cour_enseigners.split(",");
@@ -625,7 +627,7 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        storageService.store(file);
+        multipart.store(file);
         message.setFichier("/upload-dir/"+file.getOriginalFilename());
         messageRepository.save(message);
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
@@ -650,6 +652,27 @@ public class DirectionLoginController {
 
     }
 
+    @GetMapping("/message/lists")
+    public String messagesDirecteur(HttpServletRequest request, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        Collection<Message> messages = messageRepository.findAllByVisibiliteAndEcole(EVisibilite.DIRECTION.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id"));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.ENSEIGNANT.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PARENT.toString(),ecole.getName(), Sort.by(Sort.Direction.DESC, "id")));
+        Collection<Message> messages1 = messageRepository.findAllByCompte_Id(compte.getId());
+        for (Message message : messages1) {
+            if (!(messages.contains(message))) {
+                messages.add(message);
+            }
+        }
+        model.addAttribute("lists", messages);
+        model.addAttribute("message", new Message());
+        model.addAttribute("ecole", ecole);
+        return "direction/messages";
+    }
+
     @GetMapping("/message/delete/{id}")
     public String deleteMessage(@PathVariable Long id){
         messageRepository.deleteById(id);
@@ -666,7 +689,7 @@ public class DirectionLoginController {
         message.setEcole(compte.getEcole().getName());
         message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
         message.setVisibilite(message.getVisibilite().toString());
-        storageService.store(file);
+        multipart.store(file);
         message.setFichier("/upload-dir/"+file.getOriginalFilename());
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
 
@@ -686,7 +709,7 @@ public class DirectionLoginController {
         }
 
         messageRepository.save(message);
-        return "redirect:/direction/home";
+        return "redirect:/direction/message/lists";
     }
 
 
