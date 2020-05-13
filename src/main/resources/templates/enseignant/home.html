@@ -40,10 +40,13 @@
 </head>
 
 <body class="animsition">
-<div id="video-super-container" style="min-height:100%;z-index:1999999999"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
+<div id="video-super-container" style="min-height:100%;z-index:1999999999;overflow-y:scroll"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
     <div id="video-container" class="row "></div>
-    <div >
-        <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end"></i></button>
+    <div class="mb-3 mt-3">
+        <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+        <button type="button" id="videoOff"  class="btn btn-light">&nbsp;&nbsp; &nbsp;  Video&nbsp; &nbsp; <i class="zmdi zmdi-videocam-off zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+        <button type="button" id="mute"  class="btn btn-warning">&nbsp; &nbsp; &nbsp; &nbsp; Mute&nbsp; &nbsp; <i class="zmdi zmdi-volume-mute zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+
     </div>
 </div>
 <input type="hidden" th:value="${session.compte.username}" id="directorFirstName"/>

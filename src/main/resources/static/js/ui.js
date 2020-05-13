@@ -35,3 +35,34 @@ stopVideoBtn.onclick = () => {
         })
     VoxeetSDK.session.close()
 }
+
+$("#mute").click(()=>{
+   const opacity =  $("#mute").css('opacity')
+    if(opacity==1) {
+        $("#mute").css('opacity', 0.5)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, true).catch(error => {
+            console.log(error)
+        })
+    }
+    else {
+        $("#mute").css('opacity', 1)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, false).catch(error => {
+            console.log(error)
+        })
+    }
+})
+$("#videoOff").click(()=>{
+    const opacity =  $("#videoOff").css('opacity')
+    if(opacity==1) {
+        $("#videoOff").css('opacity', 0.5)
+        VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant).catch(error => {
+            console.log(error)
+        })
+    }
+    else {
+        $("#videoOff").css('opacity', 1)
+        VoxeetSDK.conference.startVideo(VoxeetSDK.session.participant).catch(error => {
+            console.log(error)
+        })
+    }
+})

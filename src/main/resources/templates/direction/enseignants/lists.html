@@ -41,10 +41,13 @@
 </head>
 
 <body class="animsition " >
-<div id="video-super-container" style="min-height:100%;z-index:1999999999"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
+<div id="video-super-container" style="min-height:100%;z-index:1999999999;overflow-y:scroll"  class="position-fixed  w-100 bg-dark flex-column justify-content-center align-items-center">
     <div id="video-container" class="row "></div>
-    <div >
-        <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end"></i></button>
+    <div class="mb-3 mt-3">
+        <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+        <button type="button" id="videoOff"  class="btn btn-light">&nbsp;&nbsp; &nbsp;  Video&nbsp; &nbsp; <i class="zmdi zmdi-videocam-off zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+        <button type="button" id="mute"  class="btn btn-warning">&nbsp; &nbsp; &nbsp; &nbsp; Mute&nbsp; &nbsp; <i class="zmdi zmdi-volume-mute zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+
     </div>
 </div>
 <input type="hidden" th:value="${session.compte.username}" id="directorFirstName"/>
@@ -88,7 +91,7 @@
                             <button type="button" id="startCall" data-toggle="modal" data-target="#contacts" class="btn btn-success">Passer un appel&nbsp;<i class="zmdi zmdi-phone"></i></button>
                             <button type="button" id="forum"  class="btn btn-warning font-weight-bold">Forum&nbsp;<i class="zmdi zmdi-accounts zmdi-hc-lg"></i></button>
                             <button type="button" id="planning"  data-toggle="modal" data-target="#planningModal" class="btn btn-dark font-weight-bold">Planification&nbsp;<i class="zmdi zmdi-time zmdi-hc-lg"></i></button>
-                            <div class="alert alert-dark" role="alert" style="display:none" id="planningSuccess">
+                            <div class="alert alert-success text-dart font-weight-bold mt-2" role="alert"  style="display: none" id="planningSuccess">
                                 Reunion planifié avec success.
                             </div>
                             <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
