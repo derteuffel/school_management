@@ -284,7 +284,7 @@ public class DirectionLoginController {
         model.addAttribute("classes",salles);
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("lists", enseignants);
-
+        model.addAttribute("ecoleId",compte.getEcole().getId());
         return "direction/enseignants/lists";
     }
 

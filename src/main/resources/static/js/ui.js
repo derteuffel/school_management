@@ -7,8 +7,11 @@ const addVideoNode = (participant, stream) => {
         videoNode = document.createElement('video');
 
         videoNode.setAttribute('id', 'video-' + participant.id);
+        
+        videoNode.setAttribute('class','col-md-6 col-12');
         videoNode.setAttribute('width', '100%');
-        videoNode.setAttribute('class','col-md-6 p-1');
+        videoNode.setAttribute('margin-bottom','16px')
+        videoNode.setAttribute('padding','16px')
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 
@@ -35,3 +38,34 @@ stopVideoBtn.onclick = () => {
         })
     VoxeetSDK.session.close()
 }
+
+$("#mute").click(()=>{
+   const opacity =  $("#mute").css('opacity')
+    if(opacity==1) {
+        $("#mute").css('opacity', 0.5)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, true).catch(error => {
+            console.log(error)
+        })
+    }
+    else {
+        $("#mute").css('opacity', 1)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, false).catch(error => {
+            console.log(error)
+        })
+    }
+})
+$("#videoOff").click(()=>{
+    const opacity =  $("#videoOff").css('opacity')
+    if(opacity==1) {
+        $("#videoOff").css('opacity', 0.5)
+        VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant).catch(error => {
+            console.log(error)
+        })
+    }
+    else {
+        $("#videoOff").css('opacity', 1)
+        VoxeetSDK.conference.startVideo(VoxeetSDK.session.participant).catch(error => {
+            console.log(error)
+        })
+    }
+})
