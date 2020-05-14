@@ -139,8 +139,12 @@ public class EncadrementController {
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
             multipart.store(file);
             encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
-            multipart.store(picture);
-            encadreur.setAvatar("/upload-dir/"+picture.getOriginalFilename());
+            if (!(picture.isEmpty())) {
+                multipart.store(picture);
+                encadreur.setAvatar("/upload-dir/" + picture.getOriginalFilename());
+            }else {
+                encadreur.setAvatar("/images/profile.jpeg");
+            }
 
 
             encadreurRepository.save(encadreur);
@@ -426,9 +430,7 @@ public class EncadrementController {
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
-                    if (!(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()).isEmpty())) {
-                        allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(), ECours.COURS.toString()));
-                    }
+                    allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
             }
 
