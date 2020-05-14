@@ -416,7 +416,6 @@ public class EncadrementController {
                 System.out.println("je suis encadreur");
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.COURS.toString()));
             }else if (compte.getRoles().contains(role1)){
-
                 System.out.println("je suis enfant");
                 Collection<Encadreur> encadreurs = encadreurRepository.findAllByEnfants_Id(compte.getEnfant().getId(),Sort.by(Sort.Direction.DESC,"id"));
                 System.out.println(encadreurs.size());
@@ -425,7 +424,6 @@ public class EncadrementController {
                 }
 
             }else {
-
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
                     if (!(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()).isEmpty())) {
