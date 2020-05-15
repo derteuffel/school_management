@@ -94,8 +94,18 @@
                             <div class="alert alert-success text-dart font-weight-bold mt-2" role="alert"  style="display: none" id="planningSuccess">
                                 Reunion planifié avec success.
                             </div>
-                            <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
                             <hr>
+                            <div id="audioContainer">
+                            <div class=" text-white p-2 justify-content-center align-items-center alert au-alert-success" id="audioComponent" style="display:none;">
+                                <span class="text-danger font-weight-bold" id="countDown" style="width:80px;font-size:1.2rem"></span>&nbsp;&nbsp;
+                                <button type="button" id="stopAudio"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+                                <button type="button" id="muteAudio"  class="btn btn-warning">&nbsp; &nbsp; &nbsp; &nbsp; Mute&nbsp; &nbsp; <i class="zmdi zmdi-volume-mute zmdi-hc-lg"></i></button>&nbsp;&nbsp;
+                            </div>
+                            </div>
+                            <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
+
+                            <hr>
+
                             <h2>Liste des enseignants</h2>
                             <hr>
                             <div class="row"  >
@@ -320,17 +330,21 @@
                             </div>
                             <div>
 
-                                <button type="button" data-dismiss="modal" class="btn btn-success call">&nbsp;<i class="zmdi zmdi-phone"></i></button>
-                                &nbsp;<input class="callInput" th:value="${enseignant?.id}" type="hidden" />
-                                <button type="button"  class="btn btn-primary crewCall">&nbsp;<i class="zmdi zmdi-check"></i></button>
-                                <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>
+                                <button type="button" data-dismiss="modal" class="btn btn-success callAudio"><i class="zmdi zmdi-volume-up zmdi-hc-lg"></i></button>
+                                <button type="button"  class="btn btn-primary call">&nbsp;<i class="zmdi zmdi-tv-play zmdi-hc-lg"></i></button>
+                                <button type="button"  class="btn btn-primary crewCall"><i class="zmdi zmdi-check"></i></button>
+                                <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>&nbsp;
+                                <input class="callInput" th:value="${enseignant?.id}" type="hidden" />
+                                <input class="crewCallAudio" th:value="${enseignant?.name}" type="hidden" />
+
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button id="crewCallButton" type="button" class="btn btn-primary" data-dismiss="modal">Appel de groupe</button>
+                    <button id="crewCallButton" type="button" class="btn btn-primary" data-dismiss="modal">Appel video de groupe <i class="zmdi zmdi-tv-play zmdi-hc-lg"></i></button>
+                    <button id="crewCallButtonAudio" type="button" class="btn btn-primary" data-dismiss="modal">Appel audio de groupe <i class="zmdi zmdi-volume-up zmdi-hc-lg"></i></button>
                 </div>
             </div>
         </div>
@@ -411,6 +425,9 @@
 
 <!-- voxeet js -->
 <script th:src="@{/js/ui.js}" type="text/javascript"></script>
+
+<!-- planification -->
+<script th:src="@{/js/planification.js}"></script>
 <script th:src="@{/js/voxeet.js}"></script>
 <!-- voxeet js -->
 <!-- message, firebase and moment -->
@@ -445,8 +462,6 @@
 </script>
 <script th:src="@{/js/message.js}"></script>
 <!-- message, firebase and moment -->
-<!-- planification -->
-<script th:src="@{/js/planification.js}"></script>
 
 <!-- planification -->
 </body>
