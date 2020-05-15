@@ -58,18 +58,23 @@ const interval = ()=>{
     },1000)
 }
 const joinAudio = async ()=>{
+    $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
     const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
     if(!conference){
 
         $('#joinError').css('display','block')
+        $('#body').preloader('remove')
     }
     else
     {
         VoxeetSDK.conference.join(conference,{audio:true,video:false}).then(()=>{
             interval()
+            $('#body').preloader('remove')
+            document.getElementById('audioComponent').style.display='flex'
         }  ).catch(e=>{
             $('#joinError').css('display','block')
+            $('#body').preloader('remove')
             console.log('error',e)
         })
     }

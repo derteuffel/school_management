@@ -45,7 +45,18 @@ const main = async (name,to) => {
         console.log(e)
     }
 }
+const interval = ()=>{
+    const date = new Date()
+    setInterval(()=>{
+        const distance= new Date().getTime()- date.getTime()
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
+        minutes = minutes < 10 ? "0" + minutes : minutes
+        seconds = seconds < 10 ? "0" + seconds : seconds
+        $('#countDown').text(`${minutes}:${seconds}`)
+    },1000)
+}
 const mainAudio = async (name,to) => {
     try {
         await VoxeetSDK.session.open({name})
@@ -54,6 +65,7 @@ const mainAudio = async (name,to) => {
                     fetch(`https://ecoles.yesbanana.org/sendMail/${to}/${conference.id}`).then(()=>{
                         console.log('audio call started')
                     })
+                interval()
                     return VoxeetSDK.conference.join(conference, {audio:true,video:false})
                 }
             )
@@ -81,21 +93,10 @@ const call = (e)=>{
     $('#body').preloader()
     main(document.getElementById('directorFirstName').value,e.currentTarget.param)
 }
-const interval = ()=>{
-    const date = new Date()
-    setInterval(()=>{
-        const distance= new Date().getTime()- date.getTime()
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-        $('#countDown').text(`${minutes}:${seconds}`)
-    },1000)
-}
 const callAudio = (e)=>{
     $('#body').preloader()
-    interval()
+
     mainAudio(document.getElementById('directorFirstName').value,e.currentTarget.param)
 }
 /* crew call */

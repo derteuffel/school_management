@@ -70,16 +70,13 @@ const muteAudio = ()=>{
     }
 }
 const stopAudio = () => {
-    const videoContainer = document.getElementById('audioComponent')
     const audioContainer = document.getElementById('audioContainer')
 
     VoxeetSDK.conference.leave()
         .then(() => {
-            videoContainer.style.display = "none"
             audioContainer.style.display = "none"
         })
         .catch((err) => {
-            videoContainer.style.display = "none"
             audioContainer.style.display = "none"
             console.log(err);
         })
