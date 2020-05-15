@@ -149,22 +149,6 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Salaire souhaité</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.salaire+' $'}">Cours enseigner</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">CV de l'encadreur</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <a th:href="${enseignant?.cv}"><small class="form-text text-muted">Voir le cv</small></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
                                                                 <label  class=" form-control-label">Localisation</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
@@ -216,10 +200,26 @@
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Description a aficher a l'exterieur</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${enseignant?.description}">Cours enseigner</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
                                                                 <label  class=" form-control-label">Code d'activation</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${enseignant?.code}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Cv</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <a th:href="${enseignant?.cv}"><small >Voir le cv</small></a>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
