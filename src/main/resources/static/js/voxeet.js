@@ -1,12 +1,3 @@
-VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
-VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
-    addVideoNode(participant, stream);
-})
-VoxeetSDK.conference.on('streamRemoved', (participant) => {
-    removeVideoNode(participant);
-})
-
-
 const main = async (name,to) => {
     try {
         await VoxeetSDK.session.open({name})

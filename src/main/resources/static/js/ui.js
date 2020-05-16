@@ -1,3 +1,16 @@
+VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
+VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
+    if (stream.type == "ScreenShare") {
+        addVideoNode({id:participant.id+'screen'}, stream)
+    }
+    else
+    addVideoNode(participant, stream);
+})
+VoxeetSDK.conference.on('streamRemoved', (participant,stream) => {
+
+        removeVideoNode(participant);
+
+})
 document.getElementById('video-super-container').style.display = "none"
 const addVideoNode = (participant, stream) => {
     const videoContainer = document.getElementById('video-container');
@@ -13,6 +26,9 @@ const addVideoNode = (participant, stream) => {
         videoNode.setAttribute('margin-bottom','16px')
         videoNode.setAttribute('padding','16px')
         videoNode.setAttribute('max-height','400px')
+        videoNode.setAttribute('height','100%')
+        videoNode.setAttribute('object-fit','fill')
+        videoNode.setAttribute('background-color','rgb(70,70,70')
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 

@@ -4,13 +4,7 @@ const constraints = {
     video: true
 }
 
-    VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
-VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
-    addVideoNode(participant, stream);
-})
-    VoxeetSDK.conference.on('streamRemoved', (participant) => {
-        removeVideoNode(participant);
-    })
+
 const joinButton = document.getElementById('join')
 const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
@@ -23,7 +17,6 @@ const join = async ()=>{
     catch(e) {
         $('#body').preloader('remove')
         $('#joinError').css('display','block')
-    }
     }
     if(!conference){
 
