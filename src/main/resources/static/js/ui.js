@@ -7,9 +7,11 @@ VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
     addVideoNode(participant, stream);
 })
 VoxeetSDK.conference.on('streamRemoved', (participant,stream) => {
-
+    if (stream.type == "ScreenShare") {
+        removeVideoNode({id:participant.id+'screen'});
+    }
+    else
         removeVideoNode(participant);
-
 })
 document.getElementById('video-super-container').style.display = "none"
 const addVideoNode = (participant, stream) => {
