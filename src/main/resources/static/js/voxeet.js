@@ -5,13 +5,7 @@ VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
 VoxeetSDK.conference.on('streamRemoved', (participant) => {
     removeVideoNode(participant);
 })
-const removeVideoNode = (participant) => {
-    let videoNode = document.getElementById('video-' + participant.id);
 
-    if (videoNode) {
-        videoNode.parentNode.removeChild(videoNode);
-    }
-}
 
 const main = async (name,to) => {
     try {
@@ -45,18 +39,7 @@ const main = async (name,to) => {
         console.log(e)
     }
 }
-const interval = ()=>{
-    const date = new Date()
-    setInterval(()=>{
-        const distance= new Date().getTime()- date.getTime()
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-        $('#countDown').text(`${minutes}:${seconds}`)
-    },1000)
-}
 const mainAudio = async (name,to) => {
     try {
         await VoxeetSDK.session.open({name})

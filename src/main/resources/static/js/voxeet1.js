@@ -1,10 +1,4 @@
-const removeVideoNode = (participant) => {
-    let videoNode = document.getElementById('video-' + participant.id);
 
-    if (videoNode) {
-        videoNode.parentNode.removeChild(videoNode);
-    }
-}
 const constraints = {
     audio: true,
     video: true
@@ -44,18 +38,6 @@ const join = async ()=>{
             console.log('error',e)
         })
     }
-}
-const interval = ()=>{
-    const date = new Date()
-    setInterval(()=>{
-        const distance= new Date().getTime()- date.getTime()
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
-
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-        $('#countDown').text(`${minutes}:${seconds}`)
-    },1000)
 }
 const joinAudio = async ()=>{
     $('#body').preloader()

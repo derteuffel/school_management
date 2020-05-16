@@ -114,9 +114,16 @@ public class EnseignantLoginController {
         request.getSession().setAttribute("salles",salles);
         model.addAttribute("salles",salles);
         Ecole ecole = ecoleRepository.getOne(id);
+        List<Enseignant> enseignants = new ArrayList<>();
+          List<Compte> comptes = (List<Compte>) compteRepository.findAllByEcole_Id(id);
+          for(int i=0;i<comptes.size();i++){
+              if(comptes.get(i).getId()!=compte.getId())
+                  enseignants.add(comptes.get(i).getEnseignant());
+          }
 
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("ecole",ecole);
+        model.addAttribute("lists",enseignants);
         return "enseignant/home";
     }
 

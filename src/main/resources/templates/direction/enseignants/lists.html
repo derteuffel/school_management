@@ -95,13 +95,7 @@
                                 Reunion planifié avec success.
                             </div>
                             <hr>
-                            <div id="audioContainer">
-                            <div class=" text-white p-2 justify-content-center align-items-center alert au-alert-success" id="audioComponent" style="display:none;">
-                                <span class="text-danger font-weight-bold" id="countDown" style="width:80px;font-size:1.2rem"></span>&nbsp;&nbsp;
-                                <button type="button" id="stopAudio"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end zmdi-hc-lg"></i></button>&nbsp;&nbsp;
-                                <button type="button" id="muteAudio"  class="btn btn-warning">&nbsp; &nbsp; &nbsp; &nbsp; Mute&nbsp; &nbsp; <i class="zmdi zmdi-volume-mute zmdi-hc-lg"></i></button>&nbsp;&nbsp;
-                            </div>
-                            </div>
+                            <div th:replace="~{../templates/fragments/audio_container :: audio_container}">
                             <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
 
                             <hr>

@@ -100,3 +100,24 @@ $("#videoOff").click(()=>{
         })
     }
 })
+const removeVideoNode = (participant) => {
+    let videoNode = document.getElementById('video-' + participant.id);
+
+    if (videoNode) {
+        videoNode.parentNode.removeChild(videoNode);
+    }
+}
+const interval = ()=>{
+    $('#countDown').text(`Sonnerie...`)
+    setTimeout(()=>{
+        const date = new Date()
+    setInterval(()=>{
+        const distance= new Date().getTime()- date.getTime()
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        minutes = minutes < 10 ? "0" + minutes : minutes
+        seconds = seconds < 10 ? "0" + seconds : seconds
+        $('#countDown').text(`${minutes}:${seconds}`)
+    },1000)},15000)
+}
