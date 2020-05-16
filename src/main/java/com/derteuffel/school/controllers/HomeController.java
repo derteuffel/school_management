@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -106,23 +106,57 @@ public class HomeController {
     @GetMapping("/experts/ecoles")
     public String getExpert1(Model model){
 
-        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_PRIMAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
-        encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_SECONDAIRE.toString(),Sort.by(Sort.Direction.DESC,"id")));
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.expert_yesb_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.expert_yesb_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id")));
         model.addAttribute("lists",encadreurs);
+        model.addAttribute("name","ecoles");
+        return "expertsProfiles";
+    }
+
+    @GetMapping("/experts/ecoles/{matiere}")
+    public String getExpert1Matieres(Model model,@PathVariable String matiere){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.expert_yesb_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.expert_yesb_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id")));
+        Collection<Encadreur> lists = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            if (encadreur.getCour_enseigner().contains(matiere.toString())){
+                lists.add(encadreur);
+            }
+        }
+        model.addAttribute("name","ecoles");
+        model.addAttribute("lists",lists);
         return "expertsProfiles";
     }
 
     @GetMapping("/experts/universites")
     public String getExpert2(Model model){
 
-        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_UNIVERSITAIRE.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.appui_redaction_travail_de_fin_de_cycle.toString(),Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("lists",encadreurs);
         return "expertsProfiles";
     }
+
     @GetMapping("/experts/professionnels")
     public String getExpert3(Model model){
 
-        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.EXPERT_YESB_PROFESSIONNEL.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.expert_yesb_en_formation_professionnelle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        model.addAttribute("name","professionnelle");
+        return "expertsProfiles";
+    }
+
+    @GetMapping("/experts/professionnels/{matiere}")
+    public String getExpert3Matieres(Model model,@PathVariable String matiere){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.expert_yesb_en_formation_professionnelle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        Collection<Encadreur> lists = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            if (encadreur.getCour_enseigner().contains(matiere.toString())){
+                lists.add(encadreur);
+            }
+        }
+        model.addAttribute("name","professionnelle");
         model.addAttribute("lists",encadreurs);
         return "expertsProfiles";
     }

@@ -54,7 +54,7 @@
                                         <li class="list-inline-item seprate">
                                             <span>/</span>
                                         </li>
-                                        <li class="list-inline-item">Expert</li>
+                                        <li class="list-inline-item"><a th:href="@{/encadrements/login}">Expert</a></li>
                                     </ul>
                                 </div>
                                 <form class="au-form-icon--sm" action="" method="">
@@ -91,7 +91,16 @@
             <div class="statistic statistic2">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-4" th:each="item : ${lists}">
+                        <div th:replace="~{../templates/fragments/sidebar_expert :: sidebar_expert}">
+
+                        </div>
+                        <div class="col-xd-9" th:if="${#lists.size(lists)}==0">
+                            <h2><span>Aucun élément trouver pour cette recherche</span></h2>
+                            <a th:if="${name}=='ecoles'" th:href="@{/experts/ecoles}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Retourner</a>
+                            <a th:if="${name}=='professionnelle'" th:href="@{/experts/professionnels}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Retourner</a>
+                        </div>
+                        <div class="col-xl-9 row" th:unless="${#lists.size(lists)}==0">
+                            <div class="col-md-4" th:each="item : ${lists}">
                             <button type="button" data-toggle="modal" data-target="#detailExpertModal" style="width: 100%" th:attr="data-target='#detailExpertModal'+${item?.id}">
                                 <div class="card">
                                 <div class="card-body">
@@ -103,11 +112,11 @@
                                     </div>
                                     <hr>
                                     <div class="card-text text-sm-center">
-                                        <span>Expert YesB Redaction de travail de fin de cycle</span>
+                                        <span th:text="${item.category}">Expert YesB Redaction de travail de fin de cycle</span>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <strong class="card-title mb-3"><span>Expert YesB Formation professionnelle</span></strong>
+                                    <strong class="card-title mb-3"><span th:text="${item.cour_enseigner[0]}">Expert YesB Formation professionnelle</span></strong>
                                 </div>
                             </div>
                             </button>
@@ -121,7 +130,7 @@
                                             </button>
                                         </div>
                                         <div class="modal-body card-block mx-5">
-                                            <div class="modal-content p-3 text-center">
+                                            <div class="modal-content p-3 text-left">
                                                 <p><h3 >Motivations de l'expert</h3>
                                                 <span th:text="${item?.motivation}"></span>
                                                 </p>
@@ -139,6 +148,7 @@
                                 </div>
                             </div>
 
+                        </div>
                         </div>
                     </div>
                 </div>
