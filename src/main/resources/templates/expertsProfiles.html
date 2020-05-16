@@ -97,7 +97,7 @@
                         <div class="col-xd-9" th:if="${#lists.size(lists)}==0">
                             <h2><span>Aucun élément trouver pour cette recherche</span></h2>
                             <a th:if="${name}=='ecoles'" th:href="@{/experts/ecoles}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Retourner</a>
-                            <a th:if="${name}=='professionnelle'" th:href="@{/experts/professionnels}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Retourner</a>
+                            <a th:if="${name}=='universite'" th:href="@{/experts/universites}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Retourner</a>
                         </div>
                         <div class="col-xl-9 row" th:unless="${#lists.size(lists)}==0">
                             <div class="col-md-4" th:each="item : ${lists}">

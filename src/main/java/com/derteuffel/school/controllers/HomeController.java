@@ -134,6 +134,22 @@ public class HomeController {
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.appui_redaction_travail_de_fin_de_cycle.toString(),Sort.by(Sort.Direction.DESC,"id"));
         model.addAttribute("lists",encadreurs);
+        model.addAttribute("name","universite");
+        return "expertsProfiles";
+    }
+
+    @GetMapping("/experts/universites/{matiere}")
+    public String getExpert2Matieres(Model model,@PathVariable String matiere){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.appui_redaction_travail_de_fin_de_cycle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        Collection<Encadreur> lists = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            if (encadreur.getCour_enseigner().contains(matiere.toString())){
+                lists.add(encadreur);
+            }
+        }
+        model.addAttribute("name","universite");
+        model.addAttribute("lists",lists);
         return "expertsProfiles";
     }
 

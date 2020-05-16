@@ -8,9 +8,9 @@
                     </a>
                 </li>
             </ul>
-            <ul th:if="${name}=='professionnelle'" th:each="item : ${T(com.derteuffel.school.enums.EProfessionnelle).values()}" class="list-unstyled navbar__list">
+            <ul th:if="${name}=='universite'" th:each="item : ${T(com.derteuffel.school.enums.EUniversite).values()}" class="list-unstyled navbar__list">
                 <li >
-                    <a  th:href="@{/experts/professionnels/}+${item}" th:text="${item}">
+                    <a  th:href="@{/experts/universites/}+${item}" th:text="${item}">
                     </a>
                 </li>
             </ul>
