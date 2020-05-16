@@ -12,6 +12,7 @@ const addVideoNode = (participant, stream) => {
         videoNode.setAttribute('width', '100%');
         videoNode.setAttribute('margin-bottom','16px')
         videoNode.setAttribute('padding','16px')
+        videoNode.setAttribute('max-height','400px')
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 
@@ -121,3 +122,17 @@ const interval = ()=>{
         $('#countDown').text(`${minutes}:${seconds}`)
     },1000)},15000)
 }
+$("#screenShare").click(()=>{
+    const opacity =  $("#screenShare").css('opacity')
+    if(opacity==1) {
+        $("#screenShare").css('opacity', 0.5)
+        VoxeetSDK.conference
+            .startScreenShare()
+            .then(() => {})
+            .catch(e => {})
+    }
+    else {
+        $("#screenShare").css('opacity', 1)
+        VoxeetSDK.conference.stopScreenShare()
+    }
+})
