@@ -21,6 +21,7 @@ const addVideoNode = (participant, stream) => {
 
     navigator.attachMediaStream(videoNode, stream);
 }
+
 const stopVideoBtn = document.getElementById("stop")
 stopVideoBtn.onclick = () => {
     const videoContainer = document.getElementById('video-container')
@@ -38,9 +39,8 @@ stopVideoBtn.onclick = () => {
         })
     VoxeetSDK.session.close()
 }
-
-$("#mute").click(()=>{
-   const opacity =  $("#mute").css('opacity')
+const mute = ()=>{
+    const opacity =  $("#mute").css('opacity')
     if(opacity==1) {
         $("#mute").css('opacity', 0.5)
         VoxeetSDK.conference.mute(VoxeetSDK.session.participant, true).catch(error => {
@@ -53,7 +53,38 @@ $("#mute").click(()=>{
             console.log(error)
         })
     }
-})
+}
+const muteAudio = ()=>{
+    const opacity =  $("#muteAudio").css('opacity')
+    if(opacity==1) {
+        $("#muteAudio").css('opacity', 0.5)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, true).catch(error => {
+            console.log(error)
+        })
+    }
+    else {
+        $("#muteAudio").css('opacity', 1)
+        VoxeetSDK.conference.mute(VoxeetSDK.session.participant, false).catch(error => {
+            console.log(error)
+        })
+    }
+}
+const stopAudio = () => {
+    const audioContainer = document.getElementById('audioContainer')
+
+    VoxeetSDK.conference.leave()
+        .then(() => {
+            audioContainer.style.display = "none"
+        })
+        .catch((err) => {
+            audioContainer.style.display = "none"
+            console.log(err);
+        })
+    VoxeetSDK.session.close()
+}
+$("#mute").click(mute)
+$("#muteAudio").click(muteAudio)
+$("#stopAudio").click(stopAudio)
 $("#videoOff").click(()=>{
     const opacity =  $("#videoOff").css('opacity')
     if(opacity==1) {

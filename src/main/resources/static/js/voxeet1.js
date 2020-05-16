@@ -18,6 +18,7 @@ VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
         removeVideoNode(participant);
     })
 const joinButton = document.getElementById('join')
+const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
@@ -27,6 +28,7 @@ const join = async ()=>{
 
             $('#body').preloader('remove')
             $('#joinError').css('display','block')
+        VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
     }
     else
     {
@@ -34,16 +36,48 @@ const join = async ()=>{
             $('#body').preloader('remove')
             document.getElementById('video-super-container').style.display='flex'
 
-    }
-
-
-    )
-        .catch(e=>{
+    }  ).catch(e=>{
             $('#body').preloader('remove')
             $('#joinError').css('display','block')
             VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
-            console.log(e)
+            VoxeetSDK.conference.leave()
+            console.log('error',e)
+        })
+    }
+}
+const interval = ()=>{
+    const date = new Date()
+    setInterval(()=>{
+        const distance= new Date().getTime()- date.getTime()
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+        minutes = minutes < 10 ? "0" + minutes : minutes
+        seconds = seconds < 10 ? "0" + seconds : seconds
+        $('#countDown').text(`${minutes}:${seconds}`)
+    },1000)
+}
+const joinAudio = async ()=>{
+    $('#body').preloader()
+    await VoxeetSDK.session.open({name:document.getElementById('username').value})
+    const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    if(!conference){
+
+        $('#joinError').css('display','block')
+        $('#body').preloader('remove')
+    }
+    else
+    {
+        VoxeetSDK.conference.join(conference,{audio:true,video:false}).then(()=>{
+            interval()
+            $('#body').preloader('remove')
+            document.getElementById('audioComponent').style.display='flex'
+        }  ).catch(e=>{
+            $('#joinError').css('display','block')
+            $('#body').preloader('remove')
+            console.log('error',e)
         })
     }
 }
 joinButton.addEventListener('click',join)
+joinButtonAudio.addEventListener('click',joinAudio)
