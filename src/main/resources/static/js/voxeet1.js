@@ -16,8 +16,15 @@ const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
-    const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
-    console.log(conference)
+    let conference=null
+    try {
+        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    }
+    catch(e) {
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
+    }
+    }
     if(!conference){
 
             $('#body').preloader('remove')
