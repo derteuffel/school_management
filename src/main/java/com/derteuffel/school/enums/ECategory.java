@@ -1,8 +1,8 @@
 package com.derteuffel.school.enums;
 
 public enum ECategory {
-    EXPERT_YESB_PRIMAIRE,
-    EXPERT_YESB_SECONDAIRE,
-    EXPERT_YESB_UNIVERSITAIRE,
-    EXPERT_YESB_PROFESSIONNEL
+    expert_yesb_primaire,
+    expert_yesb_secondaire,
+    appui_redaction_travail_de_fin_de_cycle,
+    expert_yesb_en_formation_professionnelle
 }
