@@ -33,9 +33,10 @@
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
-    <link th:href="@{/css/message.css}" rel="stylesheet">
 
 
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 
 </head>
 
@@ -68,21 +69,27 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
-                    </div>
+                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}"></div>
+
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
                             <button type="button" data-toggle="modal" data-target="#addEnseignantModal" class="btn btn-primary">Nouvel enseignant&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <button type="button" id="startCall" data-toggle="modal" data-target="#contacts" class="btn btn-success">Passer un appel&nbsp;<i class="zmdi zmdi-phone"></i></button>
-                            <button type="button" id="forum"  class="btn btn-warning font-weight-bold">Forum&nbsp;<i class="zmdi zmdi-accounts zmdi-hc-lg"></i></button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#choice">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-phone-ring"></i>
+                            </span>
+                                Joindre un appel
+                            </button>
+                            <div th:replace="~{../templates/fragments/message :: message}"></div>
                             <button type="button" id="planning"  data-toggle="modal" data-target="#planningModal" class="btn btn-dark font-weight-bold">Planification&nbsp;<i class="zmdi zmdi-time zmdi-hc-lg"></i></button>
                             <div class="alert alert-success text-dart font-weight-bold mt-2" role="alert"  style="display: none" id="planningSuccess">
                                 Reunion planifié avec success.
                             </div>
                             <hr>
-                            <div th:replace="~{../templates/fragments/audio_container :: audio_container}">
+                            <div th:replace="~{../templates/fragments/audio_container :: audio_container}"></div>
                             <p>Pour passer un appel video direct avec un enseignant cliquez sur le bouton vert, pour selectionner un enseignant et l'ajouter dans un groupe d'appel cliquer sur le bouton bleu </p>
 
                             <hr>
@@ -294,6 +301,7 @@
     </div>
     <!-- end modal medium -->
     <div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
+    <div th:replace="~{../templates/fragments/choice :: choice}">
 
     <div class="modal fade" th:id="planningModal" tabindex="-1" role="dialog"  aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -331,21 +339,8 @@
         </div>
     </div>
 </div>
-<div id="forumDiv" class="forumDiv p-2">
-    <div class="d-flex flex-row align-self-start justify-content-end w-100">
-       <i id="forumCloseBtn" class="zmdi zmdi-close zmdi-hc-2x font-weight-bold text-danger"></i>
-    </div>
-    <div id="chatRoom">
 
-    </div>
-<div class="d-flex flex-row justify-content-between align-items-center align-self-end w-100 ">
-    <input type="hidden" th:value="${ecoleId}" id="ecoleId" >
-    <input type="text" placeholder="Votre message" class="form-control" id="forumMessage" />
-    <button class="btn btn-primary" id="forumSendBtn"><i class="zmdi zmdi-forward"></i></button>
-</div>
-</div>
-<!-- Jquery JS-->
-<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+
 <!-- Bootstrap JS-->
 <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
@@ -374,38 +369,7 @@
 <!-- voxeet js -->
 <!-- planification -->
 <script th:src="@{/js/planification.js}"></script>
-<!-- message, firebase and moment -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/locale/fr-ca.min.js"></script>
-< <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 
-<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
-
-<!-- Add Firebase products that you want to use -->
-
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyBH1FWI_3NrDWxFPhAU7Sxm5zvcDPl7gf4",
-        authDomain: "yesbanana-7ddd4.firebaseapp.com",
-        databaseURL: "https://yesbanana-7ddd4.firebaseio.com",
-        projectId: "yesbanana-7ddd4",
-        storageBucket: "yesbanana-7ddd4.appspot.com",
-        messagingSenderId: "745771380195",
-        appId: "1:745771380195:web:994ae55d1c9fe51bfb44d6",
-        measurementId: "G-PNX6BWLBCQ"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    // Get a reference to the database service
-    var db = firebase.firestore()
-</script>
-<script th:src="@{/js/message.js}"></script>
-<!-- message, firebase and moment -->
 
 <!-- planification -->
 </body>

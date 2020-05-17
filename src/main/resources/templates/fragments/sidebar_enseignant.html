@@ -79,7 +79,7 @@
                         Joindre un appel
                     </button>
 
-                    <div th:replace="~{../templates/fragments/audio_container :: audio_container}">
+                    <div th:replace="~{../templates/fragments/audio_container :: audio_container}"></div>
 
                 </li>
                 <li class="text-center mt-2">
@@ -92,8 +92,7 @@
                     </button>
                 </li>
                 <li class="text-center mt-2">
-                    <button type="button" id="forum"  class="btn btn-warning font-weight-bold"><i class="zmdi zmdi-accounts zmdi-hc-lg"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Forum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-
+                    <div th:replace="~{../templates/fragments/message :: message}"></div>
                 </li>
 
             </ul>

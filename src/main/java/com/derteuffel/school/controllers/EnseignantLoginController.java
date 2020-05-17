@@ -130,6 +130,7 @@ public class EnseignantLoginController {
 
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("ecole",ecole);
+        model.addAttribute("ecoleId",ecole.getId());
         model.addAttribute("lists",enseignants);
         model.addAttribute("parents",parents);
         return "enseignant/home";

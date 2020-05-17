@@ -415,6 +415,7 @@ public class EncadrementController {
         Collection<Cours> allsCours = new ArrayList<>();
         Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.toString());
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
+        Encadreur encadreur1 = new Encadreur();
         Collection<Encadreur> allEncadreurs = encadreurRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
             if (compte.getRoles().contains(role)){
                 System.out.println("je suis encadreur");
@@ -430,16 +431,22 @@ public class EncadrementController {
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
+                    if(encadreur.getId()==compte.getEnseignant().getId())
+                    {
+                        encadreur1= encadreur;
+                    }
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
             }
 
         System.out.println(allsCours);
 
-        model.addAttribute("lists",allsCours);
+        model.addAttribute("lists1",allsCours);
+        model.addAttribute("lists",encadreur1.getEnfants());
         System.out.println("je suis et contient: "+allsCours);
         request.getSession().setAttribute("compte",compte);
         model.addAttribute("course",new Cours());
+        model.addAttribute("ecoleId",compte.getId());
         return "encadrements/courses";
     }
 

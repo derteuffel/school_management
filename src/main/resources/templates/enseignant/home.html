@@ -31,6 +31,7 @@
     <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
 
 
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
@@ -205,7 +206,6 @@
     </div>
 </div>
 <!-- Jquery JS-->
-<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 <!-- Bootstrap JS-->
 <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
@@ -228,38 +228,6 @@
 <!-- Main JS-->
 
 <script th:src="@{/js/main.js}"></script>
-<!-- message, firebase and moment -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/locale/fr-ca.min.js"></script>
-< <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
-
-<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
-
-<!-- Add Firebase products that you want to use -->
-
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyBH1FWI_3NrDWxFPhAU7Sxm5zvcDPl7gf4",
-        authDomain: "yesbanana-7ddd4.firebaseapp.com",
-        databaseURL: "https://yesbanana-7ddd4.firebaseio.com",
-        projectId: "yesbanana-7ddd4",
-        storageBucket: "yesbanana-7ddd4.appspot.com",
-        messagingSenderId: "745771380195",
-        appId: "1:745771380195:web:994ae55d1c9fe51bfb44d6",
-        measurementId: "G-PNX6BWLBCQ"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    // Get a reference to the database service
-    var db = firebase.firestore()
-</script>
-<script th:src="@{/js/message.js}"></script>
-<!-- message, firebase and moment -->
 
 </body>
 
