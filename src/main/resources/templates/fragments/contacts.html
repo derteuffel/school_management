@@ -44,6 +44,24 @@
                         </div>
                     </li>
                 </ul>
+                <ul class="text-left list-group" th:if="${directeur!=null}" th:each="enseignant : ${directeur}">
+                    <li class="list-group-item mb-2 d-flex flex-row justify-content-between">
+                        <div>
+                            <span th:text="${enseignant?.username}"></span>
+
+                        </div>
+                        <div>
+
+                            <button type="button" data-dismiss="modal" class="btn btn-success callAudio"><i class="zmdi zmdi-volume-up zmdi-hc-lg"></i></button>
+                            <button type="button" data-dismiss="modal"  class="btn btn-primary call">&nbsp;<i class="zmdi zmdi-tv-play zmdi-hc-lg"></i></button>
+                            <button type="button"  class="btn btn-primary crewCall"><i class="zmdi zmdi-check"></i></button>
+                            <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>&nbsp;
+                            <input class="callInput" th:value="${enseignant?.id}" type="hidden" />
+                            <input class="crewCallAudio" th:value="${enseignant?.username}" type="hidden" />
+
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

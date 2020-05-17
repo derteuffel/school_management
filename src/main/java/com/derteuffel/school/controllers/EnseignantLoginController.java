@@ -116,10 +116,17 @@ public class EnseignantLoginController {
         Ecole ecole = ecoleRepository.getOne(id);
         List<Enseignant> enseignants = new ArrayList<>();
         List<Parent> parents = new ArrayList<>();
+        List<Compte> directeur = new ArrayList();
           List<Compte> comptes = (List<Compte>) compteRepository.findAllByEcole_Id(id);
           for(int i=0;i<comptes.size();i++){
               if(comptes.get(i).getId()!=compte.getId()&&comptes.get(i).getEnseignant()!=null)
                   enseignants.add(comptes.get(i).getEnseignant());
+              List<Role> roles = (List<Role>) comptes.get(i).getRoles();
+              for(int j=0;j<roles.size();j++){
+                 if(roles.get(j).getName().equals("ROLE_DIRECTEUR")){
+                     directeur.add(comptes.get(i));
+                 }
+              }
 
           }
         for(int i=0;i<comptes.size();i++){
@@ -127,12 +134,13 @@ public class EnseignantLoginController {
                 parents.add(comptes.get(i).getParent());
 
         }
-
+    System.out.println(directeur);
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("ecole",ecole);
         model.addAttribute("ecoleId",ecole.getId());
         model.addAttribute("lists",enseignants);
         model.addAttribute("parents",parents);
+        model.addAttribute("directeur",directeur);
         return "enseignant/home";
     }
 

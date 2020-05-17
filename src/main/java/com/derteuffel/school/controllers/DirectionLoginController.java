@@ -274,17 +274,21 @@ public class DirectionLoginController {
         Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
         Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
         List<Enseignant> enseignants = new ArrayList<>();
-
+        List<Parent> parents = new ArrayList<>();
         for (Compte compte1 : comptes) {
             if (compte1.getEnseignant() != null) {
                 enseignants.add(compte1.getEnseignant());
             }
+            if(compte1.getParent()!=null)
+                parents.add(compte1.getParent());
         }
+        System.out.println(parents);
 
         model.addAttribute("classes",salles);
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("lists", enseignants);
         model.addAttribute("ecoleId",compte.getEcole().getId());
+        model.addAttribute("parents",parents);
         return "direction/enseignants/lists";
     }
 
