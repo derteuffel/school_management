@@ -1,3 +1,30 @@
+(function($) {
+    $.fn.blink = function(options) {
+        var defaults = { delay: 500 };
+        var options = $.extend(defaults, options);
+        return $(this).each(function(idx, itm) {
+            var handle = setInterval(function() {
+                if ($(itm).css("visibility") === "visible") {
+                    $(itm).css('visibility', 'hidden');
+                } else {
+                    $(itm).css('visibility', 'visible');
+                }
+            }, options.delay);
+
+            $(itm).data('handle', handle);
+        });
+    }
+    $.fn.unblink = function() {
+        return $(this).each(function(idx, itm) {
+            var handle = $(itm).data('handle');
+            if (handle) {
+                clearInterval(handle);
+                $(itm).data('handle', null);
+                $(itm).css('visibility', 'inherit');
+            }
+        });
+    }
+}(jQuery))
 VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
 VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
     if (stream.type == "ScreenShare") {
@@ -128,6 +155,7 @@ const removeVideoNode = (participant) => {
 }
 const interval = ()=>{
     $('#countDown').text(`Sonnerie...`)
+    $('#countDown').blink()
     setTimeout(()=>{
         const date = new Date()
     setInterval(()=>{
@@ -137,6 +165,7 @@ const interval = ()=>{
 
         minutes = minutes < 10 ? "0" + minutes : minutes
         seconds = seconds < 10 ? "0" + seconds : seconds
+        $('#countDown').unblink()
         $('#countDown').text(`${minutes}:${seconds}`)
     },1000)},15000)
 }
