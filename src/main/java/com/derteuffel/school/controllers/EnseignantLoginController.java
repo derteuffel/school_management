@@ -115,15 +115,23 @@ public class EnseignantLoginController {
         model.addAttribute("salles",salles);
         Ecole ecole = ecoleRepository.getOne(id);
         List<Enseignant> enseignants = new ArrayList<>();
+        List<Parent> parents = new ArrayList<>();
           List<Compte> comptes = (List<Compte>) compteRepository.findAllByEcole_Id(id);
           for(int i=0;i<comptes.size();i++){
-              if(comptes.get(i).getId()!=compte.getId())
+              if(comptes.get(i).getId()!=compte.getId()&&comptes.get(i).getEnseignant()!=null)
                   enseignants.add(comptes.get(i).getEnseignant());
+
           }
+        for(int i=0;i<comptes.size();i++){
+            if(comptes.get(i).getId()!=compte.getId()&&comptes.get(i).getParent()!=null)
+                parents.add(comptes.get(i).getParent());
+
+        }
 
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("ecole",ecole);
         model.addAttribute("lists",enseignants);
+        model.addAttribute("parents",parents);
         return "enseignant/home";
     }
 

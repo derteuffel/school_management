@@ -1,4 +1,10 @@
 <div th:fragment="video_container"  id="video-super-container" style="min-height:100%;z-index:1999999999;top:0px;left:0px"  class="position-absolute  w-100 bg-dark flex-column justify-content-center align-items-center">
+    <input type="hidden" th:value="${session.compte.username}" id="directorFirstName"/>
+    <input type="hidden" th:value="${session.compte.email}" id="directorEmail"/>
+    <input type="hidden" th:value="${session.compte.avatar}" id="directorAvatar"/>
+    <input type="hidden" th:value="${session.compte.conferenceId}" id="conferenceId"/>
+    <input type="hidden" th:value="${session.compte.username}" id="username"/>
+    <input type="hidden" value=" " id="directorLastName"/>
     <div id="video-container" class="row p-1 p-md-2 d-flex flex-row justify-content-center align-items-stretch" style="height:480px"></div>
     <div class="mb-3 mt-3 text-center">
         <button type="button" id="stop"  class="btn btn-danger">Raccrocher&nbsp;<i class="zmdi zmdi-phone-end zmdi-hc-lg"></i></button>&nbsp;&nbsp;

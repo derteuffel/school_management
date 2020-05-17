@@ -35,8 +35,9 @@
 
 </head>
 
-<body class="animsition">
-<div class="page-wrapper">
+<body class="animsition" >
+<div th:replace="~{../templates/fragments/video_container :: video_container}"></div>
+<div class="page-wrapper" id="body">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_parent :: header_parent}">
     </header>
@@ -79,7 +80,7 @@
                         <div class="page-content row">
                             <div class="col-md-6">
                                 <button type="button" data-toggle="modal" data-target="#classListModal" th:attr="data-target='#classListModal'">
-                                    <div class="statistic__item statistic__item--secondary" th:each="classe : ${lists}" style="height: 258px">
+                                    <div class="statistic__item statistic__item--secondary" th:each="classe : ${lists1}" style="height: 258px">
                                         <h2 class="numer">Ensemble des classes</h2>
                                         <span class="desc text-white">Planifier le travail de vos enfants dans leur classes respective</span>
                                     </div>
@@ -98,7 +99,7 @@
                                                     <div class="col col-md-3">
                                                         <label  class=" form-control-label">Classes</label>
                                                     </div>
-                                                    <div class="col-12 col-md-9" th:each="classe : ${lists}">
+                                                    <div class="col-12 col-md-9" th:each="classe : ${lists1}">
                                                         <a th:href="@{/parent/classe/detail/}+${classe.id}"><small class="form-text text-muted" th:text="${classe?.niveau}">Nom de l'enseignant</small></a>
                                                     </div>
                                                 </div>
@@ -131,7 +132,7 @@
                                                     <div class="col col-md-3">
                                                         <label  class=" form-control-label">Classes</label>
                                                     </div>
-                                                    <div class="col-12 col-md-9" th:each="classe1 : ${lists}">
+                                                    <div class="col-12 col-md-9" th:each="classe1 : ${lists1}">
                                                         <a th:href="@{/parent/cours/lists/}+${classe1.id}+'/'+${ecole.id}"><small class="form-text text-muted" th:text="${classe1?.niveau}">Nom de l'enseignant</small></a>
                                                     </div>
                                                 </div>
@@ -164,7 +165,7 @@
                                                     <div class="col col-md-3">
                                                         <label  class=" form-control-label">Classes</label>
                                                     </div>
-                                                    <div class="col-12 col-md-9" th:each="classe2 : ${lists}">
+                                                    <div class="col-12 col-md-9" th:each="classe2 : ${lists1}">
                                                         <a th:href="@{/parent/classe/detail/}+${classe2.id}+'/'+${ecole.id}"><small class="form-text text-muted" th:text="${classe2?.niveau}">Nom de l'enseignant</small></a>
                                                     </div>
                                                 </div>
@@ -183,13 +184,14 @@
                 </div>
                 <!-- COPYRIGHT-->
                 <section th:replace="~{../templates/fragments/footer :: footer}"></section>
-
+                <div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
                 <!-- END COPYRIGHT-->
             </div>
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-
+    <div th:replace="~{../templates/fragments/choice :: choice}">
+    <div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
 </div>
 
 <!-- Jquery JS-->
@@ -212,7 +214,7 @@
 <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/select2/select2.min.js}">
 </script>
-
+    <div th:replace="~{../templates/fragments/voxeetScript :: voxeetScript}"></div>
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
 

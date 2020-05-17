@@ -9,7 +9,6 @@ const joinButton = document.getElementById('join')
 const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
     $('#body').preloader()
-    await VoxeetSDK.session.open({name:document.getElementById('username').value})
     let conference=null
     try {
         conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
@@ -41,12 +40,19 @@ const join = async ()=>{
 }
 const joinAudio = async ()=>{
     $('#body').preloader()
-    await VoxeetSDK.session.open({name:document.getElementById('username').value})
-    const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    let conference=null
+    try {
+        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    }
+    catch(e) {
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
+    }
     if(!conference){
 
         $('#joinError').css('display','block')
         $('#body').preloader('remove')
+        VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
     }
     else
     {

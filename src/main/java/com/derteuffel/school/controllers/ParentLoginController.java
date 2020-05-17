@@ -120,8 +120,15 @@ public class ParentLoginController {
                 lists.add(salle);
             }
         }
+        List<Enseignant> enseignants = new ArrayList<>();
+        List<Compte> comptes = (List<Compte>) compteRepository.findAllByEcole_Id(id);
+        for(int i=0;i<comptes.size();i++){
+            if(comptes.get(i).getId()!=compte.getId()&&comptes.get(i).getEnseignant()!=null)
+                enseignants.add(comptes.get(i).getEnseignant());
+        }
 
-        model.addAttribute("lists", lists);
+        model.addAttribute("lists1", lists);
+        model.addAttribute("lists", enseignants);
         model.addAttribute("ecole",ecole);
         request.getSession().setAttribute("ecole",ecole);
 

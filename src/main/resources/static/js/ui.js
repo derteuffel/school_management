@@ -22,15 +22,15 @@ const addVideoNode = (participant, stream) => {
         videoNode = document.createElement('video');
 
         videoNode.setAttribute('id', 'video-' + participant.id);
-        
+
         videoNode.setAttribute('class','col-md-6 col-12');
         videoNode.setAttribute('width', '100%');
-        videoNode.setAttribute('margin-bottom','16px')
-        videoNode.setAttribute('padding','16px')
-        videoNode.setAttribute('max-height','400px')
         videoNode.setAttribute('height','100%')
-        videoNode.setAttribute('object-fit','fill')
-        videoNode.setAttribute('background-color','rgb(70,70,70')
+        videoNode.style.borderRadius="16px"
+        videoNode.style.backgroundColor="rgb(70,70,80)"
+        videoNode.style.objectFit="fill"
+        videoNode.style.padding="16px"
+        videoNode.style.marginBottom='16px'
         videoNode.style.borderRadius="16px"
         videoContainer.appendChild(videoNode);
 

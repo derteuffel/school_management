@@ -38,6 +38,26 @@
                     <a th:href="@{/parent/bibliotheque/lists/}+${classe.id}">
                         <i class="fas fa-bookmark-o"></i>Bibliotheques</a>
                 </li>
+                <li class="text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#choice">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-phone-ring"></i>
+                            </span>
+                        Joindre un appel
+                    </button>
+
+                    <div th:replace="~{../templates/fragments/audio_container :: audio_container}">
+
+                </li>
+                <li class="text-center mt-2">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#contacts">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-phone"></i>
+                            </span>
+                        &nbsp; Passer un appel&nbsp;
+
+                    </button>
+                </li>
 
             </ul>
         </nav>

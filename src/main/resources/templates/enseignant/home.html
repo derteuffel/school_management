@@ -29,9 +29,8 @@
     <link th:href="@{/vendor/slick/slick.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
-    <link rel="stylesheet" th:href="@{/vendor/preloader/css/preloader.css}">
 
-    <script src="https://unpkg.com/@voxeet/voxeet-web-sdk@2.0.0" type="text/javascript"></script>
+
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
@@ -41,9 +40,7 @@
 
 <body class="animsition">
 <div th:replace="~{../templates/fragments/video_container :: video_container}"></div>
-<input type="hidden" th:value="${session.compte.username}" id="directorFirstName"/>
-<input type="hidden" th:value="${session.compte.email}" id="directorEmail"/>
-<input type="hidden" th:value="${session.compte.avatar}" id="directorAvatar"/>
+
 <div class="page-wrapper" id="body">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
@@ -53,8 +50,6 @@
     <!-- WELCOME-->
     <section th:replace="~{../templates/fragments/home_welcome_enseignant :: home_welcome_enseignant}"></section>
     <!-- END WELCOME-->
-    <input type="hidden" th:value="${session.compte.conferenceId}" id="conferenceId"/>
-    <input type="hidden" th:value="${session.compte.username}" id="username"/>
 
     <!-- PAGE CONTENT-->
     <div class="page-container3">
@@ -182,42 +177,8 @@
                         <!-- END PAGE CONTENT-->
                     </div>
                 </div>
-                <div class="modal fade" th:id="choice" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Choisissez le type d'appel</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body card-block">
-                                <div class="row form-group">
-                                    <div class="col col-md-6 text-center">
-                                        <button type="button" data-dismiss="modal" class="btn btn-primary" id="join">
-                            <span aria-hidden="true">
-                                <i class="zmdi zmdi-tv-play zmdi-hc-lg"></i>
-                            </span>
-                                            Joindre l'appel video
-                                        </button>
-                                    </div>
-                                    <div class="col-12 col-md-6 text-center">
-                                        <button data-dismiss="modal" type="button" class="btn btn-warning" id="joinAudio" >
-                            <span aria-hidden="true">
-                                <i class="zmdi zmdi-volume-up zmdi-hc-lg"></i>
+                <div th:replace="~{../templates/fragments/choice :: choice}">
 
-                            </span>
-                                            Joindre l'appel audio
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- COPYRIGHT-->
                 <section th:replace="~{../templates/fragments/footer :: footer}"></section>
@@ -229,43 +190,7 @@
     <!-- END PAGE CONTENT  -->
 
 </div>
-<div class="modal fade" th:id="contacts" tabindex="-1" role="dialog"  aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Contacts</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body card-block" >
-                <ul class="text-left list-group" th:each="enseignant : ${lists}">
-                    <li class="list-group-item mb-2 d-flex flex-row justify-content-between">
-                        <div>
-                            <span th:text="${enseignant?.name}"></span>
-
-                        </div>
-                        <div>
-
-                            <button type="button" data-dismiss="modal" class="btn btn-success callAudio"><i class="zmdi zmdi-volume-up zmdi-hc-lg"></i></button>
-                            <button type="button" data-dismiss="modal"  class="btn btn-primary call">&nbsp;<i class="zmdi zmdi-tv-play zmdi-hc-lg"></i></button>
-                            <button type="button"  class="btn btn-primary crewCall"><i class="zmdi zmdi-check"></i></button>
-                            <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>&nbsp;
-                            <input class="callInput" th:value="${enseignant?.id}" type="hidden" />
-                            <input class="crewCallAudio" th:value="${enseignant?.name}" type="hidden" />
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                <button id="crewCallButton" type="button" class="btn btn-primary" data-dismiss="modal">Appel video de groupe <i class="zmdi zmdi-tv-play zmdi-hc-lg"></i></button>
-                <button id="crewCallButtonAudio" type="button" class="btn btn-primary" data-dismiss="modal">Appel audio de groupe <i class="zmdi zmdi-volume-up zmdi-hc-lg"></i></button>
-            </div>
-        </div>
-    </div>
-</div>
+<div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
 <div id="forumDiv" class="forumDiv p-2">
     <div class="d-flex flex-row align-self-start justify-content-end w-100">
         <i id="forumCloseBtn" class="zmdi zmdi-close zmdi-hc-2x font-weight-bold text-danger"></i>
@@ -299,14 +224,10 @@
 <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/select2/select2.min.js}">
 </script>
-
+<div th:replace="~{../templates/fragments/voxeetScript :: voxeetScript}"></div>
 <!-- Main JS-->
 
-<script th:src="@{/vendor/preloader/js/preloader.min.js}"></script>
 <script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/ui.js}" type="text/javascript"></script>
-<script th:src="@{/js/voxeet1.js}" type="text/javascript"></script>
-<script th:src="@{/js/voxeet.js}" type="text/javascript"></script>
 <!-- message, firebase and moment -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/locale/fr-ca.min.js"></script>
