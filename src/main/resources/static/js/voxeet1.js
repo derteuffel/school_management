@@ -1,11 +1,21 @@
 const joinButton = document.getElementById('join')
 const joinButtonAudio = document.getElementById('joinAudio')
+    let conferenceid
+const getConferenceId = async ()=> {
+    const userId = $('#userId').val()
+     conferenceid = await fetch(`http://localhost:8080/getConferenceid/${userId}`)
+    conferenceid = await conferenceid.json()
+    conferenceid = conferenceid.conferenceId
+    return conferenceid
+}
+
 const join = async ()=>{
+    await getConferenceId()
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
     let conference=null
     try {
-        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+        conference = await VoxeetSDK.conference.fetch(conferenceid)
     }
     catch(e) {
         $('#body').preloader('remove')
@@ -36,11 +46,12 @@ const join = async ()=>{
     }
 }
 const joinAudio = async ()=>{
+    await getConferenceId()
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
     let conference=null
     try {
-        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+        conference = await VoxeetSDK.conference.fetch(conferenceid)
     }
     catch(e) {
         $('#body').preloader('remove')

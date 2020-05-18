@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -59,6 +61,15 @@ public class HomeController {
         return "login/admin";
     }
 
+    @GetMapping("/getConferenceid/{userId}")
+    @ResponseBody
+    public HashMap<String, String> getConferenceId(@PathVariable String userId){
+        HashMap<String,String> conferenceId = new HashMap<String,String>();
+       Compte compte= compteRepository.getOne(Long.parseLong(userId));
+
+       conferenceId.put("conferenceId",compte.getConferenceId());
+       return conferenceId;
+    }
     @GetMapping("/sendMail/{sender}/{conferenceId}")
     public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){
         Compte compte = compteRepository.findByEnseignant_Id(Long.parseLong(sender));
