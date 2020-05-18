@@ -3,7 +3,7 @@ const joinButtonAudio = document.getElementById('joinAudio')
     let conferenceid
 const getConferenceId = async ()=> {
     const userId = $('#userId').val()
-     conferenceid = await fetch(`http://localhost:8080/getConferenceid/${userId}`)
+     conferenceid = await fetch(`https://ecoles.yesbanana.org/getConferenceid/${userId}`)
     conferenceid = await conferenceid.json()
     conferenceid = conferenceid.conferenceId
     return conferenceid

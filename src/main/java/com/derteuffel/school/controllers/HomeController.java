@@ -61,7 +61,7 @@ public class HomeController {
         return "login/admin";
     }
 
-    @GetMapping("/getConferenceid/{userId}")
+    @GetMapping("/getConferegit push origin devnceid/{userId}")
     @ResponseBody
     public HashMap<String, String> getConferenceId(@PathVariable String userId){
         HashMap<String,String> conferenceId = new HashMap<String,String>();
