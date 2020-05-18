@@ -66,7 +66,11 @@ public class HomeController {
         if(compte==null)
         {
              compte = compteRepository.findByParent_Id(Long.parseLong(sender));
+             if(compte==null){
+                 compte = compteRepository.getOne(Long.parseLong(sender));
+             }
         }
+
         compte.setConferenceId(conferenceId);
         compteRepository.save(compte);
         MailService mailService = new MailService();

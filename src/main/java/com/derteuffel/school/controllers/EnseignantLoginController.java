@@ -123,7 +123,7 @@ public class EnseignantLoginController {
                   enseignants.add(comptes.get(i).getEnseignant());
               List<Role> roles = (List<Role>) comptes.get(i).getRoles();
               for(int j=0;j<roles.size();j++){
-                 if(roles.get(j).getName().equals("ROLE_DIRECTEUR")){
+                 if(roles.get(j).getName().equals("ROLE_DIRECTEUR") || roles.get(j).getName().equals("ROLE_ROOT")){
                      directeur.add(comptes.get(i));
                  }
               }
