@@ -438,6 +438,9 @@ public class EncadrementController {
         Collection<Encadreur> allEncadreurs = encadreurRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
             if (compte.getRoles().contains(role)){
                 System.out.println("je suis encadreur");
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                model.addAttribute("lists", enfantRepository.findAllByEncadreurs_Id(encadreur.getId(),Sort.by(Sort.Direction.DESC,"id")));
+                model.addAttribute("ecoleId", encadreur.getId());
                 allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compte.getId(),ECours.COURS.toString()));
             }else if (compte.getRoles().contains(role1)){
                 System.out.println("je suis enfant");
@@ -446,6 +449,19 @@ public class EncadrementController {
                 for (Encadreur encadreur : encadreurs){
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
+                Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
+                List<Encadreur> encadreurs1 = (List<Encadreur>) encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
+                System.out.println(encadreurs1);
+                List<Compte> comptes = new ArrayList<>();
+                for (Encadreur encadreur : encadreurs1) {
+                    comptes.add(compteRepository.findByEnseignant_Id(encadreur.getId()));
+                }
+                System.out.println(comptes);
+                model.addAttribute("directeur",comptes);
+                if(encadreurs1.size()>0)
+                    model.addAttribute("ecoleId", encadreurs1.get(0).getId());
+                else
+                    model.addAttribute("ecoleId", "0000");
 
             }else {
                 System.out.println("je suis root");
@@ -453,27 +469,6 @@ public class EncadrementController {
 
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
-            }
-            if(compte.getEnseignant()!=null) {
-
-                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-                model.addAttribute("lists", encadreur.getEnfants());
-                model.addAttribute("ecoleId", encadreur.getId());
-            }
-            else{
-                Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
-                List<Encadreur> encadreurs = (List<Encadreur>) encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
-                System.out.println(encadreurs);
-                List<Compte> comptes = new ArrayList<>();
-                for (Encadreur encadreur : encadreurs) {
-                    comptes.add(compteRepository.findByEnseignant_Id(encadreur.getId()));
-                }
-                System.out.println(comptes);
-                model.addAttribute("directeur",comptes);
-                if(encadreurs.size()>0)
-                model.addAttribute("ecoleId", encadreurs.get(0).getId());
-                else
-                    model.addAttribute("ecoleId", "0000");
             }
 
         model.addAttribute("lists1",allsCours);
