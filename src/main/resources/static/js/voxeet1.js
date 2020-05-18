@@ -1,70 +1,57 @@
-const removeVideoNode = (participant) => {
-    let videoNode = document.getElementById('video-' + participant.id);
-
-    if (videoNode) {
-        videoNode.parentNode.removeChild(videoNode);
-    }
-}
-const constraints = {
-    audio: true,
-    video: true
-}
-
-    VoxeetSDK.initialize('N2wzZXJrdG1zcTc3cQ==', 'NzRqZ2pocGNmdmNxa2Q5YjZob2FoYWQ0MzU=')
-VoxeetSDK.conference.on('streamAdded', (participant, stream) => {
-    addVideoNode(participant, stream);
-})
-    VoxeetSDK.conference.on('streamRemoved', (participant) => {
-        removeVideoNode(participant);
-    })
 const joinButton = document.getElementById('join')
 const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
-    const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
-    console.log(conference)
+    let conference=null
+    try {
+        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    }
+    catch(e) {
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
+        console.log('cannot get the conference',e)
+    }
     if(!conference){
 
-            $('#body').preloader('remove')
-            $('#joinError').css('display','block')
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
         VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
     }
     else
     {
-    VoxeetSDK.conference.join(conference,{constraints}).then(()=>{
+        VoxeetSDK.conference.join(conference,{audio:true,video:true}).then(()=>{
             $('#body').preloader('remove')
             document.getElementById('video-super-container').style.display='flex'
+            VoxeetSDK.conference.startVideo(VoxeetSDK.session.participant).catch(error => {
+                console.log(error)
+            })
 
-    }  ).catch(e=>{
+        }  ).catch(e=>{
             $('#body').preloader('remove')
             $('#joinError').css('display','block')
+            console.log('error cannot join',e)
             VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
-            VoxeetSDK.conference.leave()
-            console.log('error',e)
         })
     }
-}
-const interval = ()=>{
-    const date = new Date()
-    setInterval(()=>{
-        const distance= new Date().getTime()- date.getTime()
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000)
-
-        minutes = minutes < 10 ? "0" + minutes : minutes
-        seconds = seconds < 10 ? "0" + seconds : seconds
-        $('#countDown').text(`${minutes}:${seconds}`)
-    },1000)
 }
 const joinAudio = async ()=>{
     $('#body').preloader()
     await VoxeetSDK.session.open({name:document.getElementById('username').value})
-    const conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    let conference=null
+    try {
+        conference = await VoxeetSDK.conference.fetch(document.getElementById('conferenceId').value)
+    }
+    catch(e) {
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
+        console.log('cannot get the conference',e)
+    }
     if(!conference){
 
         $('#joinError').css('display','block')
         $('#body').preloader('remove')
+
     }
     else
     {
@@ -76,6 +63,7 @@ const joinAudio = async ()=>{
             $('#joinError').css('display','block')
             $('#body').preloader('remove')
             console.log('error',e)
+
         })
     }
 }

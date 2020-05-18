@@ -30,13 +30,16 @@
     <link th:href="@{/vendor/select2/select2.min.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" media="all">
 
+    <!-- Jquery JS-->
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 
 </head>
 
 <body th:each=" role : ${session.compte.roles}" class="animsition">
-<div class="page-wrapper">
+<div th:replace="~{../templates/fragments/video_container :: video_container}"></div>
+<div class="page-wrapper" id="body">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_encadrement :: header_encadrement}">
     </header>
@@ -68,13 +71,29 @@
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
-
                             <button type="button" data-toggle="modal" th:if="${role.name}=='ROLE_ENCADREUR' or ${role.name}=='ROLE_ROOT'" data-target="#addCoursModal" class="btn btn-primary">Nouveau cours&nbsp;<i class="zmdi zmdi-plus"></i></button>
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#choice">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-phone-ring"></i>
+                            </span>
+                                Joindre un appel
+                            </button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#contacts">
+                            <span aria-hidden="true">
+                                <i class="zmdi zmdi-phone"></i>
+                            </span>
+                                &nbsp; Passer un appel&nbsp;
+
+                            </button>
+                            <div th:replace="~{../templates/fragments/message:: message}"></div>
+
+                            <div th:replace="~{../templates/fragments/audio_container :: audio_container}"></div>
                             <hr>
                             <h2>Ensemble des cours </h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 my-2" th:each="cours : ${lists}">
+                                <div class="col-md-6 my-2" th:each="cours : ${lists1}">
                                     <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailCoursModal'+${cours?.id}" style="width: 100%">
                                         <div class="alert alert-dark text-left" role="alert">
                                             <p><strong>Date du : </strong><span  th:text="${cours?.date}"></span></p>
@@ -225,11 +244,10 @@
         </div>
     </div>
     <!-- end modal medium -->
-
+    <div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
+    <div th:replace="~{../templates/fragments/choice :: choice}"></div>
 </div>
 
-<!-- Jquery JS-->
-<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 <!-- Bootstrap JS-->
 <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
@@ -251,7 +269,9 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
-
+<!-- voxeet js -->
+<div th:replace="~{../templates/fragments/voxeetScript :: voxeetScript}"></div>
+<!-- voxeet js -->
 </body>
 
 </html>

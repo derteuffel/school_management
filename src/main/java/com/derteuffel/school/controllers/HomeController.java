@@ -62,6 +62,21 @@ public class HomeController {
     @GetMapping("/sendMail/{sender}/{conferenceId}")
     public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){
         Compte compte = compteRepository.findByEnseignant_Id(Long.parseLong(sender));
+        System.out.println(compte);
+        if(compte==null)
+        {
+             compte = compteRepository.findByParent_Id(Long.parseLong(sender));
+             if(compte==null){
+
+                     compte = compteRepository.findByEnfant_Id(Long.parseLong(sender));
+                 if(compte==null){
+
+                 compte = compteRepository.getOne(Long.parseLong(sender));
+                 }
+
+             }
+        }
+
         compte.setConferenceId(conferenceId);
         compteRepository.save(compte);
         MailService mailService = new MailService();

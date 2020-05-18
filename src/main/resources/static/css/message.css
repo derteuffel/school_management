@@ -10,6 +10,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
+    z-index:10000000;
 }
 #forumCloseBtn:hover{
     cursor:pointer;

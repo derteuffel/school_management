@@ -43,6 +43,8 @@ public class EncadrementController {
 
     @Autowired
     private EnfantRepository enfantRepository;
+    @Autowired
+    private EnseignantRepository enseignantRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -448,16 +450,38 @@ public class EncadrementController {
             }else {
                 System.out.println("je suis root");
                 for (Encadreur encadreur : allEncadreurs) {
+
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
             }
+            if(compte.getEnseignant()!=null) {
 
-        System.out.println(allsCours);
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                model.addAttribute("lists", encadreur.getEnfants());
+                model.addAttribute("ecoleId", encadreur.getId());
+            }
+            else{
+                Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
+                List<Encadreur> encadreurs = (List<Encadreur>) encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
+                System.out.println(encadreurs);
+                List<Compte> comptes = new ArrayList<>();
+                for (Encadreur encadreur : encadreurs) {
+                    comptes.add(compteRepository.findByEnseignant_Id(encadreur.getId()));
+                }
+                System.out.println(comptes);
+                model.addAttribute("directeur",comptes);
+                if(encadreurs.size()>0)
+                model.addAttribute("ecoleId", encadreurs.get(0).getId());
+                else
+                    model.addAttribute("ecoleId", "0000");
+            }
 
-        model.addAttribute("lists",allsCours);
+        model.addAttribute("lists1",allsCours);
+
         System.out.println("je suis et contient: "+allsCours);
         request.getSession().setAttribute("compte",compte);
         model.addAttribute("course",new Cours());
+
         return "encadrements/courses";
     }
 

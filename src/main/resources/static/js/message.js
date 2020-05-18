@@ -8,7 +8,7 @@ const ecoleId = $("#ecoleId").val()
 const name = $("#directorFirstName").val()
 const sendMessage = async (name,message,avatar,ecoleId)=>{
     try {
-        await db.collection(`ecole${ecoleId}`).add({
+        await db.collection(`ecole${ecoleId}`).doc(`${Date.now()}`).set({
                 name,
                 message,
                 createdDate: Date.now(),
@@ -33,10 +33,11 @@ const createMessageItem= (name1,avatar,message,date)=>`<div  class="bg-light mb-
 </div>
 
 </div>`
+let unsubscribe = ()=>{}
 const getMessageAndListen = async (ecoleId)=>{
    const chatRoom= $("#chatRoom")
     console.log(ecoleId)
-    db.collection(`ecole${ecoleId}`).onSnapshot(function(snapshot) {
+    unsubscribe=db.collection(`ecole${ecoleId}`).onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
                 if (change.type === "added") {
                     const data= change.doc.data()
@@ -54,6 +55,8 @@ $("#forum").click(()=>{
 })
 $("#forumCloseBtn").click(()=>{
     $("#forumDiv").css('display','none')
+    $("#chatRoom").empty()
+    unsubscribe()
 })
 $("#forumSendBtn").click(()=>{
     const message = $("#forumMessage").val()

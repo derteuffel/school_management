@@ -17,6 +17,7 @@ public interface CompteRepository extends JpaRepository<Compte,Long> {
     Compte findByEmail(String email);
     Compte findByEnseignant_Id(Long id);
     Compte findByEnfant_Id(Long id);
+    Compte findByParent_Id(Long id);
     Collection<Compte> findAllByEmail(String email);
     Collection<Compte> findAllByEcole_Id(Long id);
     Optional<Compte> findByResetToken(String resettoken);

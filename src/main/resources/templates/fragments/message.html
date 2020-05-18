@@ -1,0 +1,41 @@
+<div th:fragment="message" class="d-inline" xmlns:th="http://www.w3.org/1999/xhtml">
+    <link th:href="@{/css/message.css}" rel="stylesheet">
+    <button type="button" id="forum"  class="btn btn-warning font-weight-bold">Forum&nbsp;<i class="zmdi zmdi-accounts zmdi-hc-lg"></i></button>
+    <div id="forumDiv" class="forumDiv p-2">
+        <div class="d-flex flex-row align-self-start justify-content-end w-100">
+            <i id="forumCloseBtn" class="zmdi zmdi-close zmdi-hc-2x font-weight-bold text-danger"></i>
+        </div>
+        <div id="chatRoom">
+
+        </div>
+        <div class="d-flex flex-row justify-content-between align-items-center align-self-end w-100 ">
+            <input type="hidden" th:value="${ecoleId}" id="ecoleId" >
+            <input type="text" placeholder="Votre message" class="form-control" id="forumMessage" />
+            <button class="btn btn-primary" id="forumSendBtn"><i class="zmdi zmdi-forward"></i></button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.25.3/locale/fr-ca.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBH1FWI_3NrDWxFPhAU7Sxm5zvcDPl7gf4",
+            authDomain: "yesbanana-7ddd4.firebaseapp.com",
+            databaseURL: "https://yesbanana-7ddd4.firebaseio.com",
+            projectId: "yesbanana-7ddd4",
+            storageBucket: "yesbanana-7ddd4.appspot.com",
+            messagingSenderId: "745771380195",
+            appId: "1:745771380195:web:994ae55d1c9fe51bfb44d6",
+            measurementId: "G-PNX6BWLBCQ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        // Get a reference to the database service
+        var db = firebase.firestore()
+    </script>
+    <script th:src="@{/js/message.js}"></script>
+</div>
