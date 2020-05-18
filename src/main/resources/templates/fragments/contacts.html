@@ -29,7 +29,7 @@
                 <ul class="text-left list-group" th:if="${parents!=null}" th:each="enseignant : ${parents}">
                     <li class="list-group-item mb-2 d-flex flex-row justify-content-between">
                         <div>
-                            <span th:text="${enseignant?.name}"></span>
+                            <span th:text="${enseignant?.nomComplet}"></span>
 
                         </div>
                         <div>
@@ -39,7 +39,7 @@
                             <button type="button"  class="btn btn-primary crewCall"><i class="zmdi zmdi-check"></i></button>
                             <button type="button"  class="btn btn-primary removeCall">&nbsp;<i class="zmdi zmdi-close"></i></button>&nbsp;
                             <input class="callInput" th:value="${enseignant?.id}" type="hidden" />
-                            <input class="crewCallAudio" th:value="${enseignant?.name}" type="hidden" />
+                            <input class="crewCallAudio" th:value="${enseignant?.nomComplet}" type="hidden" />
 
                         </div>
                     </li>

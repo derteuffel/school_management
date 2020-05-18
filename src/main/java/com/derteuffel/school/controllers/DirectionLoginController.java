@@ -279,8 +279,6 @@ public class DirectionLoginController {
             if (compte1.getEnseignant() != null) {
                 enseignants.add(compte1.getEnseignant());
             }
-            if(compte1.getParent()!=null)
-                parents.add(compte1.getParent());
         }
         System.out.println(parents);
 
@@ -288,7 +286,7 @@ public class DirectionLoginController {
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("lists", enseignants);
         model.addAttribute("ecoleId",compte.getEcole().getId());
-        model.addAttribute("parents",parents);
+
         return "direction/enseignants/lists";
     }
 
@@ -338,7 +336,8 @@ public class DirectionLoginController {
         System.out.println(parents.size());
 
         model.addAttribute("ecole",compte.getEcole());
-        model.addAttribute("lists", parents);
+        model.addAttribute("lists1", parents);
+        model.addAttribute("parents", parents);
 
         return "direction/parent/lists";
     }

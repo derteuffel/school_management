@@ -1,10 +1,3 @@
-
-const constraints = {
-    audio: true,
-    video: true
-}
-
-
 const joinButton = document.getElementById('join')
 const joinButtonAudio = document.getElementById('joinAudio')
 const join = async ()=>{
@@ -21,20 +14,24 @@ const join = async ()=>{
     }
     if(!conference){
 
-            $('#body').preloader('remove')
-            $('#joinError').css('display','block')
+        $('#body').preloader('remove')
+        $('#joinError').css('display','block')
         VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
     }
     else
     {
-    VoxeetSDK.conference.join({conference},{constraints}).then(()=>{
+        VoxeetSDK.conference.join(conference,{audio:true,video:true}).then(()=>{
             $('#body').preloader('remove')
             document.getElementById('video-super-container').style.display='flex'
+            VoxeetSDK.conference.startVideo(VoxeetSDK.session.participant).catch(error => {
+                console.log(error)
+            })
 
-    }  ).catch(e=>{
+        }  ).catch(e=>{
             $('#body').preloader('remove')
             $('#joinError').css('display','block')
             console.log('error cannot join',e)
+            VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
         })
     }
 }
@@ -48,12 +45,13 @@ const joinAudio = async ()=>{
     catch(e) {
         $('#body').preloader('remove')
         $('#joinError').css('display','block')
+        console.log('cannot get the conference',e)
     }
     if(!conference){
 
         $('#joinError').css('display','block')
         $('#body').preloader('remove')
-        VoxeetSDK.conference.stopVideo(VoxeetSDK.session.participant)
+
     }
     else
     {
@@ -65,6 +63,7 @@ const joinAudio = async ()=>{
             $('#joinError').css('display','block')
             $('#body').preloader('remove')
             console.log('error',e)
+
         })
     }
 }
