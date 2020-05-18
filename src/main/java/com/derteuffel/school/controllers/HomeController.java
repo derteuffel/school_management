@@ -67,11 +67,13 @@ public class HomeController {
         {
              compte = compteRepository.findByParent_Id(Long.parseLong(sender));
              if(compte==null){
-                 compte = compteRepository.getOne(Long.parseLong(sender));
-                 if(compte==null){
-                     compte = compteRepository.findByEnfant_Id(Long.parseLong(sender));
 
+                     compte = compteRepository.findByEnfant_Id(Long.parseLong(sender));
+                 if(compte==null){
+
+                 compte = compteRepository.getOne(Long.parseLong(sender));
                  }
+
              }
         }
 

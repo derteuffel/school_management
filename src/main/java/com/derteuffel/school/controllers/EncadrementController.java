@@ -43,6 +43,8 @@ public class EncadrementController {
 
     @Autowired
     private EnfantRepository enfantRepository;
+    @Autowired
+    private EnseignantRepository enseignantRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -434,15 +436,22 @@ public class EncadrementController {
                     allsCours.addAll(coursRepository.findAllByCompte_IdAndType(compteRepository.findByEnseignant_Id(encadreur.getId()).getId(),ECours.COURS.toString()));
                 }
             }
-        Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-            if(encadreur!=null) {
+            if(compte.getEnseignant()!=null) {
+
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
                 model.addAttribute("lists", encadreur.getEnfants());
                 model.addAttribute("ecoleId", encadreur.getId());
             }
             else{
                 Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
-                List<Encadreur> encadreurs = (List<Encadreur>)enfant.getEncadreurs();
-                model.addAttribute("lists", encadreurs);
+                List<Encadreur> encadreurs = (List<Encadreur>) encadreurRepository.findAllByEnfants_Id(enfant.getId(),Sort.by(Sort.Direction.DESC,"id"));
+                System.out.println(encadreurs);
+                List<Compte> comptes = new ArrayList<>();
+                for (Encadreur encadreur : encadreurs) {
+                    comptes.add(compteRepository.findByEnseignant_Id(encadreur.getId()));
+                }
+                System.out.println(comptes);
+                model.addAttribute("directeur",comptes);
                 if(encadreurs.size()>0)
                 model.addAttribute("ecoleId", encadreurs.get(0).getId());
                 else
