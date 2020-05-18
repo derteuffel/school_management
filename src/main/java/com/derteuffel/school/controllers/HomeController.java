@@ -138,6 +138,14 @@ public class HomeController {
         model.addAttribute("name","ecoles");
         return "expertsProfiles";
     }
+    @GetMapping("/experts/stages")
+    public String getExpert4(Model model){
+
+        Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.expert_yesb_en_stage_professionnelle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",encadreurs);
+        model.addAttribute("name","stages");
+        return "expertsProfiles";
+    }
 
     @GetMapping("/experts/ecoles/{matiere}")
     public String getExpert1Matieres(Model model,@PathVariable String matiere){

@@ -371,26 +371,44 @@ public class EncadrementController {
         Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.name());
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.name());
         if (compte.getStatus() == true){
-            return "redirect:/encadrements/cours/lists";
-        }
-        if (compte.getCode() == null){
-            compte.setCode(UUID.randomUUID().toString());
-
-            compteRepository.save(compte);
-
-            if (compte.getRoles().contains(role)){
-               Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-               encadreur.setCode(compte.getCode());
-                encadreurRepository.save(encadreur);
-            }else if (compte.getRoles().contains(role1)){
+            if (compte.getRoles().contains(role)) {
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                if (encadreur.getCode() == null){
+                    encadreur.setCode(compte.getCode());
+                    encadreurRepository.save(encadreur);
+                }
+            } else if (compte.getRoles().contains(role1)) {
                 Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
-                enfant.setCode(compte.getCode());
-                enfantRepository.save(enfant);
+                if (enfant.getCode() == null){
+                    enfant.setCode(compte.getCode());
+                    enfantRepository.save(enfant);
+                }
             }
-        }
+            return "redirect:/encadrements/cours/lists";
+        }else {
+            if (compte.getCode() == null) {
+                String randomCode = "" + UUID.randomUUID().toString();
+                compte.setCode(randomCode);
 
-        model.addAttribute("success","Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
-        return "encadrements/activation";
+                compteRepository.save(compte);
+
+                if (compte.getRoles().contains(role)) {
+                    Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                    System.out.println(compte.getCode());
+
+                    encadreur.setCode(randomCode);
+                    System.out.println(encadreur.getCode());
+                    encadreurRepository.save(encadreur);
+                } else if (compte.getRoles().contains(role1)) {
+                    Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
+                    enfant.setCode(randomCode);
+                    enfantRepository.save(enfant);
+                }
+            }
+
+            model.addAttribute("success", "Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
+            return "encadrements/activation";
+        }
     }
 
     @GetMapping("/activation/code")
