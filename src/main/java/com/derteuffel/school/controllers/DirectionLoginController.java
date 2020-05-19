@@ -449,12 +449,13 @@ public class DirectionLoginController {
 
 
     @PostMapping("/classe/save")
-    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
         Enseignant enseignant = enseignantRepository.getOne(id);
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
         salle.setEcole(ecole);
+        salle.setNiveau(salle.getNiveau().toString()+suffix.toUpperCase());
         salle.setEnseignants(Arrays.asList(enseignant));
         salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
 

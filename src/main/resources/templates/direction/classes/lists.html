@@ -113,11 +113,15 @@
                             <div class="col col-md-3">
                                 <label  class=" form-control-label">Niveau</label>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <select th:field="*{niveau}"  class="form-control">
                                     <option th:each=" name : ${T(com.derteuffel.school.enums.ENiveau).values()}" th:value="${name}" th:text="${name}"></option>
                                 </select>
                                 <small class="form-text text-muted">Niveau</small>
+                            </div>
+                            <div class="col col-md-3">
+                                <input type="text" class="form-control" name="suffix" placeholder="Suffix">
+                                <small class="form-text text-muted">Suffixe</small>
                             </div>
                         </div>
                         <div class="row form-group">
