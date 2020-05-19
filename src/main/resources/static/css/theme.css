@@ -4988,7 +4988,6 @@ section {
 
 .statistic__item .desc {
     font-size: 16px;
-    text-transform: lowercase;
     font-weight: 300;
     color: rgba(128, 128, 128, 0.6);
 }

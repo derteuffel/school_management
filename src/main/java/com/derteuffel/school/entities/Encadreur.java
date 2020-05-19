@@ -30,6 +30,7 @@ public class Encadreur extends Enseignant {
     private String code;
     private String description;
     private String category;
+    private String type;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

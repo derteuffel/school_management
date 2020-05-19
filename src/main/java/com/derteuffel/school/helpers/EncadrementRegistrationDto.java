@@ -43,4 +43,5 @@ public class EncadrementRegistrationDto {
     private String motivation;
     private String description;
     private String modePaiement;
+    private String type;
 }

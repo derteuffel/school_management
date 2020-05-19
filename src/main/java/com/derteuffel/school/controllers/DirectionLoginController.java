@@ -450,19 +450,22 @@ public class DirectionLoginController {
 
     @PostMapping("/classe/save")
     public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
-        Enseignant enseignant = enseignantRepository.getOne(id);
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        salle.setEcole(ecole);
-        salle.setNiveau(salle.getNiveau().toString()+suffix.toUpperCase());
+        if (id !=null){
+        Enseignant enseignant = enseignantRepository.getOne(id);
         salle.setEnseignants(Arrays.asList(enseignant));
-        salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
+            salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
+            enseignant.getSallesIds().add(salle.getId());
+            enseignantRepository.save(enseignant);
+        }else {
 
-        salleRepository.save(salle);
-        enseignant.getSallesIds().add(salle.getId());
-        enseignantRepository.save(enseignant);
-
+            salle.setEcole(ecole);
+            salle.setNiveau(salle.getNiveau().toString() + suffix.toUpperCase());
+            salle.setPrincipal("Non defini");
+            salleRepository.save(salle);
+        }
         redirectAttributes.addFlashAttribute("success", "Vous avez ajoute avec succes une nouvelle classe");
         return "redirect:/direction/classe/lists";
     }
