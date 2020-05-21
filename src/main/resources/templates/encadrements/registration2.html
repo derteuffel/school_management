@@ -102,12 +102,12 @@
                                     <input class="au-input au-input--full" type="text" th:field="*{telephone}"  placeholder="Numero de telephone">
                                 </div>
                                 <div class="form-group" >
-                                    <label class="control-label">Photo</label>
-                                    <input class="au-input au-input--full" type="file" name="picture"  >
-                                </div>
-                                <div class="form-group" >
                                     <label class="control-label">Votre numero whatsapp</label>
                                     <input class="au-input au-input--full" type="text" th:field="*{whatsapp}"  placeholder="Numero whatsapp">
+                                </div>
+                                <div class="form-group" >
+                                    <label class="control-label">Photo</label>
+                                    <input class="au-input au-input--full" type="file" name="picture"  >
                                 </div>
                                 <div class="form-group" >
                                     <label class="control-label">Votre Localisation</label>
@@ -141,8 +141,9 @@
                                     <input class="au-input au-input--full" type="number" th:field="*{nbreMois}"  placeholder="Nombre de mois">
                                 </div>
                                 <div class="form-group" >
-                                    <label class="control-label">Type d'encadrement</label>
-                                    <select th:field="*{type}" class="form-control" >
+                                    <label class="control-label">Type d'encadrement(pour plus d'un element a choisir bien vouloir maintenir la touche ctrl/cmd)</label>
+                                    <select th:field="*{types}" multiple class="form-control" >
+                                        <option value="">Choisir un ou plusieur elements</option>
                                         <option th:each="item :${T(com.derteuffel.school.enums.ECategory).values()}" th:value="${item}" th:text="${item}"></option>
                                     </select>
                                 </div>

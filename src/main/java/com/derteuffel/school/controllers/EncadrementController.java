@@ -139,6 +139,7 @@ public class EncadrementController {
             encadreur.setLocalisation(encadrementRegistrationDto.getLocalisation());
             encadreur.setPays(encadrementRegistrationDto.getPays());
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
+            encadreur.setTypes(encadrementRegistrationDto.getTypes());
             multipart.store(file);
             encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
             if (!(picture.isEmpty())) {
@@ -181,6 +182,10 @@ public class EncadrementController {
 
     @GetMapping("/encadreur/delete/{id}")
     public String deleteEncadreur(@PathVariable Long id){
+        Compte compte = compteRepository.findByEnseignant_Id(id);
+        System.out.println(compte.getUsername());
+        compteRepository.deleteById(compte.getId());
+        System.out.println("deleted");
         encadreurRepository.deleteById(id);
         return "redirect:/encadrements/encadreurs";
     }

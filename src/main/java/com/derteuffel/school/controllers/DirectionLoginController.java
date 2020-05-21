@@ -204,6 +204,7 @@ public class DirectionLoginController {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
 
         CompteRegistrationDto compte1 = new CompteRegistrationDto();
         Enseignant enseignant1 = enseignantRepository.findByEmail(enseignant.getEmail());
@@ -238,13 +239,16 @@ public class DirectionLoginController {
         enseignant.setAvatar("/images/profile.jpeg");
         enseignantRepository.save(enseignant);
         System.out.println(classes);
-        if (classes.length!=0){
+        if (classes!=null){
             for (Long ids : classes){
                 System.out.println(ids);
                 Salle salle = salleRepository.getOne(ids);
                 salle.getEnseignants().add(enseignant);
                 salleRepository.save(salle);
             }
+        }else {
+            redirectAttributes.addFlashAttribute("error","Il n'yas pas de classe enregistrer vous devez commencer par creer des salles de classe dans votre ecole");
+            return "redirect:/direction/enseignant/lists/"+ecole.getId();
         }
         compteService.saveEnseignant(compte1, "/images/profile.jpeg", compte.getEcole().getId(), enseignant);
         Mail sender = new Mail();
