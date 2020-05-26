@@ -75,7 +75,7 @@
                             <h2>Liste des parents d'eleves de la classe</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 m-2" th:each="parent : ${lists}">
+                                <div class="col-md-6 m-2" th:each="parent : ${parents}">
                                     <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}" style="width: 100%">
                                         <div class="alert alert-dark text-left" role="alert">
                                             <p><strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> </p>
