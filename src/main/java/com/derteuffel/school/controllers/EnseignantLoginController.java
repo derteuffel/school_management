@@ -235,7 +235,9 @@ public class EnseignantLoginController {
             }
         }
         model.addAttribute("classe",salleRepository.getOne(id));
-        model.addAttribute("lists",parents);
+        model.addAttribute("parents",parents);
+        Ecole ecole = ecoleRepository.getOne(id);
+        model.addAttribute("ecoleId",ecole.getId());
         return "enseignant/parents";
     }
 
