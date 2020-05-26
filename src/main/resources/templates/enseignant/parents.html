@@ -11,7 +11,7 @@
 
     <!-- Title Page-->
     <title>Enseignant</title>
-
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
     <link th:href="@{/vendor/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
@@ -33,15 +33,18 @@
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
 
+
+    <link th:href="@{/css/message.css}" rel="stylesheet">
+
 </head>
 
 <body class="animsition">
-<div class="page-wrapper">
+<div th:replace="~{../templates/fragments/video_container :: video_container}"></div>
+<div class="page-wrapper" id="body">
     <!-- HEADER DESKTOP-->
     <header th:replace="~{../templates/fragments/header_enseignant :: header_enseignant}">
     </header>
     <!-- END HEADER DESKTOP -->
-
     <!-- PAGE CONTENT-->
     <div class="page-container3">
         <section class="alert-wrap p-t-70 p-b-70">
@@ -100,6 +103,7 @@
                     </div>
                 </div>
                 <!-- COPYRIGHT-->
+                <div th:replace="~{../templates/fragments/choice :: choice}"></div>
                 <section th:replace="~{../templates/fragments/footer :: footer}"></section>
 
                 <!-- END COPYRIGHT-->
@@ -109,9 +113,21 @@
     <!-- END PAGE CONTENT  -->
 
 </div>
+<div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
+<div id="forumDiv" class="forumDiv p-2">
+    <div class="d-flex flex-row align-self-start justify-content-end w-100">
+        <i id="forumCloseBtn" class="zmdi zmdi-close zmdi-hc-2x font-weight-bold text-danger"></i>
+    </div>
+    <div id="chatRoom">
 
-<!-- Jquery JS-->
-<script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
+    </div>
+    <div class="d-flex flex-row justify-content-between align-items-center align-self-end w-100 ">
+        <input type="hidden" th:value="${ecole?.id}" id="ecoleId" >
+        <input type="text" placeholder="Votre message" class="form-control" id="forumMessage" />
+        <button class="btn btn-primary" id="forumSendBtn"><i class="zmdi zmdi-forward"></i></button>
+    </div>
+</div>
+
 <!-- Bootstrap JS-->
 <script th:src="@{/vendor/bootstrap-4.1/popper.min.js}"></script>
 <script th:src="@{/vendor/bootstrap-4.1/bootstrap.min.js}"></script>
@@ -130,6 +146,8 @@
 <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/select2/select2.min.js}">
 </script>
+
+<div th:replace="~{../templates/fragments/voxeetScript :: voxeetScript}"></div>
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
