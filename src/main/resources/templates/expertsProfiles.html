@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-xl-9 row" th:unless="${#lists.size(lists)}==0">
                             <div class="col-md-4" th:each="item : ${lists}">
-                            <button type="button" data-toggle="modal" data-target="#detailExpertModal" style="width: 100%" th:attr="data-target='#detailExpertModal'+${item?.id}">
+                            <button type="button" data-toggle="modal" data-target="#detailExpertModal" style="width: 100%;height: 500px" th:attr="data-target='#detailExpertModal'+${item?.id}">
                                 <div class="card">
                                 <div class="card-body">
                                     <div class="mx-auto d-block">
@@ -118,7 +118,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <strong class="card-title mb-3"><span th:text="${item.cour_enseigner[0]}">Expert YesB Formation professionnelle</span></strong>
+                                    <strong class="card-title mb-3"><span th:each="name : ${item.cour_enseigner}" th:text="${name}">Expert YesB Formation professionnelle</span></strong>
                                 </div>
                             </div>
                             </button>

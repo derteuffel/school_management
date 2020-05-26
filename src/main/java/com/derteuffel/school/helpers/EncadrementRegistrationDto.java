@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 
 /**
  * Created by user on 22/03/2020.
@@ -43,4 +44,5 @@ public class EncadrementRegistrationDto {
     private String motivation;
     private String description;
     private String modePaiement;
+    private ArrayList<String> types;
 }

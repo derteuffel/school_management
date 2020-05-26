@@ -204,6 +204,7 @@ public class DirectionLoginController {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
 
         CompteRegistrationDto compte1 = new CompteRegistrationDto();
         Enseignant enseignant1 = enseignantRepository.findByEmail(enseignant.getEmail());
@@ -238,13 +239,16 @@ public class DirectionLoginController {
         enseignant.setAvatar("/images/profile.jpeg");
         enseignantRepository.save(enseignant);
         System.out.println(classes);
-        if (classes.length!=0){
+        if (classes!=null){
             for (Long ids : classes){
                 System.out.println(ids);
                 Salle salle = salleRepository.getOne(ids);
                 salle.getEnseignants().add(enseignant);
                 salleRepository.save(salle);
             }
+        }else {
+            redirectAttributes.addFlashAttribute("error","Il n'yas pas de classe enregistrer vous devez commencer par creer des salles de classe dans votre ecole");
+            return "redirect:/direction/enseignant/lists/"+ecole.getId();
         }
         compteService.saveEnseignant(compte1, "/images/profile.jpeg", compte.getEcole().getId(), enseignant);
         Mail sender = new Mail();
@@ -449,19 +453,23 @@ public class DirectionLoginController {
 
 
     @PostMapping("/classe/save")
-    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        Enseignant enseignant = enseignantRepository.getOne(id);
+    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        salle.setEcole(ecole);
+        if (id !=null){
+        Enseignant enseignant = enseignantRepository.getOne(id);
         salle.setEnseignants(Arrays.asList(enseignant));
-        salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
+            salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
+            enseignant.getSallesIds().add(salle.getId());
+            enseignantRepository.save(enseignant);
+        }else {
 
-        salleRepository.save(salle);
-        enseignant.getSallesIds().add(salle.getId());
-        enseignantRepository.save(enseignant);
-
+            salle.setEcole(ecole);
+            salle.setNiveau(salle.getNiveau().toString() + suffix.toUpperCase());
+            salle.setPrincipal("Non defini");
+            salleRepository.save(salle);
+        }
         redirectAttributes.addFlashAttribute("success", "Vous avez ajoute avec succes une nouvelle classe");
         return "redirect:/direction/classe/lists";
     }

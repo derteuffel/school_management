@@ -18,6 +18,13 @@ public enum ENiveau {
     sixieme_secondaire,
     septieme_secondaire,
     generale_secondaire,
-    generale_primaire
+    generale_primaire,
+    premiere_professionnel,
+    deuxieme_professionnel,
+    troisieme_professionnel,
+    quatrieme_professionnel,
+    cinquieme_professionnel,
+    sixieme_professionnel,
+    septieme_professionnel,
 
 }
