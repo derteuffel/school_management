@@ -74,84 +74,93 @@
                             <h2>Ensemble des devoirs de la classe : <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 my-2" th:each="devoir : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailDevoirModal'+${devoir?.id}" style="width: 100%">
-                                        <div class="alert alert-dark text-left" role="alert">
-                                            <p><strong>Date du : </strong><span  th:text="${devoir?.date}"></span></p>
-                                            <p><strong>Titre : </strong><span class="text-primary underline" th:text="${devoir?.title}"></span></p>
-                                    </div>
-                                    </button>
-                                    <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${devoir?.id}"><i class="fas fa-trash"></i></a>
-                                    <div class="modal fade" th:id="deleteModal+${devoir?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Supprimer Devoir</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body card-block">
-                                                    <p>Vous voulez vraiment supprimer ce devoir??</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                    <a  class="btn btn-primary" th:href="@{/enseignant/devoirs/delete/}+${devoir?.id}+'/'+${classe.id}">Supprimer</a>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="add-row">
+                                        <thead>
+                                        <th>Date d'ajout du devoir</th>
+                                        <th>Titre du devoir</th>
+                                        <th>ACTION</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="devoir : ${lists}">
+                                            <td><span  th:text="${devoir?.date}"></span></td>
+                                            <td><span class="text-primary underline" th:text="${devoir?.title}"></span></td>
+                                            <td>
+                                                <button type="button" class="text-success" data-toggle="modal" data-target="#detailDevoirModal" th:attr="data-target='#detailDevoirModal'+${devoir?.id}"><i class="fas fa-eye"></i></button>
+                                                <button type="button" class="text-danger" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${devoir?.id}"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                            <div class="modal fade" th:id="deleteModal+${devoir?.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Supprimer Devoir</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body card-block">
+                                                            <p>Vous voulez vraiment supprimer ce devoir??</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                            <a  class="btn btn-primary" th:href="@{/enseignant/devoirs/delete/}+${devoir?.id}+'/'+${classe.id}">Supprimer</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal fade" th:id="detailDevoirModal+${devoir?.id}" tabindex="-1" role="dialog" aria-labelledby="detailDevoirModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail devoir</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                            <div class="modal fade" th:id="detailDevoirModal+${devoir?.id}" tabindex="-1" role="dialog" aria-labelledby="detailDevoirModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="detailModalLabel">Detail devoir</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body card-block">
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Classe</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${devoir?.salle}">Prenom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Titre</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${devoir?.title}">Prenom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Contenue</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${devoir?.content}">Nom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Fichier join</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <a th:if="${devoir?.fichier}" th:href="${devoir?.fichier}"><small  >Telecharger le fichier</small></a>
+                                                                    <a th:unless="${devoir?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                            <a th:href="@{/enseignant/devoir/update/}+${devoir.id}" class="btn btn-primary" >Editer</a>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body card-block">
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Classe</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.salle}">Prenom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Titre</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.title}">Prenom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Contenue</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${devoir?.content}">Nom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Fichier join</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <a th:if="${devoir?.fichier}" th:href="${devoir?.fichier}"><small  >Telecharger le fichier</small></a>
-                                                                <a th:unless="${devoir?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                        <a th:href="@{/enseignant/devoir/update/}+${devoir.id}" class="btn btn-primary" >Editer</a>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                </div>
+                                            </div>                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -254,7 +263,15 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
 
+    });
+</script>
 </body>
 
 </html>

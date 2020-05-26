@@ -255,9 +255,11 @@ public class EncadrementController {
         return "redirect:/encadrements/enseignant/eleves/"+encadreur.getId();
     }
 
-    @GetMapping("/eleves/delete/{id}")
+    @GetMapping("/eleve/delete/{id}")
     public String deleteEnfants(@PathVariable Long id){
-        encadreurRepository.deleteById(id);
+        Compte compte =compteRepository.findByEnfant_Id(id);
+        compteRepository.deleteById(compte.getId());
+        enfantRepository.deleteById(id);
         return "redirect:/encadrements/eleves";
     }
 

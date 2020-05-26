@@ -1,9 +1,9 @@
 package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.Compte;
-import com.derteuffel.school.entities.Ecole;
 import com.derteuffel.school.entities.Encadreur;
 import com.derteuffel.school.enums.ECategory;
+import com.derteuffel.school.helpers.EcoleFormHelper;
 import com.derteuffel.school.repositories.CompteRepository;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.repositories.EncadreurRepository;
@@ -50,7 +50,7 @@ public class HomeController {
     @GetMapping("/")
     public String accueil(Model model){
         model.addAttribute("lists", ecoleRepository.findAllByStatus(true,Sort.by(Sort.Direction.ASC,"name")));
-        model.addAttribute("ecole", new Ecole());
+        model.addAttribute("form", new EcoleFormHelper());
         return "index1";
     }
 

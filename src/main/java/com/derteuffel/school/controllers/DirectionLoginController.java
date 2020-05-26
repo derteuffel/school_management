@@ -90,7 +90,7 @@ public class DirectionLoginController {
     }
 
 
-    @PostMapping("/registration")
+   /* @PostMapping("/registration")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
                                             BindingResult result, RedirectAttributes redirectAttributes, Model model, String ecole) {
 
@@ -124,6 +124,33 @@ public class DirectionLoginController {
 
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/direction/login";
+    }*/
+
+    @GetMapping("/activation/form")
+    public String activation(HttpServletRequest request, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        if (ecole.getStatus() == true){
+            return "redirect:/direction/home";
+        }else {
+            model.addAttribute("success","Veillez contacter l'equipe YesB pour acceder a votre code");
+            return "direction/activation";
+        }
+    }
+
+    @GetMapping("activation/code")
+    public String validation(String activation, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        if (ecole.getCode().equals(activation)){
+            redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
+            return "redirect:/direction/activation/form";
+        }else {
+            redirectAttributes.addFlashAttribute("success","Code d'activation incorrect");
+            return "redirect:/direction/logout";
+        }
     }
 
     @PostMapping("/registration/root")
@@ -601,6 +628,11 @@ public class DirectionLoginController {
         return "redirect:/direction/classe/eleves/"+salle.getId();
     }
 
+    @GetMapping("/eleve/delete/{id}/{salleId}")
+    public String deleteEleve(@PathVariable Long id, @PathVariable Long salleId){
+        eleveRepository.deleteById(id);
+        return "redirect:/direction/classe/eleve/"+salleId;
+    }
 
     //---- Eleve management end -----//
     //---- Parent management start -----//

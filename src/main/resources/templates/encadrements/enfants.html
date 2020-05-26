@@ -288,6 +288,15 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
+
+    });
+</script>
 
 </body>
 

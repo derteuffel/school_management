@@ -84,13 +84,22 @@
 
                             <h2>Liste des parents d'élève : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <div class="row"  >
-                                <div class="col-lg-4 col-md-6 m-2" th:each="parent : ${lists1}">
-                                        <div class="alert alert-dark text-left" role="alert">
-                                            <strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> <br>
-                                            <strong>Téléphone  : </strong><span th:text="${parent?.telephone}"></span> <br>
-                                            <strong>E-mail  : </strong><span th:text="${parent?.email}"></span> <br>
-                                            <strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span>
-                                    </div>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="add-row">
+                                        <thead>
+                                        <th>Nom</th>
+                                        <th>Telephone</th>
+                                        <th>E-mail</th>
+                                        <th>Whatsapp</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="parent : ${lists1}">
+                                            <td><span th:text="${parent?.nomComplet}"></span></td>
+                                            <td><span th:text="${parent?.telephone}"></span></td>
+                                            <td><span th:text="${parent?.email}"></span></td>
+                                            <td><span th:text="${parent?.whatsapp}"></span></td>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -168,7 +177,15 @@
 <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/select2/select2.min.js}">
 </script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
 
+    });
+</script>
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
 <!-- voxeet js -->

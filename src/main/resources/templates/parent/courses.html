@@ -72,64 +72,72 @@
                             <h2>Ensemble des cours de la classe</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 my-2" th:each="cours : ${lists}">
-                                    <button type="button" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailCoursModal'+${cours?.id}" style="width: 100%">
-                                        <div class="alert alert-dark text-left" role="alert">
-                                            <p><strong>Date du : </strong><span  th:text="${cours?.date}"></span></p>
-                                            <br>
-                                            <p><strong>Titre : </strong><span class="text-primary underline" th:text="${cours?.title}"></span></p>
-                                    </div>
-                                    </button>
-                                    <div class="modal fade" th:id="detailCoursModal+${cours?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiCoursModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Cours</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="add-row">
+                                        <thead>
+                                        <th>Date d'ajout du cours</th>
+                                        <th>Titre de la lecon</th>
+                                        <th>ACTION</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="cours : ${lists}">
+                                            <td><span  th:text="${cours?.date}"></span></td>
+                                            <td><span class="text-primary underline" th:text="${cours?.title}"></span></td>
+                                            <td><button type="button" class="text-success" data-toggle="modal" data-target="#detailCoursModal" th:attr="data-target='#detailCoursModal'+${cours?.id}"><i class="fas fa-eye"></i></button>
+                                            </td>
+                                            <div class="modal fade" th:id="detailCoursModal+${cours?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiCoursModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="detailModalLabel">Detail Cours</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body card-block">
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Classe</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${cours?.salle}">Prenom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Titre</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${cours?.title}">Prenom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Contenue</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <small class="form-text text-muted" th:text="${cours?.content}">Nom de l'enseignant</small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <div class="col col-md-3">
+                                                                    <label  class=" form-control-label">Fichier join</label>
+                                                                </div>
+                                                                <div class="col-12 col-md-9">
+                                                                    <a th:if="${cours?.fichier}" th:href="${cours?.fichier}"><small  >Telecharger le fichier</small></a>
+                                                                    <a th:unless="${cours?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="modal-body card-block">
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Classe</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${cours?.salle}">Prenom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Titre</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${cours?.title}">Prenom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Contenue</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${cours?.content}">Nom de l'enseignant</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row form-group">
-                                                            <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Fichier join</label>
-                                                            </div>
-                                                            <div class="col-12 col-md-9">
-                                                                <a th:if="${cours?.fichier}" th:href="${cours?.fichier}"><small  >Telecharger le fichier</small></a>
-                                                                <a th:unless="${cours?.fichier}" ><small class="form-text text-muted" >Aucun fichier charger</small></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -171,7 +179,15 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
 
+    });
+</script>
 </body>
 
 </html>

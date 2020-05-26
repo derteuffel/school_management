@@ -192,11 +192,10 @@ public class ParentLoginController {
         return "parent/courses";
     }
 
-    @GetMapping("/bibliotheque/lists/{id}/{ecoleId}")
-    public String bibliotheques(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+    @GetMapping("/bibliotheque/lists/{id}")
+    public String bibliotheques(@PathVariable Long id, Model model){
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
         List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
         List<Livre> generals = livreRepository.findAllBySalle(ENiveau.generale_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.generale_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
