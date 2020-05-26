@@ -145,6 +145,8 @@ public class DirectionLoginController {
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
         if (ecole.getCode().equals(activation)){
+            ecole.setStatus(true);
+            ecoleRepository.save(ecole);
             redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
             return "redirect:/direction/activation/form";
         }else {
