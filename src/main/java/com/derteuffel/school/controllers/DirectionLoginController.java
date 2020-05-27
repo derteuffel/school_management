@@ -380,6 +380,39 @@ public class DirectionLoginController {
         return "direction/parent/lists";
     }
 
+    @GetMapping("/parent/accounts/lists")
+    public String parentListsAccount(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal.getName());
+        Compte compte = compteService.findByUsername(principal.getName());
+
+        Collection<Compte> comptes = compteRepository.findAll();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Eleve> eleves = new ArrayList<>();
+        Collection<Parent> parents = new ArrayList<>();
+        for (Salle salle : salles) {
+            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(salle.getId());
+            eleves.addAll(eleves1);
+        }
+
+        Collection<Compte> accounts = new ArrayList<>();
+            for (Compte compte1 : comptes){
+                System.out.println("je suis la ");
+                if (compte1.getParent()!= null){
+                    accounts.add(compte1);
+                }
+            }
+
+
+        System.out.println(accounts.size());
+
+
+        model.addAttribute("ecole",compte.getEcole());
+        model.addAttribute("lists1", accounts);
+
+        return "direction/parent/accounts";
+    }
+
     @GetMapping("/eleve/lists")
     public String elevesLists(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -399,7 +432,7 @@ public class DirectionLoginController {
             parents.add(eleve.getParent());
 
 
-            for (Compte compte1 : comptes){
+            /*for (Compte compte1 : comptes){
                 System.out.println("je suis la ");
                 if (compte1.getParent()!= null){
                     if (compte1.getParent().getNomComplet().contains(eleve.getName().toUpperCase())) {
@@ -411,7 +444,7 @@ public class DirectionLoginController {
                         compteRepository.save(compte1);
                     }
                 }
-            }
+            }*/
         }
 
         model.addAttribute("ecole",compte.getEcole());
