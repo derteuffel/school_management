@@ -396,12 +396,16 @@ public class DirectionLoginController {
         }
 
         Collection<Compte> accounts = new ArrayList<>();
-            for (Compte compte1 : comptes){
+        for (Eleve eleve : eleves) {
+            for (Compte compte1 : comptes) {
                 System.out.println("je suis la ");
-                if (compte1.getParent()!= null){
-                    accounts.add(compte1);
+                if (compte1.getParent() != null) {
+                    if ((compte1.getParent().getNomComplet().contains(eleve.getName().toUpperCase()))||(compte1.getParent().getNomComplet().contains(eleve.getPrenom().toUpperCase()))) {
+                        accounts.add(compte1);
+                    }
                 }
             }
+        }
 
 
         System.out.println(accounts.size());
