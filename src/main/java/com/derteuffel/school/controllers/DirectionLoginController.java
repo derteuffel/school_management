@@ -10,6 +10,7 @@ import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,9 @@ public class DirectionLoginController {
 
     @Autowired
     private EleveRepository eleveRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private Multipart multipart;
@@ -366,6 +370,7 @@ public class DirectionLoginController {
             }
         }
 
+
         System.out.println(parents.size());
 
         model.addAttribute("ecole",compte.getEcole());
@@ -386,6 +391,27 @@ public class DirectionLoginController {
         for (Salle salle : salles) {
             Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(salle.getId());
             eleves.addAll(eleves1);
+        }
+
+        Collection<Compte> comptes = compteRepository.findAll();
+        Collection<Parent> parents = new ArrayList<>();
+        for (Eleve eleve : eleves){
+            parents.add(eleve.getParent());
+
+
+            for (Compte compte1 : comptes){
+                System.out.println("je suis la ");
+                if (compte1.getParent()!= null){
+                    if (compte1.getParent().getNomComplet().contains(eleve.getName().toUpperCase())) {
+                        System.out.println("je suis la ");
+                        System.out.println(eleve.getName());
+                        compte1.setUsername(eleve.getName());
+                        System.out.println(compte1.getUsername());
+                        compte1.setPassword(passwordEncoder.encode("1234567890"));
+                        compteRepository.save(compte1);
+                    }
+                }
+            }
         }
 
         model.addAttribute("ecole",compte.getEcole());
