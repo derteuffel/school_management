@@ -87,12 +87,14 @@
                                 <div class="col-lg-12">
                                     <table class="table table-bordered" id="add-row">
                                         <thead>
+                                        <th>Nom du parent</th>
                                         <th>Nom d'utilisateur</th>
                                         <th>Email</th>
                                         <th>Password</th>
                                         </thead>
                                         <tbody>
                                         <tr th:each="account : ${lists1}">
+                                            <td><span th:text="${account?.parent.nomComplet}"></span></td>
                                             <td><span th:text="${account?.username}"></span></td>
                                             <td><span th:text="${account?.email}"></span></td>
                                             <td><span th:text="'1234567890'"></span></td>
