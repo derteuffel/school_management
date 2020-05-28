@@ -46,6 +46,9 @@ public class DirectionLoginController {
     private SalleRepository salleRepository;
 
     @Autowired
+    private  RoleRepository roleRepository;
+
+    @Autowired
     private EnseignantRepository enseignantRepository;
 
     @Autowired
@@ -430,26 +433,29 @@ public class DirectionLoginController {
             eleves.addAll(eleves1);
         }
 
-        Collection<Compte> comptes = compteRepository.findAll();
+       /* Collection<Compte> comptes = compteRepository.findAll();
+        Collection<Compte> alls = new ArrayList<>();
         Collection<Parent> parents = new ArrayList<>();
+        Role role = roleRepository.findByName(ERole.ROLE_PARENT.toString());
         for (Eleve eleve : eleves){
-            parents.add(eleve.getParent());
+            Parent parent = new Parent();
+            parent.setEmail(eleve.getName()+"_"+eleve.getPrenom()+"@yesbanana.org");
+            parent.setNomComplet(eleve.getName()+" "+eleve.getPrenom());
+            parentRepository.save(parent);
+            Compte compte1 = new Compte();
+            compte1.setPassword(passwordEncoder.encode("1234567890"));
+            compte1.setUsername(eleve.getName()+"_"+eleve.getPrenom());
+            compte1.setEmail(parent.getEmail());
+            compte1.setAvatar("/images/profile.jpeg");
+            compte1.setEcole(eleve.getSalle().getEcole());
+            compte1.setParent(parent);
+            compte1.setStatus(false);
 
-
-            /*for (Compte compte1 : comptes){
-                System.out.println("je suis la ");
-                if (compte1.getParent()!= null){
-                    if (compte1.getParent().getNomComplet().contains(eleve.getName().toUpperCase())) {
-                        System.out.println("je suis la ");
-                        System.out.println(eleve.getName());
-                        compte1.setUsername(eleve.getName());
-                        System.out.println(compte1.getUsername());
-                        compte1.setPassword(passwordEncoder.encode("1234567890"));
-                        compteRepository.save(compte1);
-                    }
-                }
-            }*/
-        }
+            compte1.setRoles(Arrays.asList(role));
+            compteRepository.save(compte1);
+            eleve.setParent(parent);
+            eleveRepository.save(eleve);
+        }*/
 
         model.addAttribute("ecole",compte.getEcole());
         model.addAttribute("lists", eleves);

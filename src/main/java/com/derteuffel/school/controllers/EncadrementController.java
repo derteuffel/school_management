@@ -317,6 +317,15 @@ public class EncadrementController {
         return "encadrements/updateEncadreur";
     }
 
+
+    @GetMapping("/changes/categories/{id}")
+    public String changesCategory(@PathVariable Long id, String category){
+        Encadreur encadreur = encadreurRepository.getOne(id);
+        encadreur.setCategory(category);
+        encadreurRepository.save(encadreur);
+        return "redirect:/encadrements/encadreurs";
+    }
+
     @PostMapping("/encadreurs/update")
     public String updateEnseignantSave(@Valid Encadreur encadreur, @RequestParam("file") MultipartFile file,@RequestParam("image") MultipartFile image, RedirectAttributes redirectAttributes, String cour_enseigners){
         if (!(file.isEmpty())){
@@ -379,11 +388,7 @@ public class EncadrementController {
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.name());
         if (compte.getStatus() == true){
             if (compte.getRoles().contains(role)) {
-                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-                if (encadreur.getCode() == null){
-                    encadreur.setCode(compte.getCode());
-                    encadreurRepository.save(encadreur);
-                }
+                System.out.println("je suis encadreur");
             } else if (compte.getRoles().contains(role1)) {
                 Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
                 if (enfant.getCode() == null){
@@ -393,20 +398,20 @@ public class EncadrementController {
             }
             return "redirect:/encadrements/cours/lists";
         }else {
-            if (compte.getCode() == null) {
-                String randomCode = "" + UUID.randomUUID().toString();
-                compte.setCode(randomCode);
-
+            if (compte.getRoles().contains(role)) {
+                System.out.println("je suis encadreur");
+                compte.setStatus(true);
                 compteRepository.save(compte);
+                return "redirect:/encadrements/cours/lists";
+            } else if (compte.getRoles().contains(role1)) {
 
-                if (compte.getRoles().contains(role)) {
-                    Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-                    System.out.println(compte.getCode());
+            if (compte.getCode() == null) {
 
-                    encadreur.setCode(randomCode);
-                    System.out.println(encadreur.getCode());
-                    encadreurRepository.save(encadreur);
-                } else if (compte.getRoles().contains(role1)) {
+                    String randomCode = "" + UUID.randomUUID().toString();
+                    compte.setCode(randomCode);
+                    compte.setStatus(true);
+
+                    compteRepository.save(compte);
                     Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
                     enfant.setCode(randomCode);
                     enfantRepository.save(enfant);

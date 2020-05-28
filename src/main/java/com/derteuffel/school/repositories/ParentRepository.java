@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParentRepository extends JpaRepository<Parent, Long> {
     Parent findByNomComplet(String name);
+
 }

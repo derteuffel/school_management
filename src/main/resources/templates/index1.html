@@ -87,7 +87,7 @@
                     <div class="row">
                         <!-- end modal medium -->
                         <div class="col-md-6 col-lg-6">
-                            <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit" >
+                            <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit;height: 250px" >
                                 <div class="statistic__item statistic__item--green text-justify">
                                     <h2 class="number">Connexion à votre</br> école/institution </h2>
                                     <p class="desc">Elèves, Parents et Enseignants</p>
@@ -99,7 +99,7 @@
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-6">
-                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
+                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit;height: 250px" >
                                 <div class="statistic__item statistic__item--primary text-justify">
                                     <h2 class="number">Enregistrez votre </br> école/université/ </br>centre de formation</h2>
                                     <p class="desc">Reservé au responsable </br> de l'institution/école</p>
@@ -110,7 +110,7 @@
                             </button>
                         </div>
                             <div class="col-md-6">
-                                <a th:href="@{/encadrements/login}" style="width: inherit" class="btn">
+                                <a th:href="@{/encadrements/login}" style="width: inherit;height: 250px" class="btn">
                                     <div class="statistic__item statistic__item--red text-justify">
                                         <h2 class="number">Encadrement</h2>
                                         <span class="desc">- Elèves secondaire et primaire, </br>- Appui+ rédaction travail fin </br> de cycle</br>- Formation professionnelle</br>- Stage professionnelle </span>
@@ -120,6 +120,14 @@
                                     </div>
                                 </a>
                             </div>
+                        <div class="col-md-6">
+                            <a th:href="@{/prices}" style="width: inherit;height: 250px" class="btn">
+                                <div class="statistic__item statistic__item--orange text-justify">
+                                    <h2 class="number">Nos prix</h2>
+                                    <span class="desc">- Cas d'une école/institution, </br>- Cas d'un particulier </span>
+                                </div>
+                            </a>
+                        </div>
                         <!-- modal medium -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">

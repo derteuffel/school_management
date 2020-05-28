@@ -230,9 +230,9 @@ public class EnseignantLoginController {
         Collection<Eleve> eleves = eleveRepository.findAllBySalle_Id(id);
         Collection<Parent> parents = new ArrayList<>();
         for (Eleve eleve:eleves){
-            if (!(parents.contains(eleve.getParent()))) {
-                parents.add(eleve.getParent());
-            }
+                if (!(parents.contains(eleve.getParent()))) {
+                    parents.add(eleve.getParent());
+                }
         }
         model.addAttribute("classe",salleRepository.getOne(id));
         model.addAttribute("parents",parents);
