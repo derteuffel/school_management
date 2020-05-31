@@ -196,7 +196,13 @@ public class ParentLoginController {
     public String bibliotheques(@PathVariable Long id, Model model){
         Salle salle = salleRepository.getOne(id);
         Ecole ecole = salle.getEcole();
-        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> livres = new ArrayList<>();
+        List<Livre> niveaux = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (Livre livre : niveaux){
+            if (salle.getNiveau().contains(livre.getSalle())){
+                livres.add(livre);
+            }
+        }
         List<Livre> generals = livreRepository.findAllBySalle(ENiveau.generale_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.generale_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         livres.addAll(generals);

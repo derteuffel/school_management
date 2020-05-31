@@ -389,26 +389,29 @@ public class DirectionLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Compte> comptes = compteRepository.findAll();
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        List<Compte> comptes = compteRepository.findAll();
+        Collection<Salle> sallesOptional = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
         Collection<Eleve> eleves = new ArrayList<>();
-        Collection<Parent> parents = new ArrayList<>();
-        for (Salle salle : salles) {
-            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(salle.getId());
+        Collection<Salle> salles = new ArrayList<>();
+        ((ArrayList<Salle>) salles).addAll(sallesOptional);
+        for (int i=0;i<salles.size();i++) {
+            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(((ArrayList<Salle>) salles).get(i).getId());
             eleves.addAll(eleves1);
         }
 
         Collection<Compte> accounts = new ArrayList<>();
-        for (Eleve eleve : eleves) {
-            for (Compte compte1 : comptes) {
+        for (int i=0;i<eleves.size();i++) {
+            for (int a=0;a<comptes.size();a++) {
                 System.out.println("je suis la ");
-                if (compte1.getParent() != null) {
-                    if ((compte1.getParent().getNomComplet().contains(eleve.getName().toUpperCase()))||(compte1.getParent().getNomComplet().contains(eleve.getPrenom().toUpperCase()))) {
-                        accounts.add(compte1);
+                if (comptes.get(a).getParent() != null) {
+                    if ((comptes.get(a).getParent().getNomComplet().contains(((ArrayList<Eleve>) eleves).get(i).getName().toUpperCase()))) {
+                        accounts.add(comptes.get(a));
                     }
                 }
             }
+
         }
+
 
 
         System.out.println(accounts.size());
@@ -426,36 +429,14 @@ public class DirectionLoginController {
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Salle> salles = new ArrayList<>();
+        Collection<Salle> salles1 = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        ((ArrayList<Salle>) salles).addAll(salles1);
         Collection<Eleve> eleves = new ArrayList<>();
-        for (Salle salle : salles) {
-            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(salle.getId());
+        for (int i=0; i<salles.size();i++) {
+            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(((ArrayList<Salle>) salles).get(i).getId());
             eleves.addAll(eleves1);
         }
-
-       /* Collection<Compte> comptes = compteRepository.findAll();
-        Collection<Compte> alls = new ArrayList<>();
-        Collection<Parent> parents = new ArrayList<>();
-        Role role = roleRepository.findByName(ERole.ROLE_PARENT.toString());
-        for (Eleve eleve : eleves){
-            Parent parent = new Parent();
-            parent.setEmail(eleve.getName()+"_"+eleve.getPrenom()+"@yesbanana.org");
-            parent.setNomComplet(eleve.getName()+" "+eleve.getPrenom());
-            parentRepository.save(parent);
-            Compte compte1 = new Compte();
-            compte1.setPassword(passwordEncoder.encode("1234567890"));
-            compte1.setUsername(eleve.getName()+"_"+eleve.getPrenom());
-            compte1.setEmail(parent.getEmail());
-            compte1.setAvatar("/images/profile.jpeg");
-            compte1.setEcole(eleve.getSalle().getEcole());
-            compte1.setParent(parent);
-            compte1.setStatus(false);
-
-            compte1.setRoles(Arrays.asList(role));
-            compteRepository.save(compte1);
-            eleve.setParent(parent);
-            eleveRepository.save(eleve);
-        }*/
 
         model.addAttribute("ecole",compte.getEcole());
         model.addAttribute("lists", eleves);
@@ -551,25 +532,43 @@ public class DirectionLoginController {
 
 
     @PostMapping("/classe/save")
-    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
+    public String classeSave(Salle salle, Long enseignantId, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        if (id !=null){
-        Enseignant enseignant = enseignantRepository.getOne(id);
+        if (enseignantId !=null){
+        Enseignant enseignant = enseignantRepository.getOne(enseignantId);
         salle.setEnseignants(Arrays.asList(enseignant));
             salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
             enseignant.getSallesIds().add(salle.getId());
             enseignantRepository.save(enseignant);
         }else {
 
-            salle.setEcole(ecole);
-            salle.setNiveau(salle.getNiveau().toString() + suffix.toUpperCase());
             salle.setPrincipal("Non defini");
-            salleRepository.save(salle);
         }
+        salle.setEcole(ecole);
+        salle.setNiveau(salle.getNiveau().toString()+" "+ suffix.toUpperCase());
+        salleRepository.save(salle);
         redirectAttributes.addFlashAttribute("success", "Vous avez ajoute avec succes une nouvelle classe");
         return "redirect:/direction/classe/lists";
+    }
+
+    @GetMapping("/update/classe/form/{id}")
+    public String updateClasse(@PathVariable Long id, Model model){
+        Salle salle = salleRepository.getOne(id);
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(salle.getEcole().getId());
+        List<Enseignant> teachers = new ArrayList<>();
+
+        for (Compte compte1 : comptes) {
+            if (compte1.getEnseignant() != null && !(comptes.contains(compte1.getEnseignant()))) {
+                teachers.add(compte1.getEnseignant());
+                System.out.println(compte1.getEnseignant().getId());
+            }
+        }
+        model.addAttribute("classe",salle);
+        model.addAttribute("enseignants",teachers);
+        model.addAttribute("ecole",salle.getEcole());
+        return "direction/classes/update";
     }
 
     @GetMapping("/salle/detail/{id}")
@@ -648,6 +647,24 @@ public class DirectionLoginController {
         model.addAttribute("student", new Eleve());
         model.addAttribute("lists", eleves);
         return "direction/classes/eleves";
+    }
+
+    @GetMapping("/create/{id}")
+    public String createParent(@PathVariable Long id){
+        Eleve eleve = eleveRepository.getOne(id);
+        Parent parent = new Parent();
+        parent.setEmail(eleve.getPrenom().toLowerCase()+"@yesbanana.org");
+        parent.setNomComplet(eleve.getName()+" "+eleve.getPrenom());
+        parentRepository.save(parent);
+            CompteRegistrationDto compteRegistrationDto = new CompteRegistrationDto();
+            compteRegistrationDto.setPassword("1234567890");
+            compteRegistrationDto.setUsername(eleve.getName()+"_"+eleve.getPrenom());
+            compteRegistrationDto.setEmail(parent.getEmail());
+
+            compteService.saveParent(compteRegistrationDto,"/images/profile.jpeg",parent);
+        eleve.setParent(parent);
+        eleveRepository.save(eleve);
+        return "redirect:/direction/classe/eleves/"+eleve.getSalle().getId();
     }
 
     @PostMapping("/eleves/save/{id}")

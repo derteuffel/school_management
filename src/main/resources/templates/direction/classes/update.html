@@ -69,26 +69,55 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h3>Liste des parents d'élève <span th:text="${classe.niveau}"></span></h3>
+
+                            <h3>Modification de la classe&nbsp; <span th:text="${classe.niveau}"></span></h3>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-12">
-                                    <table class="table table-bordered" id="add-row">
-                                        <thead>
-                                        <th>Nom</th>
-                                        <th>Telephone</th>
-                                        <th>E-mail</th>
-                                        <th>Whatsapp</th>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="parent : ${lists}">
-                                            <td><span th:text="${parent?.nomComplet}"></span></td>
-                                            <td><span th:text="${parent?.telephone}"></span></td>
-                                            <td><span th:text="${parent?.email}"></span></td>
-                                            <td><span th:text="${parent?.whatsapp}"></span></td>
-                                        </tbody>
-                                    </table>
+                                    <div class="card-content">
+                                        <form th:action="@{/direction/classe/save}" autocomplete="off" method="post" th:object="${classe}" class="form-horizontal">
+                                            <div class="card-header">
+                                                <h5 class="modal-title" id="addModalLabel">Modification salle de classe</h5>
+
+                                            </div>
+                                            <div class="modal-body card-block">
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label  class=" form-control-label">Niveau</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <select th:field="*{niveau}"  class="form-control">
+                                                            <option th:each=" name : ${T(com.derteuffel.school.enums.ENiveau).values()}" th:value="${name}" th:text="${name}"></option>
+                                                        </select>
+                                                        <small class="form-text text-muted">Niveau</small>
+                                                    </div>
+                                                    <div class="col col-md-3">
+                                                        <input type="text" class="form-control" name="suffix" placeholder="Suffix">
+                                                        <input type="hidden" class="form-control" th:field="*{id}" >
+                                                        <small class="form-text text-muted">Suffixe</small>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col col-md-3">
+                                                        <label for="text-principal" class=" form-control-label">Professeur principal</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-9">
+                                                        <select name="enseignantId" type="text" class="form-control" id="text-principal">
+                                                            <option value="">Choisir un enseignant</option>
+                                                            <option th:each="item : ${enseignants}" th:text="${item?.name}+' '+${item?.prenom}" th:value="${item?.id}">Choisir un enseignant</option>
+                                                        </select>
+                                                        <small class="form-text text-muted">Nom de l'enseignant</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a th:href="@{/direction/salle/detail/}+${classe.id}" class="btn btn-secondary" >Retour</a>
+                                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
@@ -129,9 +158,6 @@
 <script th:src="@{/vendor/chartjs/Chart.bundle.min.js}"></script>
 <script th:src="@{/vendor/select2/select2.min.js}">
 </script>
-
-<!-- Main JS-->
-<script th:src="@{/js/main.js}"></script>
 <script >
     $(document).ready(function() {
         // Add Row
@@ -141,6 +167,8 @@
 
     });
 </script>
+<!-- Main JS-->
+<script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/datatables.min.js}"></script>
 
 </body>
