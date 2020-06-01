@@ -76,30 +76,52 @@
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
-                        <div class="page-content row">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td>Profile</td>
-                                    <td ><img th:src="${compte.avatar}" style="width: 80px;height: 80px" alt=""></td>
-                                </tr>
-                                <tr>
-                                    <td>Nom d'utilisateur</td>
-                                    <td th:text="${compte.username}"></td>
-                                </tr>
-                                <tr>
-                                    <td>E-mail</td>
-                                    <td th:text="${compte.email}"></td>
-                                </tr>
-                                <tr>
-                                    <td>Ecole</td>
-                                    <td th:text="${compte.ecole.name}"></td>
-                                </tr>
+                        <form th:action="@{/encadrements/accounts/save}" th:object="${compteDto}" method="post" enctype="multipart/form-data">
+                            <div class="page-content row">
 
-                                </tbody>
-                            </table>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <td>Profile</td>
+                                        <td ><img th:src="${compte.avatar}" style="width: 80px;height: 80px" alt=""></td>
+                                        <td id="inputAvatar" style="display: none"><input type="file" class="form-control-file"  name="file" ></td>
+                                        <td  style="display: none"><input type="text" class="form-control-file"  name="avatar" th:value="${compte.avatar}" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nom d'utilisateur</td>
+                                        <td ><span th:text="${compte.username}"></span></td>
+                                        <td id="inputUsername" style="display: none"><input type="text" class="form-control"  th:field="*{username}" th:value="${compte.username}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>E-mail</td>
+                                        <td ><span th:text="${compte.email}"></span></td>
+                                        <td id="inputEmail" style="display: none"><input type="email" class="form-control"  th:field="*{email}" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ecole</td>
+                                        <td th:text="${compte.ecole.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Modifier le mot de passe</span>&nbsp;&nbsp;<button type="button" id="changePassword"><i class="fas fa-edit"></i></button> <span class="text-danger" th:text="${error}"></span></td>
+                                        <td id="inputHoldPasswor" style="display: none"><input type="password"   class="form-control" placeholder="Ancien mot de passe" name="holdPassword"></td>
+                                        <td id="inputPassword" style="display: none"><input type="password" class="form-control"   placeholder="Nouveau mot de passe" th:field="*{password}" ></td>
+                                        <td style="display: none"><input type="hidden" class="form-control"   name="id" th:value="${compte.id}" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <button type="reset" id="reset" class="btn btn-warning" style="display: none">Annuler</button>
+                                            <button type="button" id="update" class="btn btn-primary" style="display: none">Editer mon compte</button>
+                                        </td>
+                                        <td><button type="submit" class="btn btn-success" id="submit">Enregistrer</button></td>
+                                    </tr>
 
-                        </div>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <!-- END PAGE CONTENT-->
+                        </form>
+
                         <!-- END PAGE CONTENT-->
                     </div>
                 </div>

@@ -952,7 +952,47 @@ public class DirectionLoginController {
     public String getAccount(@PathVariable Long id, Model model){
         Compte compte = compteRepository.getOne(id);
         model.addAttribute("compte",compte);
+        model.addAttribute("compteDto", new CompteRegistrationDto());
         return "direction/account";
+    }
+
+    @PostMapping("/accounts/save")
+    public String saveAccount(CompteRegistrationDto compteRegistrationDto, @RequestParam("file") MultipartFile file, String holdPassword, RedirectAttributes redirectAttributes, Long id, String avatar){
+        Compte compte = compteRepository.getOne(id);
+        if (!(file.isEmpty())) {
+            multipart.store(file);
+            compte.setAvatar("/upload-dir/" + file.getOriginalFilename());
+        }else {
+            compte.setAvatar(avatar);
+        }
+        if (compteRegistrationDto.getUsername().isEmpty()) {
+            compte.setUsername(compte.getUsername());
+        }else {
+            compte.setUsername(compteRegistrationDto.getUsername());
+        }
+
+        if (compteRegistrationDto.getEmail().isEmpty()) {
+            compte.setEmail(compte.getEmail());
+        }else {
+            compte.setEmail(compteRegistrationDto.getEmail());
+        }
+
+
+        if (!(holdPassword.isEmpty()) && !(compteRegistrationDto.getPassword().isEmpty())) {
+            System.out.println(holdPassword);
+            if (passwordEncoder.matches(holdPassword,compte.getPassword())) {
+
+                compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+            }else {
+                redirectAttributes.addFlashAttribute("error","l'ancien mot de passe n'est pas valide veuillez trouver le bon");
+                return "redirect:/direction/account/detail/"+compte.getId();
+            }
+        }
+
+        compteRepository.save(compte);
+
+        return "redirect:/direction/account/detail/"+compte.getId();
+
     }
 
 
