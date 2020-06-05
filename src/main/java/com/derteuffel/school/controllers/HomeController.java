@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -68,6 +69,13 @@ public class HomeController {
 
        conferenceId.put("conferenceId",compte.getConferenceId());
        return conferenceId;
+    }
+    @GetMapping("/subscriberId/{subscriberId}")
+    public String setSubscriberId(@PathVariable String subscriberId, HttpServletRequest request){
+        Compte compte = (Compte)request.getSession().getAttribute("compte");
+        compte.setSubscriberId(subscriberId);
+        compteRepository.save(compte);
+        return "index1";
     }
     @GetMapping("/sendMail/{sender}/{conferenceId}")
     public String sendMail(@PathVariable String sender,@PathVariable String conferenceId){

@@ -1,0 +1,14 @@
+{
+    "name": "Yesbanana Notification",
+    "short_name": "Ecoles Yesbanana",
+    "gcm_sender_id": "539876079581",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "https://ecoles.yesbanana.org/images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

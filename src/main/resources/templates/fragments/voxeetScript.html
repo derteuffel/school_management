@@ -5,4 +5,35 @@
     <script th:src="@{/js/ui.js}" type="text/javascript"></script>
     <script th:src="@{/js/voxeet1.js}" type="text/javascript"></script>
     <script th:src="@{/js/voxeet.js}" type="text/javascript"></script>
+    <!-- PushAlert -->
+    <script type="text/javascript">
+        (function(d, t) {
+            var g = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            g.src = "https://ecoles.yesbanana.org/notification.js";
+            s.parentNode.insertBefore(g, s);
+        }(document, "script"));
+    </script>
+    <script>
+        (pushalertbyiw = window.pushalertbyiw || []).push(['onSuccess', callbackOnSuccess]);
+
+        function callbackOnSuccess(result) {
+            console.log(result.subscriber_id); //will output the user's subscriberId
+            console.log(result.alreadySubscribed); // False means user just Subscribed
+
+            fetch("https://ecoles.yesbanana.org/subscriberId/" + result.subscriber_id).then(resul=>console.log(resul))
+            .cath(e=>console.log(e))
+        }
+    </script>
+    <script>
+        (pushalertbyiw = window.pushalertbyiw || []).push(['onFailure', callbackOnFailure]);
+
+        function callbackOnFailure(result) {
+            console.log(result.status); //-1 - blocked, 0 - canceled or 1 - unsubscribed
+
+            //YOUR CODE
+        }
+    </script>
+    <!-- End PushAlert -->
+
 </div>
