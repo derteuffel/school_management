@@ -87,7 +87,7 @@
                     <div class="row">
                         <!-- end modal medium -->
                         <div class="col-md-6 col-lg-6">
-                            <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit" >
+                            <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit;height: 250px" >
                                 <div class="statistic__item statistic__item--green text-justify">
                                     <h2 class="number">Connexion à votre</br> école/institution </h2>
                                     <p class="desc">Elèves, Parents et Enseignants</p>
@@ -99,7 +99,7 @@
                             </a>
                         </div>
                         <div class="col-md-6 col-lg-6">
-                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit" >
+                            <button type="button" class="btn mb-1" data-toggle="modal" data-target="#addModal" style="width: inherit;height: 250px" >
                                 <div class="statistic__item statistic__item--primary text-justify">
                                     <h2 class="number">Enregistrez votre </br> école/université/ </br>centre de formation</h2>
                                     <p class="desc">Reservé au responsable </br> de l'institution/école</p>
@@ -110,21 +110,29 @@
                             </button>
                         </div>
                             <div class="col-md-6">
-                                <a th:href="@{/encadrements/login}" style="width: inherit" class="btn">
+                                <a th:href="@{/encadrements/login}" style="width: inherit;height: 250px" class="btn">
                                     <div class="statistic__item statistic__item--red text-justify">
                                         <h2 class="number">Encadrement</h2>
-                                        <span class="desc">- Elèves secondaire et primaire, </br>- Appui+ rédaction travail fin </br> de cycle</br>- Formation professionnelle</br>- Stage professionnelle </span>
+                                        <span class="desc">- Elèves secondaire et primaire, </br>- Appui+ rédaction travail fin </br> de cycle</br>- Formation professionnelle</br>- Stage professionnel </span>
                                         <div class="icon">
                                             <img th:src="@{/images/teacher.png}">
                                         </div>
                                     </div>
                                 </a>
                             </div>
+                        <div class="col-md-6">
+                            <a th:href="@{/prices}" style="width: inherit;height: 250px" class="btn">
+                                <div class="statistic__item statistic__item--orange text-justify">
+                                    <h2 class="number">Nos offres</h2>
+                                    <span class="desc">- Cas d'une école/institution, </br>- Cas d'un particulier </span>
+                                </div>
+                            </a>
+                        </div>
                         <!-- modal medium -->
                         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content" style="background-color: #00a2e3">
-                                    <form th:action="@{/ecole/save}" autocomplete="off" method="post" th:object="${ecole}" class="form-horizontal" enctype="multipart/form-data">
+                                    <form th:action="@{/ecole/save}" autocomplete="off" method="post" th:object="${form}" class="form-horizontal" enctype="multipart/form-data">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addModalLabel">Nouvelle école/institution</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -132,6 +140,42 @@
                                             </button>
                                         </div>
                                         <div class="modal-body card-block">
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-nom-responsable" class=" form-control-label">Nom du responsable</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="text" id="text-nom-responsable" th:field="*{username}" placeholder="Nom du responsable" class="form-control">
+                                                    <small class="form-text text-muted">Ce nom sera utiliser comme nom d'utilisateur pour acceder a votre compte</small>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-email-responsable" class=" form-control-label">E-mail du responsable</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="email" id="text-email-responsable" th:field="*{email}" placeholder="E-mail du responsable" class="form-control">
+                                                    <small class="form-text text-muted">Votre adresse email ou toutes vos informations vous seront communiquer</small>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-password-responsable" class=" form-control-label">Mot de passe du responsable</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="password" id="text-password-responsable" th:field="*{password}" placeholder="Mot de passe du responsable" class="form-control">
+                                                    <small class="form-text text-muted">Mot de passe, celui si sera utiliser pour acceder a votre compte</small>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col col-md-3">
+                                                    <label for="text-confirm-password-responsable" class=" form-control-label">Confirmer Mot de passe du responsable</label>
+                                                </div>
+                                                <div class="col-12 col-md-9">
+                                                    <input type="password" id="text-confirm-password-responsable" th:field="*{confirmPassword}" placeholder="Confirmer Mot de passe du responsable" class="form-control">
+                                                    <small class="form-text text-muted">Confirmer Mot de passe</small>
+                                                </div>
+                                            </div>
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
                                                         <label for="text-nom" class=" form-control-label">Nom de l'ecole</label>

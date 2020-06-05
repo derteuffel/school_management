@@ -12,7 +12,7 @@ public interface CompteService extends UserDetailsService{
 
     Compte findByUsername(String username);
     Compte findByEmail(String email);
-    Compte save(CompteRegistrationDto compteRegistrationDto, String s, Long id);
+    Compte save(String email, String password, String username, String s, Long id);
     Compte saveRoot(CompteRegistrationDto compteRegistrationDto, String s);
     Compte saveEnseignant(CompteRegistrationDto compteRegistrationDto, String s, Long id, Enseignant enseignant);
     Compte saveParent(CompteRegistrationDto compteRegistrationDto, String s, Parent parent);

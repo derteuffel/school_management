@@ -129,7 +129,7 @@
                                 <label for="text-principal" class=" form-control-label">Professeur principal</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <select name="id" type="text" class="form-control" id="text-principal">
+                                <select name="enseignantId" type="text" class="form-control" id="text-principal">
                                     <option value="">Choisir un enseignant</option>
                                     <option th:each="item : ${enseignants}" th:text="${item?.name}+' '+${item?.prenom}" th:value="${item?.id}">Choisir un enseignant</option>
                                 </select>

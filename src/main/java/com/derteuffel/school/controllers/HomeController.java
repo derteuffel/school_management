@@ -1,9 +1,9 @@
 package com.derteuffel.school.controllers;
 
 import com.derteuffel.school.entities.Compte;
-import com.derteuffel.school.entities.Ecole;
 import com.derteuffel.school.entities.Encadreur;
 import com.derteuffel.school.enums.ECategory;
+import com.derteuffel.school.helpers.EcoleFormHelper;
 import com.derteuffel.school.repositories.CompteRepository;
 import com.derteuffel.school.repositories.EcoleRepository;
 import com.derteuffel.school.repositories.EncadreurRepository;
@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -51,7 +52,7 @@ public class HomeController {
     @GetMapping("/")
     public String accueil(Model model){
         model.addAttribute("lists", ecoleRepository.findAllByStatus(true,Sort.by(Sort.Direction.ASC,"name")));
-        model.addAttribute("ecole", new Ecole());
+        model.addAttribute("form", new EcoleFormHelper());
         return "index1";
     }
 
@@ -141,6 +142,11 @@ public class HomeController {
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Expert_YesB_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.Expert_YesB_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id")));
+        List<String> matieres = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            matieres.addAll(encadreur.getCour_enseigner());
+        }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("lists",encadreurs);
         model.addAttribute("name","ecoles");
         return "expertsProfiles";
@@ -149,6 +155,11 @@ public class HomeController {
     public String getExpert4(Model model){
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Expert_YesB_en_stage_professionnel.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<String> matieres = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            matieres.addAll(encadreur.getCour_enseigner());
+        }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("lists",encadreurs);
         model.addAttribute("name","stages");
         return "expertsProfiles";
@@ -160,11 +171,14 @@ public class HomeController {
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Expert_YesB_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         encadreurs.addAll(encadreurRepository.findAllByCategory(ECategory.Expert_YesB_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id")));
         Collection<Encadreur> lists = new ArrayList<>();
+        List<String> matieres = new ArrayList<>();
         for (Encadreur encadreur : encadreurs){
             if (encadreur.getCour_enseigner().contains(matiere.toString())){
                 lists.add(encadreur);
             }
+            matieres.addAll(encadreur.getCour_enseigner());
         }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("name","ecoles");
         model.addAttribute("lists",lists);
         return "expertsProfiles";
@@ -174,6 +188,11 @@ public class HomeController {
     public String getExpert2(Model model){
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Appui_redaction_travail_de_fin_de_cycle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<String> matieres = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            matieres.addAll(encadreur.getCour_enseigner());
+        }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("lists",encadreurs);
         model.addAttribute("name","universite");
         return "expertsProfiles";
@@ -184,20 +203,52 @@ public class HomeController {
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Appui_redaction_travail_de_fin_de_cycle.toString(),Sort.by(Sort.Direction.DESC,"id"));
         Collection<Encadreur> lists = new ArrayList<>();
+        List<String> matieres = new ArrayList<>();
+
         for (Encadreur encadreur : encadreurs){
             if (encadreur.getCour_enseigner().contains(matiere.toString())){
                 lists.add(encadreur);
             }
+            matieres.addAll(encadreur.getCour_enseigner());
         }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("name","universite");
         model.addAttribute("lists",lists);
         return "expertsProfiles";
+    }
+
+    public List<String> removeDuplicates(List<String> list)
+    {
+        if (list == null){
+            return new ArrayList<>();
+        }
+
+        // Create a new ArrayList
+        List<String> newList = new ArrayList<String>();
+        // Traverse through the first list
+        for (String element : list) {
+
+            // If this element is not present in newList
+            // then add it
+
+            if (element !=null && !newList.contains(element) && !element.isEmpty()) {
+
+                newList.add(element);
+            }
+        }
+        // return the new list
+        return newList;
     }
 
     @GetMapping("/experts/professionnels")
     public String getExpert3(Model model){
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Expert_YesB_en_formation_professionnelle.toString(),Sort.by(Sort.Direction.DESC,"id"));
+        List<String> matieres = new ArrayList<>();
+        for (Encadreur encadreur : encadreurs){
+            matieres.addAll(encadreur.getCour_enseigner());
+        }
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("lists",encadreurs);
         model.addAttribute("name","professionnelle");
         return "expertsProfiles";
@@ -208,13 +259,22 @@ public class HomeController {
 
         Collection<Encadreur> encadreurs = encadreurRepository.findAllByCategory(ECategory.Expert_YesB_en_formation_professionnelle.toString(),Sort.by(Sort.Direction.DESC,"id"));
         Collection<Encadreur> lists = new ArrayList<>();
+        List<String> matieres = new ArrayList<>();
         for (Encadreur encadreur : encadreurs){
-            if (encadreur.getCour_enseigner().contains(matiere.toString())){
+            if (encadreur.getCour_enseigner().contains(matiere)){
                 lists.add(encadreur);
             }
+            matieres.addAll(encadreur.getCour_enseigner());
         }
+
+        model.addAttribute("matieres",removeDuplicates(matieres));
         model.addAttribute("name","professionnelle");
         model.addAttribute("lists",encadreurs);
         return "expertsProfiles";
+    }
+
+    @GetMapping("/prices")
+    public String priceDescription(){
+        return "prices";
     }
 }

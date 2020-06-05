@@ -10,6 +10,7 @@ import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,9 @@ public class DirectionLoginController {
     private SalleRepository salleRepository;
 
     @Autowired
+    private  RoleRepository roleRepository;
+
+    @Autowired
     private EnseignantRepository enseignantRepository;
 
     @Autowired
@@ -55,6 +59,9 @@ public class DirectionLoginController {
 
     @Autowired
     private EleveRepository eleveRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private Multipart multipart;
@@ -90,7 +97,7 @@ public class DirectionLoginController {
     }
 
 
-    @PostMapping("/registration")
+   /* @PostMapping("/registration")
     public String registrationDirectionSave(@ModelAttribute("compte") @Valid CompteRegistrationDto compteDto,
                                             BindingResult result, RedirectAttributes redirectAttributes, Model model, String ecole) {
 
@@ -124,6 +131,35 @@ public class DirectionLoginController {
 
         redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
         return "redirect:/direction/login";
+    }*/
+
+    @GetMapping("/activation/form")
+    public String activation(HttpServletRequest request, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        if (ecole.getStatus() == true){
+            return "redirect:/direction/home";
+        }else {
+            model.addAttribute("success","Veillez contacter l'equipe YesB pour acceder a votre code");
+            return "direction/activation";
+        }
+    }
+
+    @GetMapping("activation/code")
+    public String validation(String activation, HttpServletRequest request, RedirectAttributes redirectAttributes){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Ecole ecole = compte.getEcole();
+        if (ecole.getCode().equals(activation)){
+            ecole.setStatus(true);
+            ecoleRepository.save(ecole);
+            redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
+            return "redirect:/direction/activation/form";
+        }else {
+            redirectAttributes.addFlashAttribute("success","Code d'activation incorrect");
+            return "redirect:/direction/logout";
+        }
     }
 
     @PostMapping("/registration/root")
@@ -337,6 +373,7 @@ public class DirectionLoginController {
             }
         }
 
+
         System.out.println(parents.size());
 
         model.addAttribute("ecole",compte.getEcole());
@@ -346,16 +383,58 @@ public class DirectionLoginController {
         return "direction/parent/lists";
     }
 
+    @GetMapping("/parent/accounts/lists")
+    public String parentListsAccount(Model model, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println(principal.getName());
+        Compte compte = compteService.findByUsername(principal.getName());
+
+        List<Compte> comptes = compteRepository.findAll();
+        Collection<Salle> sallesOptional = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Eleve> eleves = new ArrayList<>();
+        Collection<Salle> salles = new ArrayList<>();
+        ((ArrayList<Salle>) salles).addAll(sallesOptional);
+        for (int i=0;i<salles.size();i++) {
+            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(((ArrayList<Salle>) salles).get(i).getId());
+            eleves.addAll(eleves1);
+        }
+
+        Collection<Compte> accounts = new ArrayList<>();
+        for (int i=0;i<eleves.size();i++) {
+            for (int a=0;a<comptes.size();a++) {
+                System.out.println("je suis la ");
+                if (comptes.get(a).getParent() != null) {
+                    if ((comptes.get(a).getParent().getNomComplet().contains(((ArrayList<Eleve>) eleves).get(i).getName().toUpperCase()))) {
+                        accounts.add(comptes.get(a));
+                    }
+                }
+            }
+
+        }
+
+
+
+        System.out.println(accounts.size());
+
+
+        model.addAttribute("ecole",compte.getEcole());
+        model.addAttribute("lists1", accounts);
+
+        return "direction/parent/accounts";
+    }
+
     @GetMapping("/eleve/lists")
     public String elevesLists(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         System.out.println(principal.getName());
         Compte compte = compteService.findByUsername(principal.getName());
 
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        Collection<Salle> salles = new ArrayList<>();
+        Collection<Salle> salles1 = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
+        ((ArrayList<Salle>) salles).addAll(salles1);
         Collection<Eleve> eleves = new ArrayList<>();
-        for (Salle salle : salles) {
-            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(salle.getId());
+        for (int i=0; i<salles.size();i++) {
+            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(((ArrayList<Salle>) salles).get(i).getId());
             eleves.addAll(eleves1);
         }
 
@@ -453,25 +532,43 @@ public class DirectionLoginController {
 
 
     @PostMapping("/classe/save")
-    public String classeSave(Salle salle, Long id, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
+    public String classeSave(Salle salle, Long enseignantId, HttpServletRequest request, RedirectAttributes redirectAttributes, String suffix) {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Ecole ecole = compte.getEcole();
-        if (id !=null){
-        Enseignant enseignant = enseignantRepository.getOne(id);
+        if (enseignantId !=null){
+        Enseignant enseignant = enseignantRepository.getOne(enseignantId);
         salle.setEnseignants(Arrays.asList(enseignant));
             salle.setPrincipal(enseignant.getName() + "  " + enseignant.getPrenom());
             enseignant.getSallesIds().add(salle.getId());
             enseignantRepository.save(enseignant);
         }else {
 
-            salle.setEcole(ecole);
-            salle.setNiveau(salle.getNiveau().toString() + suffix.toUpperCase());
             salle.setPrincipal("Non defini");
-            salleRepository.save(salle);
         }
+        salle.setEcole(ecole);
+        salle.setNiveau(salle.getNiveau().toString()+" "+ suffix.toUpperCase());
+        salleRepository.save(salle);
         redirectAttributes.addFlashAttribute("success", "Vous avez ajoute avec succes une nouvelle classe");
         return "redirect:/direction/classe/lists";
+    }
+
+    @GetMapping("/update/classe/form/{id}")
+    public String updateClasse(@PathVariable Long id, Model model){
+        Salle salle = salleRepository.getOne(id);
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(salle.getEcole().getId());
+        List<Enseignant> teachers = new ArrayList<>();
+
+        for (Compte compte1 : comptes) {
+            if (compte1.getEnseignant() != null && !(comptes.contains(compte1.getEnseignant()))) {
+                teachers.add(compte1.getEnseignant());
+                System.out.println(compte1.getEnseignant().getId());
+            }
+        }
+        model.addAttribute("classe",salle);
+        model.addAttribute("enseignants",teachers);
+        model.addAttribute("ecole",salle.getEcole());
+        return "direction/classes/update";
     }
 
     @GetMapping("/salle/detail/{id}")
@@ -552,6 +649,24 @@ public class DirectionLoginController {
         return "direction/classes/eleves";
     }
 
+    @GetMapping("/create/{id}")
+    public String createParent(@PathVariable Long id){
+        Eleve eleve = eleveRepository.getOne(id);
+        Parent parent = new Parent();
+        parent.setEmail(eleve.getPrenom().toLowerCase()+"@yesbanana.org");
+        parent.setNomComplet(eleve.getName()+" "+eleve.getPrenom());
+        parentRepository.save(parent);
+            CompteRegistrationDto compteRegistrationDto = new CompteRegistrationDto();
+            compteRegistrationDto.setPassword("1234567890");
+            compteRegistrationDto.setUsername(eleve.getName()+"_"+eleve.getPrenom());
+            compteRegistrationDto.setEmail(parent.getEmail());
+
+            compteService.saveParent(compteRegistrationDto,"/images/profile.jpeg",parent);
+        eleve.setParent(parent);
+        eleveRepository.save(eleve);
+        return "redirect:/direction/classe/eleves/"+eleve.getSalle().getId();
+    }
+
     @PostMapping("/eleves/save/{id}")
     public String save(Eleve eleve, @PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request){
 
@@ -601,6 +716,11 @@ public class DirectionLoginController {
         return "redirect:/direction/classe/eleves/"+salle.getId();
     }
 
+    @GetMapping("/eleve/delete/{id}/{salleId}")
+    public String deleteEleve(@PathVariable Long id, @PathVariable Long salleId){
+        eleveRepository.deleteById(id);
+        return "redirect:/direction/classe/eleve/"+salleId;
+    }
 
     //---- Eleve management end -----//
     //---- Parent management start -----//
@@ -832,7 +952,47 @@ public class DirectionLoginController {
     public String getAccount(@PathVariable Long id, Model model){
         Compte compte = compteRepository.getOne(id);
         model.addAttribute("compte",compte);
+        model.addAttribute("compteDto", new CompteRegistrationDto());
         return "direction/account";
+    }
+
+    @PostMapping("/accounts/save")
+    public String saveAccount(CompteRegistrationDto compteRegistrationDto, @RequestParam("file") MultipartFile file, String holdPassword, RedirectAttributes redirectAttributes, Long id, String avatar){
+        Compte compte = compteRepository.getOne(id);
+        if (!(file.isEmpty())) {
+            multipart.store(file);
+            compte.setAvatar("/upload-dir/" + file.getOriginalFilename());
+        }else {
+            compte.setAvatar(avatar);
+        }
+        if (compteRegistrationDto.getUsername().isEmpty()) {
+            compte.setUsername(compte.getUsername());
+        }else {
+            compte.setUsername(compteRegistrationDto.getUsername());
+        }
+
+        if (compteRegistrationDto.getEmail().isEmpty()) {
+            compte.setEmail(compte.getEmail());
+        }else {
+            compte.setEmail(compteRegistrationDto.getEmail());
+        }
+
+
+        if (!(holdPassword.isEmpty()) && !(compteRegistrationDto.getPassword().isEmpty())) {
+            System.out.println(holdPassword);
+            if (passwordEncoder.matches(holdPassword,compte.getPassword())) {
+
+                compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+            }else {
+                redirectAttributes.addFlashAttribute("error","l'ancien mot de passe n'est pas valide veuillez trouver le bon");
+                return "redirect:/direction/account/detail/"+compte.getId();
+            }
+        }
+
+        compteRepository.save(compte);
+
+        return "redirect:/direction/account/detail/"+compte.getId();
+
     }
 
 

@@ -12,7 +12,7 @@
                     <a th:href="@{/parent/cours/lists/}+${classe.id}+'/'+${ecole.id}">
                         <i class="fas fa-book"></i>Cours</a>
                 </li>
-                <li class="has-sub">
+                <li th:if="${classe}!=null" class="has-sub">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-tasks"></i>Travaux</a>
                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
@@ -46,7 +46,7 @@
                         Joindre un appel
                     </button>
 
-                    <div th:replace="~{../templates/fragments/audio_container :: audio_container}">
+                    <div th:replace="~{../templates/fragments/audio_container :: audio_container}"></div>
 
                 </li>
                 <li class="text-center mt-2">

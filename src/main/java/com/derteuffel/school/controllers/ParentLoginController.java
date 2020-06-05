@@ -4,16 +4,19 @@ import com.derteuffel.school.entities.*;
 import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.EVisibilite;
+import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -192,12 +195,17 @@ public class ParentLoginController {
         return "parent/courses";
     }
 
-    @GetMapping("/bibliotheque/lists/{id}/{ecoleId}")
-    public String bibliotheques(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+    @GetMapping("/bibliotheque/lists/{id}")
+    public String bibliotheques(@PathVariable Long id, Model model){
         Salle salle = salleRepository.getOne(id);
-        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        Ecole ecole = salle.getEcole();
+        List<Livre> livres = new ArrayList<>();
+        List<Livre> niveaux = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (Livre livre : niveaux){
+            if (salle.getNiveau().contains(livre.getSalle())){
+                livres.add(livre);
+            }
+        }
         List<Livre> generals = livreRepository.findAllBySalle(ENiveau.generale_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.generale_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         livres.addAll(generals);
@@ -461,11 +469,55 @@ public class ParentLoginController {
     @Autowired
     private CompteRepository compteRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
     @GetMapping("/account/detail/{id}")
     public String getAccount(@PathVariable Long id, Model model){
         Compte compte = compteRepository.getOne(id);
         model.addAttribute("compte",compte);
+        model.addAttribute("compteDto", new CompteRegistrationDto());
         return "parent/account";
+    }
+
+    @PostMapping("/accounts/save")
+    public String saveAccount(CompteRegistrationDto compteRegistrationDto, @RequestParam("file") MultipartFile file, String holdPassword, RedirectAttributes redirectAttributes, Long id, String avatar){
+        Compte compte = compteRepository.getOne(id);
+        if (!(file.isEmpty())) {
+            multipart.store(file);
+            compte.setAvatar("/upload-dir/" + file.getOriginalFilename());
+        }else {
+            compte.setAvatar(avatar);
+        }
+        if (compteRegistrationDto.getUsername().isEmpty()) {
+            compte.setUsername(compte.getUsername());
+        }else {
+            compte.setUsername(compteRegistrationDto.getUsername());
+        }
+
+        if (compteRegistrationDto.getEmail().isEmpty()) {
+            compte.setEmail(compte.getEmail());
+        }else {
+            compte.setEmail(compteRegistrationDto.getEmail());
+        }
+
+
+        if (!(holdPassword.isEmpty()) && !(compteRegistrationDto.getPassword().isEmpty())) {
+            System.out.println(holdPassword);
+            if (passwordEncoder.matches(holdPassword,compte.getPassword())) {
+
+                compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+            }else {
+                redirectAttributes.addFlashAttribute("error","l'ancien mot de passe n'est pas valide veuillez trouver le bon");
+                return "redirect:/parent/account/detail/"+compte.getId();
+            }
+        }
+
+        compteRepository.save(compte);
+
+        return "redirect:/parent/account/detail/"+compte.getId();
+
     }
 
 

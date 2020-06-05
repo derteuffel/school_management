@@ -50,13 +50,13 @@ public class CompteSeviceImpl implements CompteService{
     }
 
     @Override
-    public Compte save(CompteRegistrationDto compteRegistrationDto, String s,Long id) {
+    public Compte save(String email, String password, String username, String s,Long id) {
         Compte compte = new Compte();
 
         Ecole ecole = ecoleRepository.getOne(id);
-        compte.setEmail(compteRegistrationDto.getEmail());
-        compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
-        compte.setUsername(compteRegistrationDto.getUsername());
+        compte.setEmail(email);
+        compte.setPassword(passwordEncoder.encode(password));
+        compte.setUsername(username);
         compte.setAvatar(s);
         compte.setEcole(ecole);
         compte.setStatus(false);

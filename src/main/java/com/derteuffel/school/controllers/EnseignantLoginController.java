@@ -13,6 +13,7 @@ import com.derteuffel.school.services.MailService;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -185,15 +186,21 @@ public class EnseignantLoginController {
         return "enseignant/elevesP";
     }
 
-    @GetMapping("/bibliotheque/lists")
-    public String allBibliotheques( Model model, HttpServletRequest request){
+    @GetMapping("/bibliotheque/lists/{id}")
+    public String allBibliotheques( Model model, HttpServletRequest request, @PathVariable Long id){
 
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
-        Salle salle = salleRepository.findByPrincipal(compte.getEnseignant().getName() + "  " + compte.getEnseignant().getPrenom());
+        Salle salle = salleRepository.getOne(id);
 
         model.addAttribute("classe",salle);
-        List<Livre> livres = livreRepository.findAllBySalle(salle.getNiveau(),Sort.by(Sort.Direction.DESC,"id"));
+        List<Livre> livres = new ArrayList<>();
+        List<Livre> niveaux = livreRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        for (Livre livre : niveaux){
+            if (salle.getNiveau().contains(livre.getSalle())){
+                livres.add(livre);
+            }
+        }
         List<Livre> generals = livreRepository.findAllBySalle(ENiveau.generale_primaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         List<Livre> generals1 = livreRepository.findAllBySalle(ENiveau.generale_secondaire.toString(),Sort.by(Sort.Direction.DESC,"id"));
         livres.addAll(generals);
@@ -230,9 +237,9 @@ public class EnseignantLoginController {
         Collection<Eleve> eleves = eleveRepository.findAllBySalle_Id(id);
         Collection<Parent> parents = new ArrayList<>();
         for (Eleve eleve:eleves){
-            if (!(parents.contains(eleve.getParent()))) {
-                parents.add(eleve.getParent());
-            }
+                if (!(parents.contains(eleve.getParent()))) {
+                    parents.add(eleve.getParent());
+                }
         }
         model.addAttribute("classe",salleRepository.getOne(id));
         model.addAttribute("parents",parents);
@@ -564,6 +571,53 @@ public class EnseignantLoginController {
 
     }
 
+    @PostMapping("/message/save")
+    public String saveMessage1(Message message, @RequestParam("file") MultipartFile file, HttpServletRequest request){
+
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        message.setCompte(compte);
+        message.setSender(compte.getUsername());
+        message.setEcole(compte.getEcole().getName());
+        message.setDate(new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date()));
+        message.setVisibilite(message.getVisibilite().toString());
+        multipart.store(file);
+        message.setFichier("/upload-dir/"+file.getOriginalFilename());
+
+
+        messageRepository.save(message);
+        Mail sender = new Mail();
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(compte.getEcole().getId());
+
+        for (Compte compte1 : comptes){
+            if (message.getVisibilite().toString().contains(EVisibilite.DIRECTION.toString())){
+                if (compte1.getEcole() == compte.getEcole()){
+
+                    sender.sender(
+                            compte1.getEmail(),
+                            "Envoi d'un message",
+                            "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+
+                }
+            }else {
+                sender.sender(
+                        compte.getEmail(),
+                        "Envoi d'un message",
+                        "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+
+            }
+        }
+
+
+        sender.sender(
+                compte.getEmail(),
+                "Envoi d'un message",
+                "Message de  ---> "+message.getContent()+", envoye le "+message.getDate()+", fichier associe(s) "+message.getFichier()+"avec un visibilite ----> "+message.getVisibilite());
+
+        return "redirect:/enseignant/messages";
+
+    }
+
     @GetMapping("/message/{id}")
     public String messages(@PathVariable Long id, Model model, HttpServletRequest request){
         Principal principal = request.getUserPrincipal();
@@ -594,6 +648,7 @@ public class EnseignantLoginController {
         Ecole ecole = compte.getEcole();
         Collection<Message> messages = messageRepository.findAllByVisibiliteAndEcole(EVisibilite.ENSEIGNANT.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC,"id"));
         messages.addAll(messageRepository.findAllByVisibiliteAndEcole(EVisibilite.PUBLIC.toString(),ecole.getName(),Sort.by(Sort.Direction.DESC, "id")));
+        messages.addAll(messageRepository.findAllByCompte_Id(compte.getId()));
         model.addAttribute("lists",messages);
         model.addAttribute("message", new Message());
         return "enseignant/messages1";
@@ -776,11 +831,54 @@ public class EnseignantLoginController {
         return "enseignant/presenceDetail";
     }
 
+    @Autowired
+   private BCryptPasswordEncoder passwordEncoder;
+
     @GetMapping("/account/detail/{id}")
     public String getAccount(@PathVariable Long id, Model model){
         Compte compte = compteRepository.getOne(id);
         model.addAttribute("compte",compte);
+        model.addAttribute("compteDto", new CompteRegistrationDto());
         return "enseignant/account";
+    }
+
+    @PostMapping("/accounts/save")
+    public String saveAccount(CompteRegistrationDto compteRegistrationDto, @RequestParam("file") MultipartFile file, String holdPassword, RedirectAttributes redirectAttributes, Long id, String avatar){
+        Compte compte = compteRepository.getOne(id);
+        if (!(file.isEmpty())) {
+            multipart.store(file);
+            compte.setAvatar("/upload-dir/" + file.getOriginalFilename());
+        }else {
+            compte.setAvatar(avatar);
+        }
+        if (compteRegistrationDto.getUsername().isEmpty()) {
+            compte.setUsername(compte.getUsername());
+        }else {
+            compte.setUsername(compteRegistrationDto.getUsername());
+        }
+
+        if (compteRegistrationDto.getEmail().isEmpty()) {
+            compte.setEmail(compte.getEmail());
+        }else {
+            compte.setEmail(compteRegistrationDto.getEmail());
+        }
+
+
+        if (!(holdPassword.isEmpty()) && !(compteRegistrationDto.getPassword().isEmpty())) {
+            System.out.println(holdPassword);
+            if (passwordEncoder.matches(holdPassword,compte.getPassword())) {
+
+                compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+            }else {
+                redirectAttributes.addFlashAttribute("error","l'ancien mot de passe n'est pas valide veuillez trouver le bon");
+                return "redirect:/enseignant/account/detail/"+compte.getId();
+            }
+        }
+
+        compteRepository.save(compte);
+
+        return "redirect:/enseignant/account/detail/"+compte.getId();
+
     }
 
 

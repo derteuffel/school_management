@@ -5,6 +5,7 @@ import com.derteuffel.school.enums.ECours;
 import com.derteuffel.school.enums.ENiveau;
 import com.derteuffel.school.enums.ERole;
 import com.derteuffel.school.enums.EVisibilite;
+import com.derteuffel.school.helpers.CompteRegistrationDto;
 import com.derteuffel.school.helpers.EleveEncadreurHelper;
 import com.derteuffel.school.helpers.EncadrementRegistrationDto;
 import com.derteuffel.school.repositories.*;
@@ -13,6 +14,7 @@ import com.derteuffel.school.services.Mail;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -255,9 +257,11 @@ public class EncadrementController {
         return "redirect:/encadrements/enseignant/eleves/"+encadreur.getId();
     }
 
-    @GetMapping("/eleves/delete/{id}")
+    @GetMapping("/eleve/delete/{id}")
     public String deleteEnfants(@PathVariable Long id){
-        encadreurRepository.deleteById(id);
+        Compte compte =compteRepository.findByEnfant_Id(id);
+        compteRepository.deleteById(compte.getId());
+        enfantRepository.deleteById(id);
         return "redirect:/encadrements/eleves";
     }
 
@@ -313,6 +317,15 @@ public class EncadrementController {
         model.addAttribute("amounts",amounts);
         model.addAttribute("encadreur",encadreur);
         return "encadrements/updateEncadreur";
+    }
+
+
+    @GetMapping("/changes/categories/{id}")
+    public String changesCategory(@PathVariable Long id, String category){
+        Encadreur encadreur = encadreurRepository.getOne(id);
+        encadreur.setCategory(category);
+        encadreurRepository.save(encadreur);
+        return "redirect:/encadrements/encadreurs";
     }
 
     @PostMapping("/encadreurs/update")
@@ -377,11 +390,7 @@ public class EncadrementController {
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.name());
         if (compte.getStatus() == true){
             if (compte.getRoles().contains(role)) {
-                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-                if (encadreur.getCode() == null){
-                    encadreur.setCode(compte.getCode());
-                    encadreurRepository.save(encadreur);
-                }
+                System.out.println("je suis encadreur");
             } else if (compte.getRoles().contains(role1)) {
                 Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
                 if (enfant.getCode() == null){
@@ -391,20 +400,20 @@ public class EncadrementController {
             }
             return "redirect:/encadrements/cours/lists";
         }else {
-            if (compte.getCode() == null) {
-                String randomCode = "" + UUID.randomUUID().toString();
-                compte.setCode(randomCode);
-
+            if (compte.getRoles().contains(role)) {
+                System.out.println("je suis encadreur");
+                compte.setStatus(true);
                 compteRepository.save(compte);
+                return "redirect:/encadrements/cours/lists";
+            } else if (compte.getRoles().contains(role1)) {
 
-                if (compte.getRoles().contains(role)) {
-                    Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
-                    System.out.println(compte.getCode());
+            if (compte.getCode() == null) {
 
-                    encadreur.setCode(randomCode);
-                    System.out.println(encadreur.getCode());
-                    encadreurRepository.save(encadreur);
-                } else if (compte.getRoles().contains(role1)) {
+                    String randomCode = "" + UUID.randomUUID().toString();
+                    compte.setCode(randomCode);
+                    compte.setStatus(true);
+
+                    compteRepository.save(compte);
                     Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
                     enfant.setCode(randomCode);
                     enfantRepository.save(enfant);
@@ -803,11 +812,54 @@ public class EncadrementController {
         return "encadrements/messages";
     }
 
+    @Autowired
+   private BCryptPasswordEncoder passwordEncoder;
+
     @GetMapping("/account/detail/{id}")
     public String getAccount(@PathVariable Long id, Model model){
         Compte compte = compteRepository.getOne(id);
         model.addAttribute("compte",compte);
+        model.addAttribute("compteDto", new CompteRegistrationDto());
         return "encadrements/account";
+    }
+
+    @PostMapping("/accounts/save")
+    public String saveAccount(CompteRegistrationDto compteRegistrationDto, @RequestParam("file") MultipartFile file, String holdPassword, RedirectAttributes redirectAttributes, Long id, String avatar){
+        Compte compte = compteRepository.getOne(id);
+        if (!(file.isEmpty())) {
+            multipart.store(file);
+            compte.setAvatar("/upload-dir/" + file.getOriginalFilename());
+        }else {
+            compte.setAvatar(avatar);
+        }
+        if (compteRegistrationDto.getUsername().isEmpty()) {
+            compte.setUsername(compte.getUsername());
+        }else {
+            compte.setUsername(compteRegistrationDto.getUsername());
+        }
+
+        if (compteRegistrationDto.getEmail().isEmpty()) {
+            compte.setEmail(compte.getEmail());
+        }else {
+            compte.setEmail(compteRegistrationDto.getEmail());
+        }
+
+
+        if (!(holdPassword.isEmpty()) && !(compteRegistrationDto.getPassword().isEmpty())) {
+            System.out.println(holdPassword);
+            if (passwordEncoder.matches(holdPassword,compte.getPassword())) {
+
+                compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
+            }else {
+                redirectAttributes.addFlashAttribute("error","l'ancien mot de passe n'est pas valide veuillez trouver le bon");
+                return "redirect:/encadrements/account/detail/"+compte.getId();
+            }
+        }
+
+        compteRepository.save(compte);
+
+        return "redirect:/encadrements/account/detail/"+compte.getId();
+
     }
 
 

@@ -3,8 +3,8 @@
     <div class="container">
         <div class="header4-wrap">
             <div class="header__logo">
-                <a th:if="${session.ecole}!=null" href="#">
-                    <img th:if="${session.ecole?.logo}" th:src="${session.ecole.logo}" width="150" height="90" alt="">&nbsp;&nbsp;
+                <a class="row" th:if="${session.ecole}!=null" href="#">
+                    <img th:if="${session.ecole?.logo}" th:src="${session.ecole.logo}" style="height: 60px;width: 60px" alt="">&nbsp;&nbsp;
                     <h1 th:text="${session.ecole.name}"></h1>
                 </a>
             </div>

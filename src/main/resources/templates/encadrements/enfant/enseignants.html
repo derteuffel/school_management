@@ -281,6 +281,16 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
+
+    });
+</script>
+<script th:src="@{/js/datatables.min.js}"></script>
 
 </body>
 

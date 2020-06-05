@@ -32,7 +32,7 @@ public class DirectorSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/direction/login")
                 .loginProcessingUrl("/direction/login/process")
-                .defaultSuccessUrl("/direction/home")
+                .defaultSuccessUrl("/direction/activation/form")
                 .permitAll()
                 .and()
                 .logout()

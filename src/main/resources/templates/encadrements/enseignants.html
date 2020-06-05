@@ -90,6 +90,7 @@
                                             <td>
                                                 <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}" class="text-success"><i class="fas fa-eye"></i></button>
                                                 <a href="#" class="btn pull-right" data-toggle="modal" data-target="#deleteModal"  th:attr="data-target='#deleteModal'+${enseignant?.id}"><i class="fas fa-trash"></i></a>
+                                                <a href="#" class="btn pull-right" data-toggle="modal" data-target="#updateModal"  th:attr="data-target='#updateModal'+${enseignant?.id}"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <div class="modal fade" th:id="detailEnseignantModal+${enseignant?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEnseignantModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
@@ -262,6 +263,32 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="modal fade" th:id="updateModal+${enseignant?.id}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <form th:action="@{/encadrements/changes/categories/}+${enseignant?.id}" method="get">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="updateModalLabel">Modification Encadreur</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body card-block">
+                                                            <div class="form-group">
+                                                                <select name="category" class="form-control">
+                                                                    <option value="">Choisir</option>
+                                                                    <option th:each="item : ${T(com.derteuffel.school.enums.ECategory).values()}" th:value="${item}" th:text="${item}"></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-success" >Enregistrer</button>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -306,6 +333,16 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/datatables.min.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
+
+    });
+</script>
 
 </body>
 

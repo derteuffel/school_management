@@ -75,15 +75,26 @@
                             <h2>Liste des parents d'eleves de la classe</h2>
                             <hr>
                             <div class="row"  >
-                                <div class="col-md-6 m-2" th:each="parent : ${parents}">
-                                    <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}" style="width: 100%">
-                                        <div class="alert alert-dark text-left" role="alert">
-                                            <p><strong>Nom : </strong><span th:text="${parent?.nomComplet}"></span> </p>
-                                            <p><strong>Telephone  : </strong><span th:text="${parent?.telephone}"></span></p>
-                                            <p><strong>E-mail  : </strong><span th:text="${parent?.email}"></span></p>
-                                            <p><strong>Whatsapp  : </strong><span th:text="${parent?.whatsapp}"></span></p>
-                                        </div>
-                                    </a>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered" id="add-row">
+                                        <thead>
+                                        <th>Nom</th>
+                                        <th>Telephone</th>
+                                        <th>E-mail</th>
+                                        <th>Whatsapp</th>
+                                        <th>ACTION</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="parent : ${parents}">
+                                            <td><span th:text="${parent?.nomComplet}"></span></td>
+                                            <td><span th:text="${parent?.telephone}"></span></td>
+                                            <td><span th:text="${parent?.email}"></span></td>
+                                            <td><span th:text="${parent?.whatsapp}"></span></td>
+                                            <td>
+                                                <a th:href="@{/enseignant/parent/detail/}+${parent.id}+'/'+${classe.id}" ><i class="fas fa-eye"></i></a>
+                                            </td>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
@@ -140,6 +151,16 @@
 
 <!-- Main JS-->
 <script th:src="@{/js/main.js}"></script>
+<script >
+    $(document).ready(function() {
+        // Add Row
+        $('#add-row').DataTable({
+            "pageLength": 10,
+        });
+
+    });
+</script>
+<script th:src="@{/js/datatables.min.js}"></script>
 
 </body>
 

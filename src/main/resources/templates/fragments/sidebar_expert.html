@@ -2,13 +2,13 @@
     <!-- MENU SIDEBAR-->
     <aside class="menu-sidebar3 js-spe-sidebar">
         <nav class="navbar-sidebar2 navbar-sidebar3">
-            <ul th:if="${name}=='ecoles'" th:each="item : ${T(com.derteuffel.school.enums.EEcole).values()}" class="list-unstyled navbar__list">
+            <ul th:if="${name}=='ecoles'" th:each="item : ${matieres}" class="list-unstyled navbar__list">
                 <li >
                     <a  th:href="@{/experts/ecoles/}+${item}" th:text="${item}">
                     </a>
                 </li>
             </ul>
-            <ul th:if="${name}=='universite'" th:each="item : ${T(com.derteuffel.school.enums.EUniversite).values()}" class="list-unstyled navbar__list">
+            <ul th:if="${name}=='universite'" th:each="item : ${matieres}" class="list-unstyled navbar__list">
                 <li >
                     <a  th:href="@{/experts/universites/}+${item}" th:text="${item}">
                     </a>

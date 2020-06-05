@@ -133,7 +133,7 @@
                                                         <label  class=" form-control-label">Classes</label>
                                                     </div>
                                                     <div class="col-12 col-md-9" th:each="classe1 : ${lists1}">
-                                                        <a th:href="@{/parent/cours/lists/}+${classe1.id}+'/'+${ecole.id}"><small class="form-text text-muted" th:text="${classe1?.niveau}">Nom de l'enseignant</small></a>
+                                                        <a th:href="@{/parent/cours/lists/}+${classe1.id}"><small class="form-text text-muted" th:text="${classe1?.niveau}">Nom de l'enseignant</small></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -166,7 +166,7 @@
                                                         <label  class=" form-control-label">Classes</label>
                                                     </div>
                                                     <div class="col-12 col-md-9" th:each="classe2 : ${lists1}">
-                                                        <a th:href="@{/parent/classe/detail/}+${classe2.id}+'/'+${ecole.id}"><small class="form-text text-muted" th:text="${classe2?.niveau}">Nom de l'enseignant</small></a>
+                                                        <a th:href="@{/parent/classe/detail/}+${classe2.id}"><small class="form-text text-muted" th:text="${classe2?.niveau}">Nom de l'enseignant</small></a>
                                                     </div>
                                                 </div>
                                             </div>
