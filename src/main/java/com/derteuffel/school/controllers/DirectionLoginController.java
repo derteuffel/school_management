@@ -141,8 +141,14 @@ public class DirectionLoginController {
         if (ecole.getStatus() == true){
             return "redirect:/direction/home";
         }else {
-            model.addAttribute("success","Veillez contacter l'equipe YesB pour acceder a votre code");
-            return "direction/activation";
+            if (ecole.getCode() == null) {
+                String randomCode = "" + UUID.randomUUID().toString();
+                ecole.setCode(randomCode);
+                ecoleRepository.save(ecole);
+            }
+                model.addAttribute("success", "Veillez contacter l'equipe YesB pour acceder a votre code");
+                return "direction/activation";
+
         }
     }
 
