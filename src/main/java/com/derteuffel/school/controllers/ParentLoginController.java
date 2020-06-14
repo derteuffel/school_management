@@ -178,11 +178,12 @@ public class ParentLoginController {
         return "redirect:/parent/classe/detail/"+salleId;
     }
 
-    @GetMapping("/cours/lists/{id}/{ecoleId}")
-    public String cours(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+    @GetMapping("/cours/lists/{id}")
+    public String cours(@PathVariable Long id, Model model){
+
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Collection<Cours> cours = new ArrayList<>();
         if (salles.contains(salle)) {
             cours = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.COURS.toString());
@@ -223,11 +224,12 @@ public class ParentLoginController {
         return "parent/bibliotheques";
     }
 
-    @GetMapping("/devoirs/lists/{id}/{ecoleId}")
-    public String devoirs(@PathVariable Long id, @PathVariable Long ecoleId, Model model, HttpServletRequest request){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+    @GetMapping("/devoirs/lists/{id}")
+    public String devoirs(@PathVariable Long id, Model model, HttpServletRequest request){
+
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Collection<Cours> devoirs = new ArrayList<>();
         if (salles.contains(salle)) {
             devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
@@ -242,12 +244,13 @@ public class ParentLoginController {
         return "parent/devoirs";
     }
 
-    @GetMapping("/reponses/lists/{id}/{username}/{ecoleId}")
-    public String reponse(@PathVariable Long id, @PathVariable Long ecoleId,@PathVariable String username, Model model, HttpServletRequest request){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
+    @GetMapping("/reponses/lists/{id}/{username}")
+    public String reponse(@PathVariable Long id,@PathVariable String username, Model model, HttpServletRequest request){
         Compte compte = compteService.findByUsername(username);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+
         Collection<Response> reponses = new ArrayList<>();
         if (salles.contains(salle)) {
             reponses = responseRepository.findAllByCompte_IdAndSalle(compte.getId(),salle.getNiveau()+""+salle.getId());
@@ -266,8 +269,7 @@ public class ParentLoginController {
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
         Salle salle = salleRepository.getOne(salleId);
-        Ecole ecole = salle.getEcole();
-        return "redirect:/parent/reponses/lists/"+salle.getId()+"/"+compte.getUsername()+"/"+ecole.getId();
+        return "redirect:/parent/reponses/lists/"+salle.getId()+"/"+compte.getUsername();
     }
 
     @GetMapping("/reponses/add/{id}")
@@ -296,11 +298,11 @@ public class ParentLoginController {
         return "redirect:/parent/reponses/lists/"+(Long)request.getSession().getAttribute("salleId")+"/"+compte.getUsername()+"/"+(Long)request.getSession().getAttribute("ecoleId");
     }
 
-    @GetMapping("/examens/lists/{id}/{ecoleId}")
-    public String examens(@PathVariable Long id, @PathVariable Long ecoleId, Model model){
-        Ecole ecole = ecoleRepository.getOne(ecoleId);
-        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+    @GetMapping("/examens/lists/{id}")
+    public String examens(@PathVariable Long id, Model model){
         Salle salle = salleRepository.getOne(id);
+        Ecole ecole = salle.getEcole();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
         Collection<Examen> examens = new ArrayList<>();
         if (salles.contains(salle)) {
             examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());

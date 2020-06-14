@@ -74,7 +74,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String accueil(Model model){
-        model.addAttribute("lists", ecoleRepository.findAllByStatus(true,Sort.by(Sort.Direction.ASC,"name")));
         model.addAttribute("form", new EcoleFormHelper());
         return "index1";
     }
