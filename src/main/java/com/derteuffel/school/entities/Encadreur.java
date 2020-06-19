@@ -31,6 +31,7 @@ public class Encadreur extends Enseignant {
     private String code;
     private String description;
     private String category;
+    private Boolean state;
     private ArrayList<String> types = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

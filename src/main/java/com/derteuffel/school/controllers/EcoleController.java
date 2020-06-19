@@ -50,6 +50,7 @@ public class EcoleController {
         ecole.setCommune(formHelper.getCommune().toUpperCase());
         ecole.setCountry(formHelper.getCountry().toUpperCase());
         ecole.setCycle(formHelper.getCycle().toUpperCase());
+        ecole.setCategory(formHelper.getCategory());
         ecole.setMatricule(formHelper.getMatricule().toUpperCase());
         ecole.setName(formHelper.getName().toUpperCase());
         ecole.setNumParcelle(formHelper.getNumParcelle().toUpperCase());

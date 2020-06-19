@@ -212,9 +212,32 @@ public class EnseignantLoginController {
             }
         }
 
-        model.addAttribute("lists",alls);
+        if (compte.getStatus() == false || compte.getStatus() == null){
+            model.addAttribute("classe",salle);
+            model.addAttribute("error","Veuillez contacter l'equipe YesB pour avoir votre code d'activation");
+            return "enseignant/activation";
+        }else {
+            model.addAttribute("lists", alls);
 
-        return "enseignant/bibliotheques";
+            return "enseignant/bibliotheques";
+        }
+    }
+
+
+    @GetMapping("/activation/code/{id}")
+    public String activation(String code,HttpServletRequest request, @PathVariable Long id, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(id);
+        if (code.equals(compte.getBibliothequeCode())){
+            compte.setStatus(true);
+            compteRepository.save(compte);
+            return "redirect:/enseignant/bibliotheque/lists/"+salle.getId();
+        }else {
+            model.addAttribute("classe",salle);
+            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'equipe YesB pour tout besoin d'assistance");
+            return "enseignant/activation";
+        }
     }
 
 
@@ -875,6 +898,7 @@ public class EnseignantLoginController {
             }
         }
 
+        compte.setEncode(compteRegistrationDto.getPassword());
         compteRepository.save(compte);
 
         return "redirect:/enseignant/account/detail/"+compte.getId();

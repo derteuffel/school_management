@@ -197,7 +197,9 @@ public class ParentLoginController {
     }
 
     @GetMapping("/bibliotheque/lists/{id}")
-    public String bibliotheques(@PathVariable Long id, Model model){
+    public String bibliotheques(@PathVariable Long id, Model model, HttpServletRequest request){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
         Salle salle = salleRepository.getOne(id);
         Ecole ecole = salle.getEcole();
         List<Livre> livres = new ArrayList<>();
@@ -218,10 +220,33 @@ public class ParentLoginController {
             }
         }
 
-        model.addAttribute("lists",alls);
+
         model.addAttribute("ecole",ecole);
         model.addAttribute("classe",salle);
-        return "parent/bibliotheques";
+        if (compte.getStatus() == false || compte.getStatus() == null){
+            model.addAttribute("classe",salle);
+            model.addAttribute("error","Veuillez contacter l'equipe YesB pour avoir votre code d'activation");
+            return "parent/activation";
+        }else {
+            model.addAttribute("lists", alls);
+
+            return "parent/bibliotheques";
+        }
+    }
+    @GetMapping("/activation/code/{id}")
+    public String activation(String code,HttpServletRequest request, @PathVariable Long id, Model model){
+        Principal principal = request.getUserPrincipal();
+        Compte compte = compteService.findByUsername(principal.getName());
+        Salle salle = salleRepository.getOne(id);
+        if (code.equals(compte.getBibliothequeCode())){
+            compte.setStatus(true);
+            compteRepository.save(compte);
+            return "redirect:/parent/bibliotheque/lists/"+salle.getId();
+        }else {
+            model.addAttribute("classe",salle);
+            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'equipe YesB pour tout besoin d'assistance");
+            return "parent/activation";
+        }
     }
 
     @GetMapping("/devoirs/lists/{id}")
@@ -516,6 +541,7 @@ public class ParentLoginController {
             }
         }
 
+        compte.setEncode(compteRegistrationDto.getPassword());
         compteRepository.save(compte);
 
         return "redirect:/parent/account/detail/"+compte.getId();

@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Direction</title>
+    <title>Admin</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,13 +38,10 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header :: header}">
+    <header th:replace="~{../templates/fragments/header_admin :: header_admin}">
     </header>
     <!-- END HEADER DESKTOP -->
 
-    <!-- WELCOME-->
-    <section th:replace="~{../templates/fragments/home_welcome :: home_welcome}"></section>
-    <!-- END WELCOME-->
 
     <!-- PAGE CONTENT-->
     <div class="page-container3">
@@ -76,11 +73,13 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
+                    <div th:replace="~{../templates/fragments/sidebar_admin :: sidebar_admin}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content row">
+                            <h3>Enseignants : &nbsp;<span th:text="${ecole.name}"></span></h3>
+                            <hr>
                             <div class="col-lg-12">
                                 <table class="table table-bordered" id="add-row">
                                     <thead>
@@ -155,6 +154,26 @@
                                                             </div>
                                                             <div class="col-12 col-md-9">
                                                                 <small class="form-text text-muted" th:text="${enseignant?.whatsapp}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Code bibliotheque</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small th:if="${enseignant.compte.bibliothequeCode}!= null" class="form-text text-muted" th:text="${enseignant.compte.bibliothequeCode}">Numero de telephone whatsapp</small>
+                                                                <a th:unless="${enseignant.compte.bibliothequeCode}!= null" th:href="@{/admin/generate/activation/}+${enseignant.compte.id}">Generer un code??</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Acces bibliotheque</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" >
+                                                                    <span th:if="${enseignant.compte.status}==true" class="text-success">Autorise</span>
+                                                                    <span th:unless="${enseignant.compte.status}==true" class="text-danger">Refuse</span>
+                                                                </small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">

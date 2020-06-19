@@ -1,13 +1,12 @@
 package com.derteuffel.school.controllers;
 
-import com.derteuffel.school.entities.Compte;
-import com.derteuffel.school.entities.Livre;
-import com.derteuffel.school.repositories.EcoleRepository;
-import com.derteuffel.school.repositories.LivreRepository;
+import com.derteuffel.school.entities.*;
+import com.derteuffel.school.repositories.*;
 import com.derteuffel.school.services.CompteService;
 import com.derteuffel.school.services.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by user on 23/03/2020.
@@ -31,6 +29,21 @@ public class AdminLoginController {
 
     @Autowired
     private LivreRepository livreRepository;
+
+    @Autowired
+    private EnseignantRepository enseignantRepository;
+
+    @Autowired
+    private SalleRepository salleRepository;
+
+    @Autowired
+    private EleveRepository eleveRepository;
+
+    @Autowired
+    private ParentRepository parentRepository;
+
+    @Autowired
+    private CompteRepository compteRepository;
 
     @Autowired
     private CompteService compteService;
@@ -118,6 +131,137 @@ public class AdminLoginController {
     @GetMapping("/livre/delete/{id}")
     public String deleteLivre(@PathVariable Long id){
         livreRepository.deleteById(id);
+        return "redirect:/admin/bibliotheque/lists";
+    }
+
+
+    @GetMapping("/ecoles/lists")
+    public String getAllSchools(Model model){
+
+        List<Ecole> lists = ecoleRepository.findAll(Sort.by(Sort.Direction.DESC,"id"));
+        model.addAttribute("lists",lists);
+        return "admin/ecoles";
+    }
+
+    @GetMapping("/ecole/enseignants/{id}")
+    public String getAllEnseignants(@PathVariable Long id, Model model){
+        Ecole ecole = ecoleRepository.getOne(id);
+        List<Enseignant> lists = new ArrayList<>();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        for (Salle salle : salles){
+            lists.addAll(enseignantRepository.findAllBySalles_Id(salle.getId()));
+        }
+
+        model.addAttribute("lists",lists);
+        model.addAttribute("ecole",ecole);
+        return "admin/enseignants";
+
+    }
+    @GetMapping("/ecole/classes/{id}")
+    public String getAllSalles(@PathVariable Long id, Model model){
+        Ecole ecole = ecoleRepository.getOne(id);
+        Collection<Salle> lists = salleRepository.findAllByEcole_Id(ecole.getId());
+        model.addAttribute("lists",lists);
+        model.addAttribute("ecole",ecole);
+        return "admin/classes";
+
+    }
+    @GetMapping("/ecole/eleves/{id}")
+    public String getAllEleves(@PathVariable Long id, Model model){
+        Ecole ecole = ecoleRepository.getOne(id);
+        List<Eleve> lists = new ArrayList<>();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        for (Salle salle : salles){
+            lists.addAll(eleveRepository.findAllBySalle_Id(salle.getId()));
+        }
+
+        model.addAttribute("lists",lists);
+        model.addAttribute("ecole",ecole);
+        return "admin/eleves";
+
+    }
+
+    @GetMapping("/ecole/parents/{id}")
+    public String getAllParents(@PathVariable Long id, Model model){
+        Ecole ecole = ecoleRepository.getOne(id);
+        List<Eleve> lists = new ArrayList<>();
+        List<Parent> parents = new ArrayList<>();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        for (Salle salle : salles){
+            lists.addAll(eleveRepository.findAllBySalle_Id(salle.getId()));
+        }
+
+        for (Eleve eleve : lists){
+            parents.add(eleve.getParent());
+        }
+
+        model.addAttribute("lists",parents);
+        model.addAttribute("ecole",ecole);
+        return "admin/parents";
+
+
+
+    }
+
+    @GetMapping("/ecole/accounts/parents/{id}")
+    public String getAllAccounts(@PathVariable Long id, Model model) {
+        Ecole ecole = ecoleRepository.getOne(id);
+        List<Eleve> lists = new ArrayList<>();
+        List<Parent> parents = new ArrayList<>();
+        List<Compte> accounts = new ArrayList<>();
+        Collection<Salle> salles = salleRepository.findAllByEcole_Id(ecole.getId());
+        for (Salle salle : salles) {
+            lists.addAll(eleveRepository.findAllBySalle_Id(salle.getId()));
+        }
+
+        for (Eleve eleve : lists) {
+            parents.add(eleve.getParent());
+        }
+
+        for (Parent parent : parents){
+            for (Compte compte : compteRepository.findAll()){
+                if (compte.getParent() != null) {
+                    if (compte.getParent().getId() == parent.getId()) {
+                        accounts.add(compte);
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("lists", accounts);
+        model.addAttribute("ecole", ecole);
+        return "admin/accounts";
+    }
+
+    @GetMapping("/generate/activation/{id}")
+    public String generateBibliothequeCode(@PathVariable Long id, Model model){
+        Compte compte = compteRepository.getOne(id);
+        model.addAttribute("compte",compte);
+        return "admin/generate";
+    }
+
+
+    @GetMapping("/active/{id}")
+    public String active(@PathVariable Long id, @RequestParam("expireDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date expireDate){
+
+        System.out.println(expireDate);
+        Compte compte = compteRepository.getOne(id);
+        String randomCode = "" + UUID.randomUUID().toString();
+        compte.setBibliothequeCode(randomCode);
+        compteRepository.save(compte);
+        TimerTask deactivate = new TimerTask() {
+            @Override
+            public void run() {
+                compte.setBibliothequeCode(null);
+                compte.setStatus(false);
+                compteRepository.save(compte);
+                System.out.println("job is done");
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(deactivate,expireDate);
+
         return "redirect:/admin/bibliotheque/lists";
     }
 }

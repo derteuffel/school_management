@@ -142,6 +142,7 @@ public class EncadrementController {
             encadreur.setPays(encadrementRegistrationDto.getPays());
             encadreur.setDescription(encadrementRegistrationDto.getDescription());
             encadreur.setTypes(encadrementRegistrationDto.getTypes());
+            encadreur.setState(false);
             multipart.store(file);
             encadreur.setCv("/upload-dir/"+file.getOriginalFilename());
             if (!(picture.isEmpty())) {
@@ -295,6 +296,7 @@ public class EncadrementController {
             enfant.setNbreJourParSemaine(encadrementRegistrationDto.getNbreJourParSemanie());
             enfant.setNbreMois(encadrementRegistrationDto.getNbreMois());
             enfant.setPays(encadrementRegistrationDto.getPays());
+            enfant.setState(false);
             enfantRepository.save(enfant);
             compteService.saveEnfant(encadrementRegistrationDto,"/images/profile.jpeg",enfant);
         Mail sender = new Mail();
@@ -390,6 +392,11 @@ public class EncadrementController {
         Role role1 = roleRepository.findByName(ERole.ROLE_ENFANT.name());
         if (compte.getStatus() == true){
             if (compte.getRoles().contains(role)) {
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                if (encadreur.getCode() == null){
+                    encadreur.setCode(compte.getCode());
+                    encadreurRepository.save(encadreur);
+                }
                 System.out.println("je suis encadreur");
             } else if (compte.getRoles().contains(role1)) {
                 Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
@@ -402,8 +409,17 @@ public class EncadrementController {
         }else {
             if (compte.getRoles().contains(role)) {
                 System.out.println("je suis encadreur");
-                compte.setStatus(true);
-                compteRepository.save(compte);
+                if (compte.getCode() == null) {
+
+                    String randomCode = "" + UUID.randomUUID().toString();
+                    compte.setCode(randomCode);
+                    compte.setStatus(false);
+
+                    compteRepository.save(compte);
+                    Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                    encadreur.setCode(compte.getCode());
+                    encadreurRepository.save(encadreur);
+                }
                 return "redirect:/encadrements/cours/lists";
             } else if (compte.getRoles().contains(role1)) {
 
@@ -411,17 +427,24 @@ public class EncadrementController {
 
                     String randomCode = "" + UUID.randomUUID().toString();
                     compte.setCode(randomCode);
-                    compte.setStatus(true);
+                    compte.setStatus(false);
 
                     compteRepository.save(compte);
                     Enfant enfant = enfantRepository.getOne(compte.getEnfant().getId());
                     enfant.setCode(randomCode);
                     enfantRepository.save(enfant);
                 }
+            }else {
+                return "redirect:/encadrements/cours/lists";
             }
 
             model.addAttribute("success", "Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
-            return "encadrements/activation";
+            if (compte.getRoles().contains(role)){
+                return "encadrements/activation1";
+            }else {
+                return "encadrements/activation";
+            }
+
         }
     }
 
@@ -429,7 +452,17 @@ public class EncadrementController {
      public String activation(String activation, HttpServletRequest request, RedirectAttributes redirectAttributes){
         Principal principal = request.getUserPrincipal();
         Compte compte = compteService.findByUsername(principal.getName());
+        Role role = roleRepository.findByName(ERole.ROLE_ENCADREUR.name());
         if (!(compte.getCode().equals(activation))){
+            if (compte.getRoles().contains(role)){
+                Encadreur encadreur = encadreurRepository.getOne(compte.getEnseignant().getId());
+                encadreur.setState(true);
+                encadreurRepository.save(encadreur);
+            }else {
+                Enfant enfant = compte.getEnfant();
+                enfant.setState(true);
+                enfantRepository.save(enfant);
+            }
             redirectAttributes.addFlashAttribute("success","Code d'activation incorrect");
             return "redirect:/encadrements/logout";
         }else {
@@ -856,6 +889,7 @@ public class EncadrementController {
             }
         }
 
+        compte.setEncode(compteRegistrationDto.getPassword());
         compteRepository.save(compte);
 
         return "redirect:/encadrements/account/detail/"+compte.getId();

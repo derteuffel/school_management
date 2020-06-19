@@ -59,6 +59,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(username);
         compte.setAvatar(s);
         compte.setEcole(ecole);
+        compte.setEncode(password);
         compte.setStatus(false);
 
         Role role = new Role();
@@ -87,6 +88,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
+        compte.setEncode(compteRegistrationDto.getPassword());
         compte.setCode(UUID.randomUUID().toString());
         compte.setStatus(false);
 
@@ -114,6 +116,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEcole(ecole);
+        compte.setEncode(compteRegistrationDto.getPassword());
         compte.setEnseignant(enseignant);
         compte.setStatus(false);
 
@@ -139,6 +142,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setPassword(passwordEncoder.encode(compteRegistrationDto.getPassword()));
         compte.setUsername(compteRegistrationDto.getUsername());
         compte.setAvatar(s);
+        compte.setEncode(compteRegistrationDto.getPassword());
         compte.setParent(parent);
         compte.setStatus(false);
 
@@ -164,6 +168,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setAvatar(s);
         compte.setEnfant(enfant);
         compte.setStatus(false);
+        compte.setEncode(encadrementRegistrationDto.getPassword());
         compte.setCode(UUID.randomUUID().toString());
 
         Role existRole = roleRepository.findByName(ERole.ROLE_ENFANT.toString());
@@ -188,6 +193,7 @@ public class CompteSeviceImpl implements CompteService{
         compte.setUsername(encadrementRegistrationDto.getUsername());
         compte.setAvatar(s);
         compte.setEnseignant(encadreur);
+        compte.setEncode(encadrementRegistrationDto.getPassword());
         compte.setCode(UUID.randomUUID().toString());
         compte.setStatus(false);
 

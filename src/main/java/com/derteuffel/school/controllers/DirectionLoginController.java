@@ -398,27 +398,25 @@ public class DirectionLoginController {
         List<Compte> comptes = compteRepository.findAll();
         Collection<Salle> sallesOptional = salleRepository.findAllByEcole_Id(compte.getEcole().getId());
         Collection<Eleve> eleves = new ArrayList<>();
-        Collection<Salle> salles = new ArrayList<>();
-        ((ArrayList<Salle>) salles).addAll(sallesOptional);
-        for (int i=0;i<salles.size();i++) {
-            Collection<Eleve> eleves1= eleveRepository.findAllBySalle_Id(((ArrayList<Salle>) salles).get(i).getId());
-            eleves.addAll(eleves1);
+        Collection<Parent> parents = new ArrayList<>();
+        Collection<Compte> accounts = new ArrayList<>();
+        for (Salle salle : sallesOptional) {
+            eleves.addAll(eleveRepository.findAllBySalle_Id(salle.getId()));
         }
 
-        Collection<Compte> accounts = new ArrayList<>();
-        for (int i=0;i<eleves.size();i++) {
-            for (int a=0;a<comptes.size();a++) {
-                System.out.println("je suis la ");
-                if (comptes.get(a).getParent() != null) {
-                    if ((comptes.get(a).getParent().getNomComplet().contains(((ArrayList<Eleve>) eleves).get(i).getName().toUpperCase()))) {
-                        accounts.add(comptes.get(a));
+        for (Eleve eleve : eleves){
+            parents.add(eleve.getParent());
+        }
+
+        for (Compte compte1 : compteRepository.findAll()){
+            for (Parent parent : parents){
+                if (compte1.getParent() != null){
+                    if (compte1.getParent().getId() == parent.getId()){
+                        accounts.add(compte1);
                     }
                 }
             }
-
         }
-
-
 
         System.out.println(accounts.size());
 
@@ -994,6 +992,8 @@ public class DirectionLoginController {
                 return "redirect:/direction/account/detail/"+compte.getId();
             }
         }
+
+        compte.setEncode(compteRegistrationDto.getPassword());
 
         compteRepository.save(compte);
 

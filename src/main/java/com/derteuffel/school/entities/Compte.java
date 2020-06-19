@@ -30,6 +30,8 @@ public class Compte implements Serializable{
     private String conferenceId;
     private String subscriberId;
     private Boolean status;
+    private String bibliothequeCode;
+    private String encode;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(

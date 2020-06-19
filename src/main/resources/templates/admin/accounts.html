@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Direction</title>
+    <title>Admin</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -39,9 +39,9 @@
 
 <body class="animsition">
 <div class="page-wrapper" id="body">
-    <div th:replace="~{../templates/fragments/video_container :: video_container}"></div>
+
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header :: header}">
+    <header th:replace="~{../templates/fragments/header_admin :: header_admin}">
     </header>
     <!-- END HEADER DESKTOP -->
 
@@ -67,22 +67,13 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
+                    <div th:replace="~{../templates/fragments/sidebar_admin :: sidebar_admin}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
-                            <button type="button" id="startCall" data-toggle="modal" data-target="#contacts" class="btn btn-success">Passer un appel&nbsp;<i class="zmdi zmdi-phone"></i></button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#choice">
 
-                                <span aria-hidden="true">
-                                <i class="zmdi zmdi-phone-ring"></i>
-                            </span>
-                                Joindre un appel
-                            </button>
-                            <div th:replace="~{../templates/fragments/audio_container :: audio_container}"></div>
-
-                            <h2>Liste des parents d'élève : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
+                            <h2>Liste des comptes des parents d'élève : <span th:text="${ecole.name+'  '+ecole.province}"></span></h2>
                             <div class="row"  >
                                 <div class="col-lg-12">
                                     <table class="table table-bordered" id="add-row">
@@ -91,15 +82,20 @@
                                         <th>Nom d'utilisateur</th>
                                         <th>Email</th>
                                         <th>Password</th>
+                                        <th>Code Bibliotheque</th>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="account : ${lists1}">
+                                        <tr th:each="account : ${lists}">
                                             <td><span th:text="${account?.parent.nomComplet}"></span></td>
                                             <td><span th:text="${account?.username}"></span></td>
                                             <td><span th:text="${account?.email}"></span></td>
                                             <td>
                                                 <span th:if="${account.encode}== null" th:text="'1234567890'"></span>
                                                 <span th:unless="${account.encode}== null" th:text="${account.encode}"></span>
+                                            </td>
+                                            <td>
+                                                <span th:if="${account.bibliothequeCode}!= null" th:text="${account.bibliothequeCode}"></span>
+                                                <a th:href="@{/admin/generate/activation/}+${account.id}" th:unless="${account.bibliothequeCode}!= null" >Generer code</a>
                                             </td>
                                         </tbody>
                                     </table>
@@ -118,46 +114,6 @@
         </section>
     </div>
     <!-- END PAGE CONTENT  -->
-
-    <div th:replace="~{../templates/fragments/contacts :: contacts}"></div>
-    <div th:replace="~{../templates/fragments/choice :: choice}">
-
-        <div class="modal fade" th:id="planningModal" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Contacts</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body card-block" >
-                        <ul class="text-left list-group" th:each="enseignant : ${lists1}">
-                            <li class="     -group-item mb-2 d-flex flex-row justify-content-between">
-                                <div>
-                                    <span th:text="${enseignant?.name}"></span>
-
-                                </div>
-                                <div>
-                                    &nbsp;<input class="callInputPlanning" th:value="${enseignant?.email}" type="hidden" />
-                                    <button type="button"  class="btn btn-primary crewCallPlanning">&nbsp;<i class="zmdi zmdi-check"></i></button>
-                                    <button type="button"  class="btn btn-primary removeCallPlanning">&nbsp;<i class="zmdi zmdi-close"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="form-group">
-                            <label for="datePlanning">Date de la reunion</label>
-                            <input class="form-control" placeholder="" type="date" id="datePlanning"/>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                        <button id="planifier" type="button" class="btn btn-primary" data-dismiss="modal">Planifier</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Jquery JS-->

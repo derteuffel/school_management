@@ -10,7 +10,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Direction</title>
+    <title>Admin</title>
 
     <!-- Fontfaces CSS-->
     <link th:href="@{/css/font-face.css}" rel="stylesheet" media="all">
@@ -38,13 +38,9 @@
 <body class="animsition">
 <div class="page-wrapper">
     <!-- HEADER DESKTOP-->
-    <header th:replace="~{../templates/fragments/header :: header}">
+    <header th:replace="~{../templates/fragments/header_admin :: header_admin}">
     </header>
     <!-- END HEADER DESKTOP -->
-
-    <!-- WELCOME-->
-    <section th:replace="~{../templates/fragments/home_welcome :: home_welcome}"></section>
-    <!-- END WELCOME-->
 
     <!-- PAGE CONTENT-->
     <div class="page-container3">
@@ -76,7 +72,7 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
+                    <div th:replace="~{../templates/fragments/sidebar_admin :: sidebar_admin}">
                     </div>
                     <div class="col-xl-9">
                         <!-- PAGE CONTENT-->
@@ -84,37 +80,40 @@
                             <div class="col-lg-12">
                                 <table class="table table-bordered" id="add-row">
                                     <thead>
-                                    <th>Profil</th>
+                                    <th>Logo</th>
                                     <th>Nom</th>
-                                    <th>Niveau</th>
-                                    <th>Cours enseigner</th>
+                                    <th>Localisation</th>
+                                    <th>Matricule</th>
+                                    <th>Categorie</th>
                                     <th>ACTION</th>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="enseignant : ${lists}">
-                                        <td><img class="rounded-circle" style="width: 90px;height: 90px" th:src="${enseignant?.avatar}" alt=""></td>
-                                        <td th:text="${enseignant?.name}"></td>
-                                        <td th:text="${enseignant?.telephone}"></td>
-                                        <td ><span th:each="item : ${enseignant.cour_enseigner}" th:text="${item}"></span></td>
+                                    <tr th:each="item : ${lists}">
+                                        <td><img class="rounded-circle" style="width: 60px;height: 60px" th:src="${item.logo}" alt=""></td>
+                                        <td th:text="${item.name}"></td>
+                                        <td th:text="${item.country+' '+item.province}"></td>
+                                        <td ><span  th:text="${item.matricule}"></span></td>
+                                        <td ><span  th:text="${item.category}"></span></td>
                                         <td>
-                                            <button type="button" data-toggle="modal" data-target="#detailEnseignantModal" th:attr="data-target='#detailEnseignantModal'+${enseignant?.id}" class="text-success"><i class="fas fa-eye"></i></button>
+                                            <button type="button" data-toggle="modal" data-target="#detailEcoleModal" th:attr="data-target='#detailEcoleModal'+${item.id}" class="text-success"><i class="fas fa-eye"></i></button>
                                         </td>
-                                        <div class="modal fade" th:id="detailEnseignantModal+${enseignant?.id}" tabindex="-1" role="dialog" aria-labelledby="detaiEnseignantModalLabel" aria-hidden="true">
+                                        <div class="modal fade" th:id="detailEcoleModal+${item.id}" tabindex="-1" role="dialog" aria-labelledby="detailEcoleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="detailModalLabel">Detail Enseignant</h5>
+                                                        <h5 class="modal-title" id="detailModalLabel">Detail Ecole</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body card-block">
+                                                    <div class="row">
+                                                        <div class="modal-body card-block col-xl-8 col-md-6">
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Prenom</label>
+                                                                <label  class=" form-control-label">Logo</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.prenom}">Prenom de l'enseignant</small>
+                                                                <img class="rounded-circle" style="width: 60px;height: 60px" th:src="${item.logo}" alt="">
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
@@ -122,48 +121,98 @@
                                                                 <label  class=" form-control-label">Nom</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.name}">Nom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${item.name}">Prenom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Postnom</label>
+                                                                <label  class=" form-control-label">Localisation</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.postnom}">Postnom de l'enseignant</small>
+                                                                <small class="form-text text-muted" th:text="${item.country+' '+item.province+' '+item.commune}">Nom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Telephone</label>
+                                                                <label  class=" form-control-label">Quartier</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.telephone}">Numero de telephone</small>
+                                                                <small class="form-text text-muted" th:text="${item.quartier+' '+item.avenue+' '+item.numParcelle}">Postnom de l'enseignant</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">E-mail</label>
+                                                                <label  class=" form-control-label">Cycle</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.email}">Adresse email</small>
+                                                                <small class="form-text text-muted" th:text="${item.cycle}">Numero de telephone</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Whatsapp</label>
+                                                                <label  class=" form-control-label">Matricule</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:text="${enseignant?.whatsapp}">Numero de telephone whatsapp</small>
+                                                                <small class="form-text text-muted" th:text="${item.matricule}">Adresse email</small>
                                                             </div>
                                                         </div>
                                                         <div class="row form-group">
                                                             <div class="col col-md-3">
-                                                                <label  class=" form-control-label">Cours enseigner</label>
+                                                                <label  class=" form-control-label">Categorie</label>
                                                             </div>
                                                             <div class="col-12 col-md-9">
-                                                                <small class="form-text text-muted" th:each="item:${enseignant?.cour_enseigner}" th:text="${item}">Cours enseigner</small>
+                                                                <small class="form-text text-muted" th:text="${item.category}">Adresse email</small>
                                                             </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Code d'activation</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted" th:text="${item.code}">Numero de telephone whatsapp</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Status</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted">
+                                                                    <span th:if="${item.status}== true" class="text-success">Actif</span>
+                                                                    <span th:unless="${item.status}== true" class="text-danger">inactif</span>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col col-md-3">
+                                                                <label  class=" form-control-label">Termes d'utilisation</label>
+                                                            </div>
+                                                            <div class="col-12 col-md-9">
+                                                                <small class="form-text text-muted">
+                                                                    <span th:if="${item.terms}== true" class="text-success">Accepter</span>
+                                                                    <span th:unless="${item.terms}== true" class="text-danger">Refuse</span>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        <div class="modal-body card-block col-xl-4 col-md-6">
+                                                            <ul>
+                                                                <li>
+                                                                    <a th:href="@{/admin/ecole/classes/}+${item.id}">Classes</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a th:href="@{/admin/ecole/enseignants/}+${item.id}">Enseignants</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a th:href="@{/admin/ecole/eleves/}+${item.id}">Eleves</a>
+                                                                </li>
+                                                                <li>
+                                                                   <a th:href="@{/admin/ecole/parents/}+${item.id}">Parents</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a th:href="@{/admin/ecole/accounts/parents/}+${item.id}">Comptes des parents</a>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

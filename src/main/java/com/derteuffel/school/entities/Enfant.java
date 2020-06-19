@@ -37,6 +37,7 @@ public class Enfant implements Serializable {
     private  int nbreMois;
     private String pays;
     private String code;
+    private Boolean state;
     private ArrayList<String> matieres = new ArrayList<>();
 
     @ManyToMany
