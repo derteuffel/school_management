@@ -198,15 +198,59 @@ public class DirectionLoginController {
         request.getSession().setAttribute("compte", compte);
         return "redirect:/direction/ecole/detail/" + ecole.getId();
     }
+    class User{
+        private String name;
+        private Long id;
+        private String avatar;
+        User(Long m_id,String m_name,String m_avatar){
+            this.name=m_name;
+            this.id=m_id;
+            this.avatar= m_avatar;
+        }
 
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+    }
     @GetMapping("/ecole/detail/{id}")
     public String detail(Model model, @PathVariable Long id, HttpServletRequest request) {
         Ecole ecole = ecoleRepository.getOne(id);
+        List<User> users = new ArrayList<User>();
+        Collection<Compte> comptes = compteRepository.findAllByEcole_Id(id);
+        Compte c = (Compte) request.getSession().getAttribute("compte");
+        for(Compte compte: comptes)
+        {
+            if(compte.getId()!=c.getId())
+            users.add(new User(compte.getId(), compte.getUsername(),compte.getAvatar()));
+        }
+
+        System.out.println(users);
         request.getSession().setAttribute("teacher", new Enseignant());
         request.getSession().setAttribute("ecole", ecole);
         model.addAttribute("teacher", new Enseignant());
         model.addAttribute("message",new Message());
         model.addAttribute("ecole", ecole);
+        model.addAttribute("users",users);
         return "direction/home";
     }
 
