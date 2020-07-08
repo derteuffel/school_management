@@ -113,8 +113,8 @@ public class EncadrementController {
 
         Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
-            result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
-            redirectAttributes.addFlashAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            result.rejectValue("username", null, "Il existe déjà un compte avec ce nom d'utilisateur veuillez choisir un autre");
+            redirectAttributes.addFlashAttribute("error","Il existe déjà un compte avec ce nom d'utilisateur veuillez choisir un autre");
         }
 
         if (result.hasErrors()) {
@@ -160,9 +160,9 @@ public class EncadrementController {
         sender.sender(
                 encadrementRegistrationDto.getEmail(),
                 "Enregistrement Espace encadrement",
-                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Encadreur/Expert YesB, contacter l'equipe de YesB");
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Encadreur/Expert YesB, contacter l'équipe de YesB");
 
-        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a été effectué avec succès");
         return "redirect:/encadrements/login";
     }
 
@@ -272,8 +272,8 @@ public class EncadrementController {
 
         Compte existAccount = compteService.findByUsername(encadrementRegistrationDto.getUsername());
         if (existAccount != null){
-            result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
-            redirectAttributes.addFlashAttribute("error","Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            result.rejectValue("username", null, "Il existe déjà un compte avec ce nom d'utilisateur veuillez choisir un autre");
+            redirectAttributes.addFlashAttribute("error","Il existe déjà un compte avec ce nom d'utilisateur veuillez choisir un autre");
         }
 
         if (result.hasErrors()) {
@@ -303,9 +303,9 @@ public class EncadrementController {
         sender.sender(
                 encadrementRegistrationDto.getEmail(),
                 "Enregistrement Espace encadrement",
-                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Etudiant/Eleve, contacter l'equipe de YesB");
+                "Vous venez de vous enregistrer dans l'espace d'encadrement en tant que Etudiant/Elève, contacter l'équipe de YesB");
 
-        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes, bien vouloir contacter l'equipe Yesb via l'adresse info@yesbanana.org pour finalise votre inscription et entrer en possession de votre code d'activation de votre compte");
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a été effectué avec succès, bien vouloir contacter l'équipe Yesb via l'adresse info@yesbanana.org pour finaliser votre inscription et entrer en possession de votre code d'activation de votre compte");
         return "redirect:/encadrements/login";
     }
 
@@ -361,7 +361,7 @@ public class EncadrementController {
 
         encadreurRepository.save(encadreur);
 
-        redirectAttributes.addFlashAttribute("success","Votre modification a ete faite avec succes");
+        redirectAttributes.addFlashAttribute("success","Votre modification a été faite avec succès");
         return "redirect:/encadrements/encadreurs";
 
     }
@@ -378,7 +378,7 @@ public class EncadrementController {
     @PostMapping("/enfants/update")
     public String updateEnfatnSave(@Valid Enfant enfant, RedirectAttributes redirectAttributes){
         enfantRepository.save(enfant);
-        redirectAttributes.addFlashAttribute("success","Votre modification a ete faite avec succes");
+        redirectAttributes.addFlashAttribute("success","Votre modification a été faite avec succès");
         return "redirect:/encadrements/eleves";
 
     }
@@ -438,7 +438,7 @@ public class EncadrementController {
                 return "redirect:/encadrements/cours/lists";
             }
 
-            model.addAttribute("success", "Bien vouloir contacter l'equipe de Yesb pour avoir votre code d'activation");
+            model.addAttribute("success", "Bien vouloir contacter l'équipe de Yesb pour avoir votre code d'activation");
             if (compte.getRoles().contains(role)){
                 return "encadrements/activation1";
             }else {
@@ -468,7 +468,7 @@ public class EncadrementController {
         }else {
             compte.setStatus(true);
             compteRepository.save(compte);
-            redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
+                redirectAttributes.addFlashAttribute("success","Code d'activation correct, profitez de nos services");
             return "redirect:/encadrements/activation/form";
         }
      }
@@ -579,7 +579,7 @@ public class EncadrementController {
         cours.setDate(dateFormat.format(date));
         cours.setType(ECours.COURS.toString());
         coursRepository.save(cours);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau cours avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau devoir avec succès");
         return "redirect:/encadrements/cours/lists";
     }
 
@@ -641,7 +641,7 @@ public class EncadrementController {
         devoir.setDate(dateFormat.format(date));
         devoir.setType(ECours.DEVOIRS.toString());
         coursRepository.save(devoir);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau devoir avec succès");
         return "redirect:/encadrements/devoirs/lists";
     }
 
@@ -770,7 +770,7 @@ public class EncadrementController {
 
         examen.setDate(dateFormat.format(date));
         examenRepository.save(examen);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau devoir avec succès");
         return "redirect:/encadrements/examens/lists";
     }
 

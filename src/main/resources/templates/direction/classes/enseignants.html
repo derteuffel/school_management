@@ -71,7 +71,7 @@
 
                             <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-primary">Ajouter&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h3>Liste des enseignants <span th:text="${classe.niveau}"></span></h3>
+                            <h3>Liste des professeurs/enseignants <span th:text="${classe.niveau}"></span></h3>
                             <hr>
                             <div class="row"  >
                                 <table class="table table-bordered" id="add-row">
@@ -210,7 +210,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <select name="enseignantId" class="form-control">
-                                    <option value="">Choisir un enseignant</option>
+                                    <option value="">Choisir un professeur/enseignant</option>
                                     <option th:each="teacher:${teachers}" th:value="${teacher.id}" th:text="${teacher.name}+' '+${teacher.prenom}">Choisir un enseignant</option>
                                 </select>
                                 <small class="form-text text-muted">Prénom de l'enseignant</small>

@@ -74,13 +74,13 @@ public class EcoleController {
             sender.sender(
                     "confirmation@yesbanana.org",
                     "Ecole Yesbanana: Notification Creation d'une ecole par:"+formHelper.getUsername(),
-                    "Nom : " + ecole.getName() + ", Province : " + ecole.getProvince() + ", Commune : " + ecole.getCommune() + ", Cycle : " + ecole.getCycle() + ", Matricule : " + ecole.getMatricule() + ", et le code generer que vous allez communiquer au directeur pour valider son compte ---> " + ecole.getCode() +
-                            " sur la plateforme ecoles.yesbanana.org. Veuillez vous connectez pour l'envoyer son code de confirmation. bien vouloir comuniquer le code suivant a l'adresse mail: " + formHelper.getEmail() + " code: " + ecole.getCode()
+                    "Nom : " + ecole.getName() + ", Province : " + ecole.getProvince() + ", Commune : " + ecole.getCommune() + ", Cycle : " + ecole.getCycle() + ", Matricule : " + ecole.getMatricule() + ", et le code généré que vous allez communiquer au directeur pour valider son compte ---> " + ecole.getCode() +
+                            " sur la plateforme ecoles.yesbanana.org. Veuillez vous connectez pour l'envoyer son code de confirmation. bien vouloir communiquer le code suivant a l'adresse mail: " + formHelper.getEmail() + " code: " + ecole.getCode()
             );
 
             request.getSession().setAttribute("item", ecole);
             model.addAttribute("ecole", ecole);
-            model.addAttribute("success", "Votre école a été ajouter avec success, veuillez contacter les administrateurs du site pour vous fournir le code de validation de votre école pour continuer a l'adresse");
+            model.addAttribute("success", "Votre école a été ajouté avec succès, veuillez contacter les administrateurs du site pour vous fournir le code de validation de votre école pour continuer à l'adresse");
             return "index";
         }
     }

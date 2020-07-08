@@ -73,7 +73,7 @@ public class EnseignantLoginController {
     @GetMapping("/login")
     public String director(Model model){
 
-        model.addAttribute("message","Bien vouloir contacter le responsable de votre ecole pour obtenir les informations de connexion a votre compte");
+        model.addAttribute("message","Bien vouloir contacter le responsable de votre école pour obtenir les informations de connexion a votre compte");
         return "enseignant/login";
     }
 
@@ -214,7 +214,7 @@ public class EnseignantLoginController {
 
         if (compte.getStatus() == false || compte.getStatus() == null){
             model.addAttribute("classe",salle);
-            model.addAttribute("error","Veuillez contacter l'equipe YesB pour avoir votre code d'activation");
+            model.addAttribute("error","Veuillez contacter l'équipe YesB pour avoir votre code d'activation");
             return "enseignant/activation";
         }else {
             model.addAttribute("lists", alls);
@@ -235,7 +235,7 @@ public class EnseignantLoginController {
             return "redirect:/enseignant/bibliotheque/lists/"+salle.getId();
         }else {
             model.addAttribute("classe",salle);
-            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'equipe YesB pour tout besoin d'assistance");
+            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'équipe YesB pour tout besoin d'assistance");
             return "enseignant/activation";
         }
     }
@@ -325,7 +325,7 @@ public class EnseignantLoginController {
             MailService mailService = new MailService();
             mailService.sendSimpleMessage(
                     compteRegistrationDto.getEmail(),
-                    "Vous venez d'etre ajouter en tant que enseignant dans l'ecole virtuelle  :",
+                    "Vous venez d'être ajouté en tant que enseignant dans l'école virtuelle  :",
                     "vos identifiants : username:" +compteRegistrationDto.getUsername()+" et password : "+compteRegistrationDto.getPassword()
 
             );
@@ -335,7 +335,7 @@ public class EnseignantLoginController {
                     "YesBanana: Notification Inscription d'un enseignant",
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " dont l'email est " +
                             compteRegistrationDto.getEmail()+ "  Vient de s'inscrire " +
-                            "sur la plateforme YesBanana. Veuillez vous connectez pour manager son status.");
+                            "sur la plateforme YesBanana. Veuillez vous connecter pour manager son statut.");
 
 
 
@@ -343,7 +343,7 @@ public class EnseignantLoginController {
 
 
 
-        redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec success un nouvel eleve dans cette classe");
+        redirectAttributes.addFlashAttribute("success","Vous avez ajouté avec succès un nouvel élève dans cette classe");
         return "redirect:/enseignant/eleves/lists/"+salle.getId();
     }
 
@@ -403,7 +403,7 @@ public class EnseignantLoginController {
         cours.setSalle(cours.getSalle()+""+salle.getId());
         coursRepository.save(cours);
 
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau cours avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau cours avec succès");
         return "redirect:/enseignant/cours/lists/"+ salle.getId();
     }
 
@@ -458,7 +458,7 @@ public class EnseignantLoginController {
         devoir.setType(ECours.DEVOIRS.toString());
         devoir.setSalle(devoir.getSalle()+""+salle.getId());
         coursRepository.save(devoir);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau devoir avec succès");
         return "redirect:/enseignant/devoirs/lists/"+ salle.getId();
     }
 
@@ -527,7 +527,7 @@ public class EnseignantLoginController {
         examen.setDate(dateFormat.format(date));
         examen.setSalle(examen.getSalle()+""+salle.getId());
         examenRepository.save(examen);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter un vouveau devoir avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté un nouveau devoir avec succès");
         return "redirect:/enseignant/examens/lists/"+ salle.getId();
     }
 
@@ -762,7 +762,7 @@ public class EnseignantLoginController {
         Salle salle = (Salle)request.getSession().getAttribute("classe");
         hebdo.setSalle(salle);
         hebdoRepository.save(hebdo);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter une nouvelle semaine avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté une nouvelle semaine avec succès");
         return "redirect:/enseignant/hebdos/lists/"+ salle.getId();
     }
 
@@ -773,7 +773,7 @@ public class EnseignantLoginController {
         Hebdo hebdo = hebdoRepository.getOne(id);
         Collection<Planning> plannings = planningRepository.findAllByHebdo_Id(hebdo.getId());
         if (plannings.size()<=6){
-            redirectAttributes.addFlashAttribute("error","Vous ne pouvez pas ajouter plus de 6 lecons pour une semaine");
+            redirectAttributes.addFlashAttribute("error","Vous ne pouvez pas ajouter plus de 6 leçons pour une semaine");
             return "redirect:/enseignant/hebdo/detail/"+ hebdo.getId();
         }
         planning.setHebdo(hebdo);
@@ -782,7 +782,7 @@ public class EnseignantLoginController {
         array.add(false);
         planning.setValidations(array);
         planningRepository.save(planning);
-        redirectAttributes.addFlashAttribute("success", "vous avez ajouter une nouvelle journee avec success");
+        redirectAttributes.addFlashAttribute("success", "vous avez ajouté une nouvelle journée avec succès");
         return "redirect:/enseignant/hebdo/detail/"+ hebdo.getId();
     }
 

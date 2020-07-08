@@ -75,7 +75,7 @@ public class ParentLoginController {
     @GetMapping("/login")
     public String director(Model model){
 
-        model.addAttribute("message","Bien vouloir contacter le responsable de votre ecole pour obtenir les informations de connexion a votre compte");
+        model.addAttribute("message","Bien vouloir contacter le responsable de votre école pour obtenir les informations de connexion à votre compte");
         return "parent/login";
     }
 
@@ -188,7 +188,7 @@ public class ParentLoginController {
         if (salles.contains(salle)) {
             cours = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.COURS.toString());
         }else {
-            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
+            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet établissement");
         }
         model.addAttribute("ecole",ecole);
         model.addAttribute("lists",cours);
@@ -225,7 +225,7 @@ public class ParentLoginController {
         model.addAttribute("classe",salle);
         if (compte.getStatus() == false || compte.getStatus() == null){
             model.addAttribute("classe",salle);
-            model.addAttribute("error","Veuillez contacter l'equipe YesB pour avoir votre code d'activation");
+            model.addAttribute("error","Veuillez contacter l'équipe YesB pour avoir votre code d'activation");
             return "parent/activation";
         }else {
             model.addAttribute("lists", alls);
@@ -244,7 +244,7 @@ public class ParentLoginController {
             return "redirect:/parent/bibliotheque/lists/"+salle.getId();
         }else {
             model.addAttribute("classe",salle);
-            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'equipe YesB pour tout besoin d'assistance");
+            model.addAttribute("error","Votre code n'est pas valide, veuillez contacter l'équipe YesB pour tout besoin d'assistance");
             return "parent/activation";
         }
     }
@@ -259,7 +259,7 @@ public class ParentLoginController {
         if (salles.contains(salle)) {
             devoirs = coursRepository.findAllBySalleAndType(salle.getNiveau()+""+salle.getId(), ECours.DEVOIRS.toString());
         }else {
-            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
+            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet établissement");
         }
         model.addAttribute("ecole",ecole);
         model.addAttribute("lists",devoirs);
@@ -280,7 +280,7 @@ public class ParentLoginController {
         if (salles.contains(salle)) {
             reponses = responseRepository.findAllByCompte_IdAndSalle(compte.getId(),salle.getNiveau()+""+salle.getId());
         }else {
-            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
+            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet établissement");
         }
         model.addAttribute("ecole",ecole);
         model.addAttribute("lists",reponses);
@@ -332,7 +332,7 @@ public class ParentLoginController {
         if (salles.contains(salle)) {
             examens = examenRepository.findAllBySalle(salle.getNiveau()+""+salle.getId());
         }else {
-            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet etablissement");
+            model.addAttribute("error","Vous n'avez aucune classe avec ce nom dans cet établissement");
         }
         model.addAttribute("ecole",ecole);
         model.addAttribute("lists",examens);

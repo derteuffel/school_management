@@ -146,7 +146,7 @@ public class DirectionLoginController {
                 ecole.setCode(randomCode);
                 ecoleRepository.save(ecole);
             }
-                model.addAttribute("success", "Veillez contacter l'equipe YesB pour acceder a votre code");
+                model.addAttribute("success", "Veuillez contacter l'équipe YesB pour accéder à votre code");
                 return "direction/activation";
 
         }
@@ -174,7 +174,7 @@ public class DirectionLoginController {
 
         Compte existAccount = compteService.findByUsername(compteDto.getUsername());
         if (existAccount != null) {
-            result.rejectValue("username", null, "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
+            result.rejectValue("username", null, "Il existe déjà un compte avec ce nom d'utilisateur veuillez choisir un autre");
             redirectAttributes.addFlashAttribute("error", "Il existe deja un compte avec ce nom d'utilisateur vueillez choisir un autre");
         }
 
@@ -185,7 +185,7 @@ public class DirectionLoginController {
 
             compteService.saveRoot(compteDto, "/images/profile.jpeg");
 
-        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a ete effectuer avec succes");
+        redirectAttributes.addFlashAttribute("success", "Votre enregistrement a été effectué avec succès");
         return "redirect:/";
     }
 
@@ -261,7 +261,7 @@ public class DirectionLoginController {
 
         if (enseignants.contains(enseignant1)){
             System.out.println("je contient cette enseignant");
-            model.addAttribute("error", "il existe un enseignant deja enregistrer avec cet adresse email");
+            model.addAttribute("error", "il existe un enseignant déjà enregistrer avec cet adresse email");
             model.addAttribute("message",new Message());
             return "direction/home";
         }
@@ -289,7 +289,7 @@ public class DirectionLoginController {
                 salleRepository.save(salle);
             }
         }else {
-            redirectAttributes.addFlashAttribute("error","Il n'yas pas de classe enregistrer vous devez commencer par creer des salles de classe dans votre ecole");
+            redirectAttributes.addFlashAttribute("error","Il n'y as pas de classe enregistrer vous devez commencer par créer des salles de classe dans votre école");
             return "redirect:/direction/enseignant/lists/"+ecole.getId();
         }
         compteService.saveEnseignant(compte1, "/images/profile.jpeg", compte.getEcole().getId(), enseignant);
@@ -301,12 +301,12 @@ public class DirectionLoginController {
 
         sender.sender(
                 "confirmation@yesbanana.org",
-                "Enregistrement d'un enseignant dans l'ecole : "+compte.getEcole().getName(),
+                "Enregistrement d'un enseignant dans l'école : "+compte.getEcole().getName(),
                 "L'utilisateur " + compte1.getUsername() + " avec l'email :" +
                         compte1.getEmail() + "  Vient d'etre ajouter " +
-                        "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
+                        "sur la plateforme de gestion écoles en ligne. Veuillez vous connecter pour manager son statut.");
 
-        redirectAttributes.addFlashAttribute("success", "Vous avez enregistrer avec success ce nouvel enseignant : " + enseignant.getPrenom() + " " + enseignant.getName() + " " + enseignant.getPostnom());
+        redirectAttributes.addFlashAttribute("success", "Vous avez enregistré avec succès ce nouvel enseignant : " + enseignant.getPrenom() + " " + enseignant.getName() + " " + enseignant.getPostnom());
         return "redirect:/direction/enseignant/lists";
     }
 
@@ -553,7 +553,7 @@ public class DirectionLoginController {
         salle.setEcole(ecole);
         salle.setNiveau(salle.getNiveau().toString()+" "+ suffix.toUpperCase());
         salleRepository.save(salle);
-        redirectAttributes.addFlashAttribute("success", "Vous avez ajoute avec succes une nouvelle classe");
+        redirectAttributes.addFlashAttribute("success", "Vous avez ajouté avec succès une nouvelle classe");
         return "redirect:/direction/classe/lists";
     }
 
@@ -609,7 +609,7 @@ public class DirectionLoginController {
         enseignantRepository.save(enseignant);
         salle.getEnseignants().add(enseignant);
         salleRepository.save(salle);
-        redirectAttributes.addFlashAttribute("success", "Vous avez ajouter avec succes un nouvel enseignant a cette classe");
+        redirectAttributes.addFlashAttribute("success", "Vous avez ajouté avec succès un nouvel enseignant a cette classe");
         return "redirect:/direction/enseignant/classe/" + salle.getId();
 
     }
@@ -700,10 +700,10 @@ public class DirectionLoginController {
             eleve.setParent(parent);
             sender.sender(
                     compteRegistrationDto.getEmail(),
-                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
+                    "Enregistrement d'un parent dans l'école : "+salle.getEcole().getName(),
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " avec mot de passe :" +
-                            compteRegistrationDto.getPassword() + "  Vient d'etre ajouter " +
-                            "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
+                            compteRegistrationDto.getPassword() + "  Vient d'être ajouter " +
+                            "sur la plateforme de gestion écoles en ligne. Veuillez vous connecter pour manager son statut.");
 
         }
             eleveRepository.save(eleve);
@@ -711,12 +711,12 @@ public class DirectionLoginController {
 
             sender.sender(
                     "confirmation@yesbanana.org",
-                    "Enregistrement d'un parent dans l'ecole : "+salle.getEcole().getName(),
+                    "Enregistrement d'un parent dans l'école : "+salle.getEcole().getName(),
                     "L'utilisateur " + compteRegistrationDto.getUsername() + " avec email :" +
-                            compteRegistrationDto.getEmail() + "  Vient d'etre ajouter " +
-                            "sur la plateforme de gestion ecoles en ligne. Veuillez vous connectez pour manager son status.");
+                            compteRegistrationDto.getEmail() + "  Vient d'être ajouter " +
+                            "sur la plateforme de gestion écoles en ligne. Veuillez vous connecter pour manager son statut.");
 
-        redirectAttributes.addFlashAttribute("success","Vous avez ajouter avec success un nouvel eleve dans cette classe");
+        redirectAttributes.addFlashAttribute("success","Vous avez ajouté avec succès un nouvel élève dans cette classe");
         return "redirect:/direction/classe/eleves/"+salle.getId();
     }
 
@@ -779,7 +779,7 @@ public class DirectionLoginController {
                 sender.sender(
                         compte1.getEmail(),
                         "Message de la direction",
-                        message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org");
+                        message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'école en ligne sur----> www.ecoles.yesbanana.org");
 
             }
         }
@@ -839,7 +839,7 @@ public class DirectionLoginController {
             sender.sender(
                     compte1.getEmail(),
                     "Message de la direction",
-                    message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'ecole en ligne sur ----> www.ecoles.yesbanana.org");
+                    message.getContent() + ", envoye le " + message.getDate() + ", fichier associe(s) " + message.getFichier()+"Vous pouvez consulter ce message dans votre espace membre dans l'école en ligne sur ----> www.ecoles.yesbanana.org");
 
         }
 

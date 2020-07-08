@@ -72,7 +72,7 @@ public class PasswordController {
                                 "/password/reset?token=" + compte.getResetToken());
 
                 // add message in view to confirmation
-                model.addAttribute("success", "un lien pour reinitialliser votre mot de passe a été envoyé a cette adresse" + email);
+                model.addAttribute("success", "un lien pour réinitialiser votre mot de passe a été envoyé à cette adresse" + email);
 
             }
         }
@@ -123,10 +123,10 @@ public class PasswordController {
             System.out.println(compte.get().getPassword());
             // In order to set a model attribute on a redirect, we must use
             // RedirectAttributes
-            redirectAttributes.addFlashAttribute("success", "Vous avez reinitialise avec succes votre Mot de Passe, veuillez vous connecter");
+            redirectAttributes.addFlashAttribute("success", "Vous avez réinitialisé avec succès votre Mot de Passe, veuillez vous connecter");
             return "redirect:/ecole/connexion";
         }else {
-            model.addAttribute("error", "Ooops vous n'avez pas le bon lien de reinitialistaion");
+            model.addAttribute("error", "Ooops vous n'avez pas le bon lien de réinitialisation");
             return "resetPassword";
         }
     }
