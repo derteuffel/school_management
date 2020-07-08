@@ -1,0 +1,42 @@
+#messengerBtn{
+    display:flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items:center;
+    position:fixed;
+    right:2rem;
+    bottom:20px;
+    z-index:100000;
+}
+.icon{
+    padding:.5rem;
+    width: 50px;
+    background-color:rgb(220,220,220);
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+
+}
+.messageBtn{
+    font-weight: 500;
+}
+.chatMessenger{
+    display: none;
+    height: 450px;
+    width:320px;
+    background-color: white;
+    position:fixed;
+    right:2rem;
+    bottom:20px;
+    z-index:100000;
+    overflow-y:scroll;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items:flex-start;
+}
+#chatClose{
+    cursor:pointer;
+}
+.messageBox:hover{
+    cursor:pointer;
+}

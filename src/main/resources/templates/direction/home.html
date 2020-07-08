@@ -32,6 +32,7 @@
 
     <!-- Main CSS-->
     <link th:href="@{/css/theme.css}" rel="stylesheet" media="all">
+    <script th:src="@{/vendor/jquery-3.2.1.min.js}"></script>
 
 </head>
 
@@ -79,6 +80,7 @@
                     <div th:replace="~{../templates/fragments/sidebar_director :: sidebar_director}">
                     </div>
                     <div class="col-xl-9">
+                        <div th:replace="~{../templates/fragments/messenger :: messenger}"></div>
                         <!-- PAGE CONTENT-->
                         <div class="page-content row">
                             <div class="col-md-6">
