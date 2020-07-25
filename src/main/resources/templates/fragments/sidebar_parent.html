@@ -18,11 +18,11 @@
                     <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li th:if="${classe}!=null">
                             <a th:href="@{/parent/devoirs/lists/}+${classe.id}">
-                                <i class="fas fa-address-book"></i>Devoirs</a>
+                                <i class="fas fa-address-book"></i>Devoirs/TP</a>
                         </li>
                         <li th:if="${classe}!=null">
                             <a th:href="@{/parent/reponses/lists/}+${classe.id}+'/'+${session.compte.username}">
-                                <i class="fas fa-bookmark-o"></i>Reponses aux devoirs</a>
+                                <i class="fas fa-bookmark-o"></i>Reponses aux devoirs/TP</a>
                         </li>
                         <li th:if="${classe}!=null">
                             <a th:href="@{/parent/examens/lists/}+${classe.id}">

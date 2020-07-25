@@ -75,7 +75,7 @@
                          <div class="page-content" >
                              <form th:action="@{/parent/reponses/save/}+${devoir.id}" autocomplete="off" method="post" th:object="${reponse}" enctype="multipart/form-data" class="form-horizontal">
                                  <div class="card-header">
-                                     <h5 class="card-title">Reponse au devoir <span th:text="${devoir.title}"></span> du <span th:text="${devoir.date}"></span></h5>
+                                     <h5 class="card-title">Reponse au devoir/TP <span th:text="${devoir.title}"></span> du <span th:text="${devoir.date}"></span></h5>
                                  </div>
                                  <div class="card-body card-block">
                                      <div class="row form-group">
@@ -84,7 +84,7 @@
                                          </div>
                                          <div class="col-12 col-md-9">
                                              <input type="text" id="text-title" th:field="*{title}" placeholder="Titre" class="form-control">
-                                             <small class="form-text text-muted">Titre du devoir</small>
+                                             <small class="form-text text-muted">Titre du devoir/TP</small>
                                          </div>
                                      </div>
                                      <div class="row form-group">
@@ -93,7 +93,7 @@
                                          </div>
                                          <div class="col-12 col-md-9">
                                              <textarea th:field="*{content}" id="text-content" class="form-control" rows="15" placeholder="Contenue"></textarea>
-                                             <small class="form-text text-muted">Ajouter un resumer du devoir</small>
+                                             <small class="form-text text-muted">Ajouter un resumer du devoir/TP</small>
                                          </div>
                                      </div>
                                      <div class="row form-group">

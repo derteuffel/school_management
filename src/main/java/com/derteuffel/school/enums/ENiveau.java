@@ -26,5 +26,6 @@ public enum ENiveau {
     cinquieme_professionnelle,
     sixieme_professionnelle,
     septieme_professionnelle,
+    autres
 
 }

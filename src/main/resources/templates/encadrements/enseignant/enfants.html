@@ -69,7 +69,7 @@
                         <!-- PAGE CONTENT-->
                         <div class="page-content">
 
-                            <h2>Liste des élèves</h2>
+                            <h2>Liste des élèves/apprenants</h2>
                             <button class="btn btn-primary pull-right" type="button" data-toggle="modal" data-target="#addModal" ><i class="fas fa-plus"></i></button>
                             <hr>
                             <div class="row"  >
@@ -113,7 +113,7 @@
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailModalLabel">Detail élève</h5>
+                                                            <h5 class="modal-title" id="detailModalLabel">Detail élève/apprenant</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -193,7 +193,7 @@
                                                                 </div>
                                                             </div>
                                                             <hr>
-                                                            <p>Informations sur la disponibilité de l'élève</p>
+                                                            <p>Informations sur la disponibilité de l'élève/apprenant</p>
                                                             <br>
                                                             <div class="row form-group">
                                                                 <div class="col col-md-3">
@@ -245,7 +245,7 @@
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="addModalLabel1">Ajouter des élèves</h5>
+                                        <h5 class="modal-title" id="addModalLabel1">Ajouter des élèves/apprenants</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -254,11 +254,11 @@
                                         <form th:action="@{/encadrements/enseignant/eleves/save/}+${encadreur.id}" autocomplete="off" method="post" th:object="${helper}"  class="form-horizontal">
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label  class=" form-control-label">Choisir des élèves</label>
+                                                        <label  class=" form-control-label">Choisir des élèves/apprenants</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <select th:field="*{students}" multiple class="form-control">
-                                                            <option value="">Choisir des élèves</option>
+                                                            <option value="">Choisir des élèves/apprenant</option>
                                                             <option th:each="student : ${eleves}" th:value="${student.id}" th:text="${student.name}">Choisir des eleves</option>
                                                         </select>
                                                         <small class="form-text text-muted">Charger ici les enfant a encadre par cette enseignant</small>

@@ -90,7 +90,7 @@
                             <a th:href="@{/ecole/connexion}" class="btn mb-1"   style="width: inherit;height: 250px" >
                                 <div class="statistic__item statistic__item--green text-justify">
                                     <h2 class="number">Connexion à votre</br> école/institution </h2>
-                                    <p class="desc">Elèves, Parents et Enseignants</p>
+                                    <p class="desc">Elèves/Apprenants, Parents/Tuteurs <br> et Enseignants/Professeurs</p>
                                     <div class="icon">
                                         <img th:src="@{/images/search.png}">
                                         <img th:src="@{/images/school.png}">
@@ -113,7 +113,7 @@
                                 <a th:href="@{/encadrements/login}" style="width: inherit;height: 250px" class="btn">
                                     <div class="statistic__item statistic__item--red text-justify">
                                         <h2 class="number">Encadrement</h2>
-                                        <span class="desc">- Elèves secondaire et primaire, </br>- Appui+ rédaction travail fin </br> de cycle</br>- Formation professionnelle</br>- Stage professionnel </span>
+                                        <span class="desc">- Elèves/apprenants secondaire et primaire, </br>- Appui+ rédaction travail fin </br> de cycle</br>- Formation professionnelle</br>- Stage professionnel </span>
                                         <div class="icon">
                                             <img th:src="@{/images/teacher.png}">
                                         </div>
@@ -178,11 +178,11 @@
                                             </div>
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label for="text-nom" class=" form-control-label">Nom de l'ecole</label>
+                                                        <label for="text-nom" class=" form-control-label">Nom de l'ecole/institution</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <input type="text" id="text-nom" th:field="*{name}" placeholder="Nom" class="form-control">
-                                                        <small class="form-text text-muted">Ce nom sera l'identite de votre école</small>
+                                                        <small class="form-text text-muted">Ce nom sera l'identite de votre école/institution</small>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
@@ -242,7 +242,7 @@
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-3">
-                                                        <label for="text-matricule" class=" form-control-label">Matricule de votre école</label>
+                                                        <label for="text-matricule" class=" form-control-label">Matricule de votre école/institution</label>
                                                     </div>
                                                     <div class="col-12 col-md-9">
                                                         <input type="text" id="text-matricule" th:field="*{matricule}" placeholder="Matricule" class="form-control">
@@ -251,11 +251,11 @@
                                                 </div>
                                             <div class="row form-group">
                                                 <div class="col col-md-3">
-                                                    <label for="text-logo" class=" form-control-label">Logo de votre école</label>
+                                                    <label for="text-logo" class=" form-control-label">Logo de votre école/institution</label>
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <input type="file" id="text-logo" name="file"  class="form-control-file">
-                                                    <small class="form-text text-muted">Inserer le logo de votre ecole qui sera vu par tous</small>
+                                                    <small class="form-text text-muted">Inserer le logo de votre ecole/institution qui sera vu par tous</small>
                                                 </div>
                                             </div>
                                                 <div class="row form-group">
@@ -264,13 +264,13 @@
                                                 </div>
                                                 <div class="col-12 col-md-9">
                                                     <select th:field="*{cycle}" class="form-control" >
-                                                        <option value="">Choisir un cycle</option>
+                                                        <option value="">Choisir un cycle/programme</option>
                                                         <option  value="PRIMAIRE">PRIMAIRE</option>
                                                         <option  value="SECONDAIRE">SECONDAIRE</option>
                                                         <option  value="UNIVERSITE">UNIVERSITE</option>
                                                         <option  value="PROFESSIONNELLE">PROFESSIONNELLE</option>
                                                     </select>
-                                                    <small class="form-text text-muted">Cycle de votre école</small>
+                                                    <small class="form-text text-muted">Cycle/Programme de votre école/institution</small>
                                                 </div>
                                             </div>
                                             <div class="row form-group">

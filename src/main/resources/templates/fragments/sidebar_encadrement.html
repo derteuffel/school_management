@@ -15,7 +15,7 @@
                 </li>
                 <li th:if="${role.name}=='ROLE_ROOT'">
                     <a th:href="@{/encadrements/eleves}">
-                        <i class="fas fa-user"></i>Eleves</a>
+                        <i class="fas fa-user"></i>Eleves/Apprenants</a>
                 </li>
                 <li>
                     <a th:href="@{/encadrements/cours/lists}">
@@ -49,7 +49,7 @@
                 </li>
                 <li th:if="${role.name}=='ROLE_ENCADREUR'" >
                     <a th:href="@{/encadrements/eleves/lists}">
-                        <i class="fas fa-users"></i>Eleve encadres</a>
+                        <i class="fas fa-users"></i>Eleve/Apprenant encadres</a>
                 </li>
                 <li th:if="${role.name}=='ROLE_ENFANT'" >
                     <a th:href="@{/encadrements/encadreurs/lists}">

@@ -71,14 +71,14 @@
 
                             <button type="button" data-toggle="modal" data-target="#addDevoirModal" class="btn btn-primary">Nouveau devoir&nbsp;<i class="zmdi zmdi-plus"></i></button>
                             <hr>
-                            <h2>Ensemble des devoirs de la classe : <span th:text="${classe.niveau}"></span></h2>
+                            <h2>Ensemble des devoirs/TP de la classe : <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-12">
                                     <table class="table table-bordered" id="add-row">
                                         <thead>
-                                        <th>Date d'ajout du devoir</th>
-                                        <th>Titre du devoir</th>
+                                        <th>Date d'ajout du devoir/TP</th>
+                                        <th>Titre du devoir/TP</th>
                                         <th>ACTION</th>
                                         </thead>
                                         <tbody>
@@ -99,7 +99,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body card-block">
-                                                            <p>Vous voulez vraiment supprimer ce devoir??</p>
+                                                            <p>Vous voulez vraiment supprimer ce devoir/TP??</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -112,7 +112,7 @@
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailModalLabel">Detail devoir</h5>
+                                                            <h5 class="modal-title" id="detailModalLabel">Detail devoir/TP</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -158,7 +158,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>                                        </tr>
+                                            </div>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

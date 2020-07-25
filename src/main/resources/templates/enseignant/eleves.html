@@ -49,7 +49,7 @@
                 <!-- ALERT-->
                 <div class="alert au-alert-success alert-dismissible fade show au-alert au-alert--70per" role="alert">
                     <i class="zmdi zmdi-check-circle"></i>
-                    <span th:if="${success}" class="content" th:text="${success}">Vous etes connecter successivement a votre compte</span>
+                    <span th:if="${success}" class="content" th:text="${success}">Vous ètes connecté successivement a votre compte</span>
                     <span th:unless="${success}" class="content">Vous ètes connecté successivement a votre compte</span>
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">
@@ -71,14 +71,14 @@
 
                             <!--button th:if="${session.compte.enseignant.name+'  '+session.compte.enseignant.prenom}== ${classe.principal}" type="button" data-toggle="modal" data-target="#addEleveModal" class="btn btn-primary">Nouvel eleve&nbsp;<i class="zmdi zmdi-plus"></i></button-->
                             <hr>
-                            <h2>Liste des eleves  : <span th:text="${classe.niveau}"></span></h2>
+                            <h2>Liste des élèves/apprenants  : <span th:text="${classe.niveau}"></span></h2>
                             <hr>
                             <div class="row"  >
                                 <div class="col-lg-12">
                                     <table class="table table-bordered" id="add-row">
                                         <thead>
                                         <th>Nom</th>
-                                        <th>Telephone du tuteur</th>
+                                        <th>Téléphone du tuteur</th>
                                         <th>ACTION</th>
                                         </thead>
                                         <tbody>
@@ -93,7 +93,7 @@
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="detailModalLabel">Detail élève</h5>
+                                                            <h5 class="modal-title" id="detailModalLabel">Detail élève/apprenant</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -184,13 +184,13 @@
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteModalLabel">Supprimer élève</h5>
+                                                            <h5 class="modal-title" id="deleteModalLabel">Supprimer élève/apprenant</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body card-block">
-                                                            <p>Vous voulez vraiment supprimer cet élève??</p>
+                                                            <p>Vous voulez vraiment supprimer cet élève/apprenant??</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
